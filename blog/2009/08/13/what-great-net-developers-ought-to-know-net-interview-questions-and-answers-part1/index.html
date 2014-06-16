@@ -23,10 +23,7 @@
 	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
-	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
+	Included file 'custom/head.html' not found in _includes directory
 </head>
 
 
@@ -34,10 +31,11 @@
 	<div class="container">
 		<div class="left-col">
 			<div class="intrude-less">
-			<header id="header" class="inner"><nav id="main-nav"><ul class="nav">
-    
-</ul>
-</nav>
+			<header id="header" class="inner"><nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul></nav>
 <!-- <nav id="sub-nav">
 	<div class="social">
 		
@@ -63,7 +61,7 @@
     <script src="/javascripts/md5.js"></script>
     <script type="text/javascript">
 $(function(){
-  $('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+  $('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("navaneethkn@gmail.com") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
 });
     </script>
   </div>
@@ -73,19 +71,7 @@ $(function(){
   <p class="site-subtitle">Random thoughts on programming and travel.</p>
   
   </hgroup>
-  <div class="jumbotron">
-  <div class="container">
-    
-      {love to code}
-    
-    <h3 class="tagline">
-      
-        Random thoughts on programming and travel.
-      
-    </h3>
-  </div>
-</div>
-
+  
 </div>
 </header>
 			</div>
@@ -93,20 +79,6 @@ $(function(){
 		<div class="mid-col">
 			
 				
-<div id="banner" class="inner">
-	<div class="container">
-		<ul class="feed"></ul>
-	</div>
-	<small><a href="http://twitter.com/navaneethkn">navaneethkn</a> @ <a href="http://twitter.com">Twitter</a></small>
-	<div class="loading">Loading...</div>
-</div>
-<script src="/javascripts/twitter.js"></script>
-<script type="text/javascript">
-	(function($){
-		$('#banner').getTwitterFeed('navaneethkn', 4, false);
-	})(jQuery);
-</script>
-
 			
 			<div class="mid-col-container">
 				<div id="content" class="article-inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
@@ -206,6 +178,13 @@ $(function(){
 
 <p>GAC stands for Global Assembly Cache. It provides a centralized storage for assemblies that needs to be shared across applications. It solved the versioning problem and allows side-by-side execution. It can be used when assemblies require elevated permission to do the job.</p>
 </div>
+	<div class="meta"><span class="tags">
+
+
+	<a class='category' href='/blog/categories/dot-net/'>.net,</a>, <a class='category' href='/blog/categories/c-number/'>c#</a>
+
+
+</span></div>
 
 </article>
 
@@ -232,8 +211,9 @@ $(function(){
 			</div>
 			<footer id="footer" class="inner"><p>
   Copyright &copy; 2014 - nkn -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span> - Theme by <a href="http://alexgaribay.com">Alex Garibay</a>
+  <span class="credit"><a href="http://octopress.org">Octopress</a></span>
 </p>
+
 
 <p>Theme: <a href="https://github.com/qingwang/octopress-theme-yinyang">YinYang</a></p>
 </footer>
@@ -275,7 +255,6 @@ $(function(){
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		})();
 	</script>
-
 
 
 
