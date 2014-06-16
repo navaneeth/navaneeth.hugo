@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: productivity, | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/productivity/atom.xml" rel="self"/>
+  <link href="http://navaneeth.github.io/"/>
+  <updated>2014-06-16T12:07:52+05:30</updated>
+  <id>http://navaneeth.github.io/</id>
+  <author>
+    <name><![CDATA[nkn]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Simple egg timer on Linux for Pomodoro technique]]></title>
+    <link href="http://navaneeth.github.io/blog/2010/12/19/simple-egg-timer-on-linux-for-pomodoro-technique/"/>
+    <updated>2010-12-19T21:19:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2010/12/19/simple-egg-timer-on-linux-for-pomodoro-technique</id>
+    <content type="html"><![CDATA[<p>Recently I have started evaluating the Pomodoro Technique which I found quite interesting. I am still evaluating the technique and not yet concluded on whether I should continue using it.</p>
+
+<p>To implement pomodoro technique, you need a kitchen timer or egg timer. Since I use pomodoro for my programming work, I obviously don’t want to use a physical timer. I couldn’t find a decent timer for linux especially one that works well with Xfce. In this blog post, I will explain building a kitchen timer with basic linux programming techniques. This also gives an idea about how simple linux tools can be combined to do useful stuff.</p>
+
+<p>Things that are used</p>
+
+<ul>
+<li>Shell scripting</li>
+<li>Notification mechanisms on popular desktops like Gnome and Xfce. (I use Xfce in this example)</li>
+</ul>
+
+
+<p>The shell script is actually a modified version of the one published here (<a href="http://mostlylinux.wordpress.com/commandline/eggtimer/">http://mostlylinux.wordpress.com/commandline/eggtimer/</a>).</p>
+
+<p>```sh</p>
+
+<h1>!/bin/bash</h1>
+
+<p>counter=0
+limit=$1
+summary=$2
+startmessage=$3
+endmessage=$4
+notify-send -u critical -i appointment -t 600 &ldquo;$summary&rdquo; &ldquo;$startmessage&rdquo;
+echo
+while [ $counter != $limit ]; do
+   echo &ldquo;$counter minutes so far&hellip;&rdquo;;
+   sleep 60
+   let &ldquo;counter = $counter + 1&rdquo;
+done
+if [ $counter = $limit ]; then
+   echo
+   notify-send -u critical -i appointment &ldquo;$summary&rdquo; &ldquo;$endmessage&rdquo;
+   echo -e &lsquo;\a&rsquo; &gt;&amp;2
+   exit 0
+fi
+```</p>
+
+<p>All it does is wait until the limit reaches. It uses the sleep(1) command to sleep for a minute. notify-send is used for sending notifications to the desktop environment.</p>
+
+<p>This script can be invoked using,</p>
+
+<p><code>sh
+./p-timer.sh
+</code></p>
+
+<p>If you use bash, you can add an alias for convenience.</p>
+
+<p><code>sh
+alias begin-pomodoro='sh ~/utils/p-timer.sh 25 "Pomodoro" "Pomodoro started, you have 25 minutes left" "Pomodoro ended. Please stop the work and take short break"'
+</code></p>
+
+<p>This post is written on one pomodoro!</p>
+
+<p>Happy programming!</p>
+]]></content>
+  </entry>
+  
+</feed>

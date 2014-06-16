@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ado.net | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/ado-dot-net/atom.xml" rel="self"/>
+  <link href="http://navaneeth.github.io/"/>
+  <updated>2014-06-16T12:07:52+05:30</updated>
+  <id>http://navaneeth.github.io/</id>
+  <author>
+    <name><![CDATA[nkn]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ADO.NET best practices – Reading data from data reader]]></title>
+    <link href="http://navaneeth.github.io/blog/2009/07/11/ado-dot-net-best-practices-reading-data-from-data-reader/"/>
+    <updated>2009-07-11T23:38:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2009/07/11/ado-dot-net-best-practices-reading-data-from-data-reader</id>
+    <content type="html"><![CDATA[<p>I have seen many people using DataReader incorrectly. In this post, I will try to explain some good practices that can be followed when reading from a data reader. Consider the following problematic code,</p>
+
+<p>```csharp
+SqlDataReader reader = /<em> &hellip; </em>/;
+while (reader.Read())
+{</p>
+
+<pre><code>string userName = reader["user_name"].ToString();
+int age = int.Parse( reader["age"].ToString() );
+/* ... */
+</code></pre>
+
+<p>}
+reader.Close();
+```</p>
+
+<p>How many problems can you figure out from the above code? There are many problems with this code,</p>
+
+<ul>
+<li>The columns “user_name” and “age” may or may not exist. If the column does not exist in the reader, it will throw error.</li>
+<li>You may be calling <code>ToString()</code> on an object which may be pointing to <code>NULL</code>. This will lead to a null reference exception.</li>
+<li><code>SqlDataReader</code> implements <code>IDisposable</code> and user code has to call <code>Dispose()</code> each time to release the resources deterministically. This is not happening here.</li>
+<li><code>reader["age"]</code> may contain values that are not compatible with integer. In such case, <code>int.Parse()</code> will throw a <code>FormatException</code>.</li>
+</ul>
+
+
+<p>Following sections will show a safe method to read data from DataReader.</p>
+
+<h2>Understanding ordinals</h2>
+
+<p>Ordinal is the index of a column in the reader. <code>GetOrdinal()</code> method will give you the ordinal for the column name supplied. So the first step in reading data from reader should be to find the ordinal of the columns which we want to read. Before getting the ordinal values, you have to ensure that the reader can read. SqlDataReader provides a HasRows property which can be useful here. Here is how you read the ordinals</p>
+
+<p>```csharp
+SqlDataReader reader = /<em> &hellip; </em>/;
+int userNameOrdinal;
+int ageOrdinal;
+if (reader.HasRows)
+{</p>
+
+<pre><code> try
+ {
+       userNameOrdinal = reader.GetOrdinal("user_name");
+ }
+ catch (IndexOutOfRangeException)
+ {
+       throw new YourCustomException("Expected column 'user_name' not found");
+ }
+ try
+ {
+       ageOrdinal = reader.GetOrdinal("age");
+ }
+ catch (IndexOutOfRangeException)
+ {
+       throw new YourCustomException("Expected column 'age' not found");
+ }
+</code></pre>
+
+<p>}
+```</p>
+
+<p>If you have support to “Extension methods”, this code can be simplified further.</p>
+
+<p>```csharp
+public static class SqlDataReaderExtensions
+{</p>
+
+<pre><code>public static int GetOrdinalOrThrow(this SqlDataReader reader, string columnName)
+{
+    try
+    {
+        return reader.GetOrdinal(columnName);
+    }
+    catch (IndexOutOfRangeException)
+    {
+        throw new YourCustomException(string.Format("Expected column '{0}' not found",columnName));
+    }
+}
+</code></pre>
+
+<p>}</p>
+
+<p>SqlDataReader reader = /<em> &hellip; </em>/;
+int userNameOrdinal;
+int ageOrdinal;
+if (reader.HasRows)
+{</p>
+
+<pre><code>  userNameOrdinal = reader.GetOrdinalOrThrow("user_name");
+  ageOrdinal = reader.GetOrdinalOrThrow("age");
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This makes the code more clean. However, I really wish to see a <code>TryGetOrdinal()</code> method on <code>IDataReader</code> so that we can save the cost of exception handling.</p>
+
+<p>GetOrdinal() method first does a case-sensitive lookup for the column name. If it fails, case-insensitive search is performed. Thus, using the column name in correct case with GetOrdinal() will be more efficient.</p>
+
+<h2>Respecting type safety</h2>
+
+<p>C# is a strongly typed language and each programmer should take full advantage of this. Reading data like, <code>reader["user_name"]</code> is not a type safe way as it returns a object. Data reader provides methods to read data in a type safe way.</p>
+
+<p>Here is what MSDN says about it</p>
+
+<blockquote><pre><code>When accessing column data use the typed accessors like GetString, GetInt32, and so on. This saves you the processing required to cast the Object returned from GetValue as a particular type. 
+</code></pre></blockquote>
+
+<p>Now let us follow the above suggestion and rewrite our code like,</p>
+
+<p>```csharp
+while (reader.Read())
+{
+   string userName = reader.GetString(userNameOrdinal);
+   int age = -1;
+   try
+   {</p>
+
+<pre><code>     age = reader.GetInt32(ageOrdinal);
+</code></pre>
+
+<p>   }
+   catch (InvalidCastException)
+   {</p>
+
+<pre><code>     throw new YourCustomException("Unable to read age. Expecting integer value");
+</code></pre>
+
+<p>   }
+   /<em> &hellip; </em>/
+}
+```</p>
+
+<h2>Releasing resources</h2>
+
+<p>If any type implements IDisposable, it is like saying “I have something to release explicitly rather than garbage collector to release it“. So it is programmers duty to ensure the calls to Dispose() when using disposable types. C# has “using” statement (stack semantics can be used in C++/CLI) which will ensure calls to Dispose(). Since DataReader is a disposable object, we can write like</p>
+
+<p>```csharp
+using(SqlDataReader reader = command.ExecuteReader())
+{</p>
+
+<pre><code>  while (reader.Read())
+  {
+      string userName = reader.GetString(userNameOrdinal);
+      int age = -1;
+      try
+      {
+          age = reader.GetInt32(ageOrdinal);
+      }
+      catch (InvalidCastException)
+      {
+          throw new YourCustomException("Unable to read age. Expecting integer value");
+      }
+      /* ... */
+  }
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This ensures that the reader is disposed properly even in exceptional situations.</p>
+
+<h2>Putting everything together</h2>
+
+<p>If you put everything together, code will be like</p>
+
+<p>```csharp
+public static class SqlDataReaderExtensions
+{</p>
+
+<pre><code>public static int GetOrdinalOrThrow(this SqlDataReader reader, string columnName)
+{
+    try
+    {
+        return reader.GetOrdinal(columnName);
+    }
+    catch (IndexOutOfRangeException)
+    {
+        throw new YourCustomException(string.Format("Expected column '{0}' not found",columnName));
+    }
+}
+</code></pre>
+
+<p>}</p>
+
+<p>int userNameOrdinal = -1;
+int ageOrdinal = -1;
+if (reader.HasRows)
+{</p>
+
+<pre><code>userNameOrdinal = reader.GetOrdinalOrThrow("user_name");
+ageOrdinal = reader.GetOrdinalOrThrow("age");
+</code></pre>
+
+<p>}
+using (SqlDataReader reader = GetReader())
+{</p>
+
+<pre><code>while (reader.Read())
+{
+    string userName = reader.GetString(userNameOrdinal);
+    int age = -1;
+    try
+    {
+        age = reader.GetInt32(ageOrdinal);
+    }
+    catch (InvalidCastException)
+    {
+        throw new YourCustomException("Unable to read age. Expecting integer value");
+    }
+    /* ... */
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>We have got clean code now. It handles the exceptions and throws informative exceptions to the caller rather than throwing Boneheaded exceptions, we have avoided explicit casting and DataReader is disposed properly.</p>
+
+<p>These are applicable for all types which implements <code>IDataReader</code>. <code>SqlDataReader</code> is used in this post just for explanation.</p>
+
+<p>Happy programming!</p>
+]]></content>
+  </entry>
+  
+</feed>

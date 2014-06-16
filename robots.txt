@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://navaneeth.github.io/sitemap.xml 

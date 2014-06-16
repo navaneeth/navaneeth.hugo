@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: linux | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://navaneeth.github.io/"/>
+  <updated>2014-06-16T12:07:52+05:30</updated>
+  <id>http://navaneeth.github.io/</id>
+  <author>
+    <name><![CDATA[nkn]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Funny GTK warning]]></title>
+    <link href="http://navaneeth.github.io/blog/2013/02/08/funny-gtk-warning/"/>
+    <updated>2013-02-08T00:23:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2013/02/08/funny-gtk-warning</id>
+    <content type="html"><![CDATA[<p>I was working with a GTK application and got the below warning.</p>
+
+<blockquote><p> Trying to remove a child that doesn&rsquo;t believe we&rsquo;re it&rsquo;s parent</p></blockquote>
+
+<p>:)</p>
+]]></content>
+  </entry>
+  
+</feed>

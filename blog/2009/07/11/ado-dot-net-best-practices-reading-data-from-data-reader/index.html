@@ -1,0 +1,520 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>ADO.NET best practices – Reading data from data reader - {love to code}</title>
+	<meta name="author" content="nkn">
+
+	
+	<meta name="description" content="ADO.NET Best Practices – Reading Data From Data Reader Jul 11th, 2009 I have seen many people using DataReader incorrectly. In this post, I will try &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="{love to code}" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://navaneeth.github.io/blog/2009/07/11/ado-dot-net-best-practices-reading-data-from-data-reader/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><nav id="main-nav"><ul class="nav">
+    
+</ul>
+</nav>
+<!-- <nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/navaneethkn" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/navaneeth" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav> -->
+<div class="profile-container">
+  <div class="profilepic">
+    <script src="/javascripts/md5.js"></script>
+    <script type="text/javascript">
+$(function(){
+  $('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+});
+    </script>
+  </div>
+  <hgroup>
+  <h1 class="site-title"><a href="/">{love to code}</a></h1>
+  
+  <p class="site-subtitle">Random thoughts on programming and travel.</p>
+  
+  </hgroup>
+  <div class="jumbotron">
+  <div class="container">
+    
+      {love to code}
+    
+    <h3 class="tagline">
+      
+        Random thoughts on programming and travel.
+      
+    </h3>
+  </div>
+</div>
+
+</div>
+</header>
+			</div>
+		</div>
+		<div class="mid-col">
+			
+				
+<div id="banner" class="inner">
+	<div class="container">
+		<ul class="feed"></ul>
+	</div>
+	<small><a href="http://twitter.com/navaneethkn">navaneethkn</a> @ <a href="http://twitter.com">Twitter</a></small>
+	<div class="loading">Loading...</div>
+</div>
+<script src="/javascripts/twitter.js"></script>
+<script type="text/javascript">
+	(function($){
+		$('#banner').getTwitterFeed('navaneethkn', 4, false);
+	})(jQuery);
+</script>
+
+			
+			<div class="mid-col-container">
+				<div id="content" class="article-inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+	<h1 class="title" itemprop="name">ADO.NET Best Practices – Reading Data From Data Reader</h1>
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+  <div class="post-date"><time datetime="2009-07-11T23:38:00+05:30" data-updated="true" itemprop="datePublished">Jul 11<span>th</span>, 2009</time></div>
+	<div class="entry-content" itemprop="articleBody"><p>I have seen many people using DataReader incorrectly. In this post, I will try to explain some good practices that can be followed when reading from a data reader. Consider the following problematic code,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">SqlDataReader</span> <span class="n">reader</span> <span class="p">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
+</span><span class='line'><span class="k">while</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">Read</span><span class="p">())</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">string</span> <span class="n">userName</span> <span class="p">=</span> <span class="n">reader</span><span class="p">[</span><span class="s">&quot;user_name&quot;</span><span class="p">].</span><span class="n">ToString</span><span class="p">();</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">age</span> <span class="p">=</span> <span class="kt">int</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span> <span class="n">reader</span><span class="p">[</span><span class="s">&quot;age&quot;</span><span class="p">].</span><span class="n">ToString</span><span class="p">()</span> <span class="p">);</span>
+</span><span class='line'>    <span class="cm">/* ... */</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">reader</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>How many problems can you figure out from the above code? There are many problems with this code,</p>
+
+<ul>
+<li>The columns “user_name” and “age” may or may not exist. If the column does not exist in the reader, it will throw error.</li>
+<li>You may be calling <code>ToString()</code> on an object which may be pointing to <code>NULL</code>. This will lead to a null reference exception.</li>
+<li><code>SqlDataReader</code> implements <code>IDisposable</code> and user code has to call <code>Dispose()</code> each time to release the resources deterministically. This is not happening here.</li>
+<li><code>reader["age"]</code> may contain values that are not compatible with integer. In such case, <code>int.Parse()</code> will throw a <code>FormatException</code>.</li>
+</ul>
+
+
+<p>Following sections will show a safe method to read data from DataReader.</p>
+
+<h2>Understanding ordinals</h2>
+
+<p>Ordinal is the index of a column in the reader. <code>GetOrdinal()</code> method will give you the ordinal for the column name supplied. So the first step in reading data from reader should be to find the ordinal of the columns which we want to read. Before getting the ordinal values, you have to ensure that the reader can read. SqlDataReader provides a HasRows property which can be useful here. Here is how you read the ordinals</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">SqlDataReader</span> <span class="n">reader</span> <span class="p">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">userNameOrdinal</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">ageOrdinal</span><span class="p">;</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">HasRows</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>     <span class="k">try</span>
+</span><span class='line'>     <span class="p">{</span>
+</span><span class='line'>           <span class="n">userNameOrdinal</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetOrdinal</span><span class="p">(</span><span class="s">&quot;user_name&quot;</span><span class="p">);</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'>     <span class="k">catch</span> <span class="p">(</span><span class="n">IndexOutOfRangeException</span><span class="p">)</span>
+</span><span class='line'>     <span class="p">{</span>
+</span><span class='line'>           <span class="k">throw</span> <span class="k">new</span> <span class="nf">YourCustomException</span><span class="p">(</span><span class="s">&quot;Expected column &#39;user_name&#39; not found&quot;</span><span class="p">);</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'>     <span class="k">try</span>
+</span><span class='line'>     <span class="p">{</span>
+</span><span class='line'>           <span class="n">ageOrdinal</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetOrdinal</span><span class="p">(</span><span class="s">&quot;age&quot;</span><span class="p">);</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'>     <span class="k">catch</span> <span class="p">(</span><span class="n">IndexOutOfRangeException</span><span class="p">)</span>
+</span><span class='line'>     <span class="p">{</span>
+</span><span class='line'>           <span class="k">throw</span> <span class="k">new</span> <span class="nf">YourCustomException</span><span class="p">(</span><span class="s">&quot;Expected column &#39;age&#39; not found&quot;</span><span class="p">);</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you have support to “Extension methods”, this code can be simplified further.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">SqlDataReaderExtensions</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="kt">int</span> <span class="nf">GetOrdinalOrThrow</span><span class="p">(</span><span class="k">this</span> <span class="n">SqlDataReader</span> <span class="n">reader</span><span class="p">,</span> <span class="kt">string</span> <span class="n">columnName</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">try</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetOrdinal</span><span class="p">(</span><span class="n">columnName</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">catch</span> <span class="p">(</span><span class="n">IndexOutOfRangeException</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">YourCustomException</span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;Expected column &#39;{0}&#39; not found&quot;</span><span class="p">,</span><span class="n">columnName</span><span class="p">));</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">SqlDataReader</span> <span class="n">reader</span> <span class="p">=</span> <span class="cm">/* ... */</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">userNameOrdinal</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">ageOrdinal</span><span class="p">;</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">HasRows</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>      <span class="n">userNameOrdinal</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetOrdinalOrThrow</span><span class="p">(</span><span class="s">&quot;user_name&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">ageOrdinal</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetOrdinalOrThrow</span><span class="p">(</span><span class="s">&quot;age&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This makes the code more clean. However, I really wish to see a <code>TryGetOrdinal()</code> method on <code>IDataReader</code> so that we can save the cost of exception handling.</p>
+
+<p>GetOrdinal() method first does a case-sensitive lookup for the column name. If it fails, case-insensitive search is performed. Thus, using the column name in correct case with GetOrdinal() will be more efficient.</p>
+
+<h2>Respecting type safety</h2>
+
+<p>C# is a strongly typed language and each programmer should take full advantage of this. Reading data like, <code>reader["user_name"]</code> is not a type safe way as it returns a object. Data reader provides methods to read data in a type safe way.</p>
+
+<p>Here is what MSDN says about it</p>
+
+<blockquote><pre><code>When accessing column data use the typed accessors like GetString, GetInt32, and so on. This saves you the processing required to cast the Object returned from GetValue as a particular type. 
+</code></pre></blockquote>
+
+<p>Now let us follow the above suggestion and rewrite our code like,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">while</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">Read</span><span class="p">())</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>   <span class="kt">string</span> <span class="n">userName</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">userNameOrdinal</span><span class="p">);</span>
+</span><span class='line'>   <span class="kt">int</span> <span class="n">age</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span><span class="p">;</span>
+</span><span class='line'>   <span class="k">try</span>
+</span><span class='line'>   <span class="p">{</span>
+</span><span class='line'>         <span class="n">age</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetInt32</span><span class="p">(</span><span class="n">ageOrdinal</span><span class="p">);</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'>   <span class="k">catch</span> <span class="p">(</span><span class="n">InvalidCastException</span><span class="p">)</span>
+</span><span class='line'>   <span class="p">{</span>
+</span><span class='line'>         <span class="k">throw</span> <span class="k">new</span> <span class="nf">YourCustomException</span><span class="p">(</span><span class="s">&quot;Unable to read age. Expecting integer value&quot;</span><span class="p">);</span>
+</span><span class='line'>   <span class="p">}</span>
+</span><span class='line'>   <span class="cm">/* ... */</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Releasing resources</h2>
+
+<p>If any type implements IDisposable, it is like saying “I have something to release explicitly rather than garbage collector to release it“. So it is programmers duty to ensure the calls to Dispose() when using disposable types. C# has “using” statement (stack semantics can be used in C++/CLI) which will ensure calls to Dispose(). Since DataReader is a disposable object, we can write like</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">using</span><span class="p">(</span><span class="n">SqlDataReader</span> <span class="n">reader</span> <span class="p">=</span> <span class="n">command</span><span class="p">.</span><span class="n">ExecuteReader</span><span class="p">())</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>      <span class="k">while</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">Read</span><span class="p">())</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="kt">string</span> <span class="n">userName</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">userNameOrdinal</span><span class="p">);</span>
+</span><span class='line'>          <span class="kt">int</span> <span class="n">age</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">try</span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="n">age</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetInt32</span><span class="p">(</span><span class="n">ageOrdinal</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>          <span class="k">catch</span> <span class="p">(</span><span class="n">InvalidCastException</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="k">throw</span> <span class="k">new</span> <span class="nf">YourCustomException</span><span class="p">(</span><span class="s">&quot;Unable to read age. Expecting integer value&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>          <span class="cm">/* ... */</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This ensures that the reader is disposed properly even in exceptional situations.</p>
+
+<h2>Putting everything together</h2>
+
+<p>If you put everything together, code will be like</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">SqlDataReaderExtensions</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">public</span> <span class="k">static</span> <span class="kt">int</span> <span class="nf">GetOrdinalOrThrow</span><span class="p">(</span><span class="k">this</span> <span class="n">SqlDataReader</span> <span class="n">reader</span><span class="p">,</span> <span class="kt">string</span> <span class="n">columnName</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">try</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetOrdinal</span><span class="p">(</span><span class="n">columnName</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">catch</span> <span class="p">(</span><span class="n">IndexOutOfRangeException</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">YourCustomException</span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;Expected column &#39;{0}&#39; not found&quot;</span><span class="p">,</span><span class="n">columnName</span><span class="p">));</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">userNameOrdinal</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span><span class="p">;</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">ageOrdinal</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span><span class="p">;</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">HasRows</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">userNameOrdinal</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetOrdinalOrThrow</span><span class="p">(</span><span class="s">&quot;user_name&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">ageOrdinal</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetOrdinalOrThrow</span><span class="p">(</span><span class="s">&quot;age&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">using</span> <span class="p">(</span><span class="n">SqlDataReader</span> <span class="n">reader</span> <span class="p">=</span> <span class="n">GetReader</span><span class="p">())</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">Read</span><span class="p">())</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="kt">string</span> <span class="n">userName</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetString</span><span class="p">(</span><span class="n">userNameOrdinal</span><span class="p">);</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">age</span> <span class="p">=</span> <span class="p">-</span><span class="m">1</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">try</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">age</span> <span class="p">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">GetInt32</span><span class="p">(</span><span class="n">ageOrdinal</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">catch</span> <span class="p">(</span><span class="n">InvalidCastException</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">YourCustomException</span><span class="p">(</span><span class="s">&quot;Unable to read age. Expecting integer value&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="cm">/* ... */</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We have got clean code now. It handles the exceptions and throws informative exceptions to the caller rather than throwing Boneheaded exceptions, we have avoided explicit casting and DataReader is disposed properly.</p>
+
+<p>These are applicable for all types which implements <code>IDataReader</code>. <code>SqlDataReader</code> is used in this post just for explanation.</p>
+
+<p>Happy programming!</p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="share_icon_group addthis_toolbox addthis_default_style addthis_32x32_style">
+	
+  <a class="share_icon addthis_button_preferred_1"></a>
+	
+	
+	
+	<a class="share_icon addthis_button_preferred_4"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - nkn -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span> - Theme by <a href="http://alexgaribay.com">Alex Garibay</a>
+</p>
+
+<p>Theme: <a href="https://github.com/qingwang/octopress-theme-yinyang">YinYang</a></p>
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'lovetocode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://navaneeth.github.io/blog/2009/07/11/ado-dot-net-best-practices-reading-data-from-data-reader/';
+        var disqus_url = 'http://navaneeth.github.io/blog/2009/07/11/ado-dot-net-best-practices-reading-data-from-data-reader/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-38544003-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

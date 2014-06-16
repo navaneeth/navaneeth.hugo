@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: .net | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/dot-net/atom.xml" rel="self"/>
+  <link href="http://navaneeth.github.io/"/>
+  <updated>2014-06-16T12:07:52+05:30</updated>
+  <id>http://navaneeth.github.io/</id>
+  <author>
+    <name><![CDATA[nkn]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Is Thread.Sleep() evil?]]></title>
+    <link href="http://navaneeth.github.io/blog/2013/02/19/is-thread-dot-sleep-evil/"/>
+    <updated>2013-02-19T09:54:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2013/02/19/is-thread-dot-sleep-evil</id>
+    <content type="html"><![CDATA[<p>If you search for this topic, you will find lots of information and many of them claiming <code>Thread.Sleep()</code> is evil. However, I think this evilness is mostly dependent on which context <code>Thread.Sleep()</code> is used.</p>
+
+<p>You might have seen code like the below one.</p>
+
+<p>```csharp
+while (!exit)
+{</p>
+
+<pre><code>DoWork();
+Thread.Sleep(10000);
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This code example does some work and sleeps for 1 minute before does the job again. This simple example has some potential issues.</p>
+
+<p>Internally <code>Thread.Sleep()</code> calls WIN32&rsquo;s <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms686298%28v=vs.85%29.aspx">Sleep</a> function. This is what MSDN says about Sleep function.</p>
+
+<blockquote><p>This function causes a thread to relinquish the remainder of its time slice and become unrunnable for an interval based on the value of dwMilliseconds. The system clock &ldquo;ticks&rdquo; at a constant rate. If dwMilliseconds is less than the resolution of the system clock, the thread may sleep for less than the specified length of time. If dwMilliseconds is greater than one tick but less than two, the wait can be anywhere between one and two ticks, and so on.</p></blockquote>
+
+<p>It is clear that <code>Sleep()</code> won&rsquo;t sleep exactly for the interval specified. This can be problematic if your application needs to be accurate with the intervals. This is also dependent on how much load CPU has. If CPU is really overloaded, this time could be longer. This also makes it hard to tell when the job will run next time. If you have done some action which needs to be processed by the background job and not knowing when background job will kick in next time is bad.</p>
+
+<p>If your thread is running with a low priority, sleep duration could be more than the specified interval.</p>
+
+<p>If you are trying to implement something which runs periodically, use <code>System.Threading.Timer</code> class which provides better scheduling capabilities. It runs the callback at specified intervals on a thread pool thread.</p>
+
+<p>Is <code>Thread.Sleep()</code> really evil? NO, if you understand all the above problems and you are OK with the above behaviour. Yes otherwise.</p>
+]]></content>
+  </entry>
+  
+</feed>

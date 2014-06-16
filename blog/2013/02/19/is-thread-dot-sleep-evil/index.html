@@ -1,0 +1,236 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Is Thread.Sleep() evil? - {love to code}</title>
+	<meta name="author" content="nkn">
+
+	
+	<meta name="description" content="Is Thread.Sleep() Evil? Feb 19th, 2013 If you search for this topic, you will find lots of information and many of them claiming Thread.Sleep() is &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="{love to code}" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://navaneeth.github.io/blog/2013/02/19/is-thread-dot-sleep-evil/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><nav id="main-nav"><ul class="nav">
+    
+</ul>
+</nav>
+<!-- <nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/navaneethkn" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/navaneeth" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav> -->
+<div class="profile-container">
+  <div class="profilepic">
+    <script src="/javascripts/md5.js"></script>
+    <script type="text/javascript">
+$(function(){
+  $('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+});
+    </script>
+  </div>
+  <hgroup>
+  <h1 class="site-title"><a href="/">{love to code}</a></h1>
+  
+  <p class="site-subtitle">Random thoughts on programming and travel.</p>
+  
+  </hgroup>
+  <div class="jumbotron">
+  <div class="container">
+    
+      {love to code}
+    
+    <h3 class="tagline">
+      
+        Random thoughts on programming and travel.
+      
+    </h3>
+  </div>
+</div>
+
+</div>
+</header>
+			</div>
+		</div>
+		<div class="mid-col">
+			
+				
+<div id="banner" class="inner">
+	<div class="container">
+		<ul class="feed"></ul>
+	</div>
+	<small><a href="http://twitter.com/navaneethkn">navaneethkn</a> @ <a href="http://twitter.com">Twitter</a></small>
+	<div class="loading">Loading...</div>
+</div>
+<script src="/javascripts/twitter.js"></script>
+<script type="text/javascript">
+	(function($){
+		$('#banner').getTwitterFeed('navaneethkn', 4, false);
+	})(jQuery);
+</script>
+
+			
+			<div class="mid-col-container">
+				<div id="content" class="article-inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+	<h1 class="title" itemprop="name">Is Thread.Sleep() Evil?</h1>
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+  <div class="post-date"><time datetime="2013-02-19T09:54:00+05:30" data-updated="true" itemprop="datePublished">Feb 19<span>th</span>, 2013</time></div>
+	<div class="entry-content" itemprop="articleBody"><p>If you search for this topic, you will find lots of information and many of them claiming <code>Thread.Sleep()</code> is evil. However, I think this evilness is mostly dependent on which context <code>Thread.Sleep()</code> is used.</p>
+
+<p>You might have seen code like the below one.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">while</span> <span class="p">(!</span><span class="n">exit</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">DoWork</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">Thread</span><span class="p">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">10000</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This code example does some work and sleeps for 1 minute before does the job again. This simple example has some potential issues.</p>
+
+<p>Internally <code>Thread.Sleep()</code> calls WIN32&rsquo;s <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms686298%28v=vs.85%29.aspx">Sleep</a> function. This is what MSDN says about Sleep function.</p>
+
+<blockquote><p>This function causes a thread to relinquish the remainder of its time slice and become unrunnable for an interval based on the value of dwMilliseconds. The system clock &ldquo;ticks&rdquo; at a constant rate. If dwMilliseconds is less than the resolution of the system clock, the thread may sleep for less than the specified length of time. If dwMilliseconds is greater than one tick but less than two, the wait can be anywhere between one and two ticks, and so on.</p></blockquote>
+
+<p>It is clear that <code>Sleep()</code> won&rsquo;t sleep exactly for the interval specified. This can be problematic if your application needs to be accurate with the intervals. This is also dependent on how much load CPU has. If CPU is really overloaded, this time could be longer. This also makes it hard to tell when the job will run next time. If you have done some action which needs to be processed by the background job and not knowing when background job will kick in next time is bad.</p>
+
+<p>If your thread is running with a low priority, sleep duration could be more than the specified interval.</p>
+
+<p>If you are trying to implement something which runs periodically, use <code>System.Threading.Timer</code> class which provides better scheduling capabilities. It runs the callback at specified intervals on a thread pool thread.</p>
+
+<p>Is <code>Thread.Sleep()</code> really evil? NO, if you understand all the above problems and you are OK with the above behaviour. Yes otherwise.</p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="share_icon_group addthis_toolbox addthis_default_style addthis_32x32_style">
+	
+  <a class="share_icon addthis_button_preferred_1"></a>
+	
+	
+	
+	<a class="share_icon addthis_button_preferred_4"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - nkn -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span> - Theme by <a href="http://alexgaribay.com">Alex Garibay</a>
+</p>
+
+<p>Theme: <a href="https://github.com/qingwang/octopress-theme-yinyang">YinYang</a></p>
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'lovetocode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://navaneeth.github.io/blog/2013/02/19/is-thread-dot-sleep-evil/';
+        var disqus_url = 'http://navaneeth.github.io/blog/2013/02/19/is-thread-dot-sleep-evil/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-38544003-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

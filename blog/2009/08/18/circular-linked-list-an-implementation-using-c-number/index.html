@@ -1,0 +1,697 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Circular linked list – An implementation using C# - {love to code}</title>
+	<meta name="author" content="nkn">
+
+	
+	<meta name="description" content="Circular Linked List – an Implementation Using C# Aug 18th, 2009 In this post, I will explain about creating a circular doubly linked list using C &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="{love to code}" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://navaneeth.github.io/blog/2009/08/18/circular-linked-list-an-implementation-using-c-number/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><nav id="main-nav"><ul class="nav">
+    
+</ul>
+</nav>
+<!-- <nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/navaneethkn" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/navaneeth" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav> -->
+<div class="profile-container">
+  <div class="profilepic">
+    <script src="/javascripts/md5.js"></script>
+    <script type="text/javascript">
+$(function(){
+  $('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+});
+    </script>
+  </div>
+  <hgroup>
+  <h1 class="site-title"><a href="/">{love to code}</a></h1>
+  
+  <p class="site-subtitle">Random thoughts on programming and travel.</p>
+  
+  </hgroup>
+  <div class="jumbotron">
+  <div class="container">
+    
+      {love to code}
+    
+    <h3 class="tagline">
+      
+        Random thoughts on programming and travel.
+      
+    </h3>
+  </div>
+</div>
+
+</div>
+</header>
+			</div>
+		</div>
+		<div class="mid-col">
+			
+				
+<div id="banner" class="inner">
+	<div class="container">
+		<ul class="feed"></ul>
+	</div>
+	<small><a href="http://twitter.com/navaneethkn">navaneethkn</a> @ <a href="http://twitter.com">Twitter</a></small>
+	<div class="loading">Loading...</div>
+</div>
+<script src="/javascripts/twitter.js"></script>
+<script type="text/javascript">
+	(function($){
+		$('#banner').getTwitterFeed('navaneethkn', 4, false);
+	})(jQuery);
+</script>
+
+			
+			<div class="mid-col-container">
+				<div id="content" class="article-inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+	<h1 class="title" itemprop="name">Circular Linked List – an Implementation Using C#</h1>
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+  <div class="post-date"><time datetime="2009-08-18T22:12:00+05:30" data-updated="true" itemprop="datePublished">Aug 18<span>th</span>, 2009</time></div>
+	<div class="entry-content" itemprop="articleBody"><p>In this post, I will explain about creating a circular doubly linked list using C#. .NET framework provides a doubly linked list implementation in System.Collections.Generic.LinkedList<T> class . But this class is not providing the behavior of a circular linked list and it is very tough to extend for supporting circular linked list requirements.</p>
+
+<p>In a normal doubly linked list, each node will have a link to its previous and next nodes. In a circular doubly linked list, tail node’s next node will be head and head node’s previous node will be tail. Here is an image taken from wikipedia which visualizes circular linked list.</p>
+
+<p><img src="images/posts/circular_linked_list.png" title="Circular linked list" alt="Alt text" /></p>
+
+<p> Here is our requirements for the circular linked list</p>
+
+<ul>
+<li>Adding items to the list should be O(1).</li>
+<li>Provide similar interface like the standard LinkedList<T> class.</li>
+<li>Keep items in a type-safe way.</li>
+<li>Avoid using collections like List or array internally for keeping items.</li>
+<li>Should provide access to Head and Tail</li>
+<li>Option to enumerate all items</li>
+<li>Reverse enumeration</li>
+<li>Access items with an index.</li>
+<li>Maintain collection semantics.</li>
+</ul>
+
+
+<p>Here is the class diagram.</p>
+
+<p><img src="images/posts/classdiagram1.png" title="Class diagram" alt="Alt text" /></p>
+
+<h2>Node&lt;T&gt; class</h2>
+
+<blockquote><p>Every problem can be solved by adding another layer of indirection.</p></blockquote>
+
+<p>Node class is a layer of indirection added to hold the linked list value. It manages the next and previous items and provides an option to get the current value. This class is immutable. Here is Node class looks like,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'><span class="c1">/// Represents a node</span>
+</span><span class='line'><span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'><span class="c1">/// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;</span>
+</span><span class='line'><span class="na">[DebuggerDisplay(&quot;Value = {Value}&quot;)]</span>
+</span><span class='line'><span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// Gets the Value</span>
+</span><span class='line'>    <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="n">T</span> <span class="n">Value</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// Gets next node</span>
+</span><span class='line'>    <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">Next</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">internal</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// Gets previous node</span>
+</span><span class='line'>    <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>    <span class="k">public</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">Previous</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">internal</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">/// &lt;summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// Initializes a new &lt;see cref=&quot;Node&quot;/&gt; instance</span>
+</span><span class='line'>    <span class="c1">/// &lt;/summary&gt;</span>
+</span><span class='line'>    <span class="c1">/// &lt;param name=&quot;item&quot;&gt;Value to be assigned&lt;/param&gt;</span>
+</span><span class='line'>    <span class="k">internal</span> <span class="nf">Node</span><span class="p">(</span><span class="n">T</span> <span class="n">item</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="n">Value</span> <span class="p">=</span> <span class="n">item</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>CircularLinkedList&lt;T&gt; class</h2>
+
+<p>Keeping the requirements in mind, let us start writing the generic CircularLinkedList<T>. Some linked list implementations maintains only a link to the head node and when adding a new item to the list, each node in the list has to be traveled till tail node is found and this gives O(n) complexity for the algorithm.</p>
+
+<p>Maintaining link to head and tail helps us to do insertions with a O(1) complexity. In such cases, list traversal is not required. All we need is to change the pointer in the tail node. Head and tail node are member variables of CircularLinkedList class.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">CircularLinkedList</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="na">    [DebuggerBrowsable(DebuggerBrowsableState.Never)]</span>
+</span><span class='line'>    <span class="n">Node</span> <span class="n">head</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">    [DebuggerBrowsable(DebuggerBrowsableState.Never)]</span>
+</span><span class='line'>    <span class="n">Node</span> <span class="n">tail</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To add an item to the last, we need to create a new node from the supplied item. Set the new node’s next pointer pointing to the list’s head and previous pointing to the tail. Finally, tail will be replaced with the new node. Here is the <code>AddLast()</code> method implementation.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">AddLast</span><span class="p">(</span><span class="n">T</span> <span class="n">item</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// if head is null, then this will be the first item</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">head</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="n">AddFirstItem</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">newNode</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="n">item</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">tail</span><span class="p">.</span><span class="n">Next</span> <span class="p">=</span> <span class="n">newNode</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">newNode</span><span class="p">.</span><span class="n">Next</span> <span class="p">=</span> <span class="n">head</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">newNode</span><span class="p">.</span><span class="n">Previous</span> <span class="p">=</span> <span class="n">tail</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">tail</span> <span class="p">=</span> <span class="n">newNode</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">head</span><span class="p">.</span><span class="n">Previous</span> <span class="p">=</span> <span class="n">tail</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="p">++</span><span class="n">count</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">void</span> <span class="nf">AddFirstItem</span><span class="p">(</span><span class="n">T</span> <span class="n">item</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">head</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="n">item</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">tail</span> <span class="p">=</span> <span class="n">head</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">head</span><span class="p">.</span><span class="n">Next</span> <span class="p">=</span> <span class="n">tail</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">head</span><span class="p">.</span><span class="n">Previous</span> <span class="p">=</span> <span class="n">tail</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can easily add another method that will add item to the first position in the list. Implementation looks similar like <code>AddLast()</code>. Unlike <code>AddLast()</code>, head node’s previous pointer will be re-pointed to the new node. The new node’s previous and next pointer will be pointed to tail and head respectively. Finally head will be replaced with the new node.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">void</span> <span class="nf">AddFirst</span><span class="p">(</span><span class="n">T</span> <span class="n">item</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">head</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="n">AddFirstItem</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">newNode</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="n">item</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">head</span><span class="p">.</span><span class="n">Previous</span> <span class="p">=</span> <span class="n">newNode</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">newNode</span><span class="p">.</span><span class="n">Previous</span> <span class="p">=</span> <span class="n">tail</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">newNode</span><span class="p">.</span><span class="n">Next</span> <span class="p">=</span> <span class="n">head</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">tail</span><span class="p">.</span><span class="n">Next</span> <span class="p">=</span> <span class="n">newNode</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">head</span> <span class="p">=</span> <span class="n">newNode</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="p">++</span><span class="n">count</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finding an item from the list will have a <code>O(n)</code> complexity as it needs to traverse through all items in the list until we get a matching item. Here is a recursive implementation.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">Find</span><span class="p">(</span><span class="n">T</span> <span class="n">item</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">node</span> <span class="p">=</span> <span class="n">FindNode</span><span class="p">(</span><span class="n">head</span><span class="p">,</span> <span class="n">item</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">FindNode</span><span class="p">(</span><span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">node</span><span class="p">,</span> <span class="n">T</span> <span class="n">valueToCompare</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">result</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">comparer</span><span class="p">.</span><span class="n">Equals</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Value</span><span class="p">,</span> <span class="n">valueToCompare</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">result</span> <span class="p">=</span> <span class="n">node</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">result</span> <span class="p">==</span> <span class="k">null</span> <span class="p">&amp;&amp;</span> <span class="n">node</span><span class="p">.</span><span class="n">Next</span> <span class="p">!=</span> <span class="n">head</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">result</span> <span class="p">=</span> <span class="n">FindNode</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">Next</span><span class="p">,</span> <span class="n">valueToCompare</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Providing an iterator to iterate the items in the list will be useful. Since this is a circular linked list, a reverse iterator also makes sense. <code>yield</code> keyword makes iterator implementations almost trivial.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="n">IEnumerator</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">GetEnumerator</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">current</span> <span class="p">=</span> <span class="n">head</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">current</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">do</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">yield</span> <span class="k">return</span> <span class="n">current</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">current</span> <span class="p">=</span> <span class="n">current</span><span class="p">.</span><span class="n">Next</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">current</span> <span class="p">!=</span> <span class="n">head</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">public</span> <span class="n">IEnumerator</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">GetReverseEnumerator</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">current</span> <span class="p">=</span> <span class="n">tail</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">current</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">do</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="k">yield</span> <span class="k">return</span> <span class="n">current</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">current</span> <span class="p">=</span> <span class="n">current</span><span class="p">.</span><span class="n">Previous</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">current</span> <span class="p">!=</span> <span class="n">tail</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Removing items from list is also just re-pointing the previous and next pointers of the node’s previous.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="kt">bool</span> <span class="nf">Remove</span><span class="p">(</span><span class="n">T</span> <span class="n">item</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// finding the first occurance of this item</span>
+</span><span class='line'>    <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeToRemove</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">Find</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">nodeToRemove</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="n">RemoveNode</span><span class="p">(</span><span class="n">nodeToRemove</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">bool</span> <span class="nf">RemoveNode</span><span class="p">(</span><span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">nodeToRemove</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">previous</span> <span class="p">=</span> <span class="n">nodeToRemove</span><span class="p">.</span><span class="n">Previous</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">previous</span><span class="p">.</span><span class="n">Next</span> <span class="p">=</span> <span class="n">nodeToRemove</span><span class="p">.</span><span class="n">Next</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">nodeToRemove</span><span class="p">.</span><span class="n">Next</span><span class="p">.</span><span class="n">Previous</span> <span class="p">=</span> <span class="n">nodeToRemove</span><span class="p">.</span><span class="n">Previous</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// if this is head, we need to update the head reference</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">head</span> <span class="p">==</span> <span class="n">nodeToRemove</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">head</span> <span class="p">=</span> <span class="n">nodeToRemove</span><span class="p">.</span><span class="n">Next</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">tail</span> <span class="p">==</span> <span class="n">nodeToRemove</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">tail</span> <span class="p">=</span> <span class="n">tail</span><span class="p">.</span><span class="n">Previous</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">--</span><span class="n">count</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, an indexer is provided so that list items can be accessed using an index. Like <code>Find()</code> method, this also has a <code>O(n)</code> complexity.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="k">this</span><span class="p">[</span><span class="kt">int</span> <span class="n">index</span><span class="p">]</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">get</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="p">&gt;=</span> <span class="n">count</span> <span class="p">||</span> <span class="n">index</span> <span class="p">&lt;</span> <span class="m">0</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">ArgumentOutOfRangeException</span><span class="p">(</span><span class="s">&quot;index&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">else</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="n">Node</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="n">node</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">head</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">index</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+</span><span class='line'>                <span class="n">node</span> <span class="p">=</span> <span class="n">node</span><span class="p">.</span><span class="n">Next</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">node</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To get a collection semantics and maintain similar interface like the standard LinkedList, we implement <code>ICollection&lt;T&gt;</code> and <code>IEnumerable&lt;T&gt;</code> interfaces.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">public</span> <span class="k">sealed</span> <span class="k">class</span> <span class="nc">CircularLinkedList</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">:</span> <span class="n">ICollection</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;,</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// code</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Test harness</h2>
+
+<p>Following code shows how this class can be used,</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">static</span> <span class="k">void</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">CircularLinkedList</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="n">list</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CircularLinkedList</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;();</span>
+</span><span class='line'>    <span class="n">list</span><span class="p">.</span><span class="n">AddLast</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">list</span><span class="p">.</span><span class="n">AddLast</span><span class="p">(</span><span class="m">2</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">list</span><span class="p">.</span><span class="n">AddLast</span><span class="p">(</span><span class="m">3</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;List count = {0}&quot;</span><span class="p">,</span> <span class="n">list</span><span class="p">.</span><span class="n">Count</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Head  = {0}&quot;</span><span class="p">,</span> <span class="n">list</span><span class="p">.</span><span class="n">Head</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Tail  = {0}&quot;</span><span class="p">,</span> <span class="n">list</span><span class="p">.</span><span class="n">Tail</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Head&#39;s Previous  = {0}&quot;</span><span class="p">,</span> <span class="n">list</span><span class="p">.</span><span class="n">Head</span><span class="p">.</span><span class="n">Previous</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;Tail&#39;s Next  = {0}&quot;</span><span class="p">,</span> <span class="n">list</span><span class="p">.</span><span class="n">Tail</span><span class="p">.</span><span class="n">Next</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;************List Items***********&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="k">in</span> <span class="n">list</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;************List Items in reverse***********&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="n">IEnumerator</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="n">r</span> <span class="p">=</span> <span class="n">list</span><span class="p">.</span><span class="n">GetReverseEnumerator</span><span class="p">();</span> <span class="n">r</span><span class="p">.</span><span class="n">MoveNext</span><span class="p">();</span> <span class="p">)</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">Current</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;************Adding a new item at first***********&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">list</span><span class="p">.</span><span class="n">AddFirst</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="k">in</span> <span class="n">list</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;************Adding item before***********&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">list</span><span class="p">.</span><span class="n">AddBefore</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">11</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="k">in</span> <span class="n">list</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">&quot;************Adding item after***********&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">list</span><span class="p">.</span><span class="n">AddAfter</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">foreach</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="k">in</span> <span class="n">list</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Console</span><span class="p">.</span><span class="n">ReadKey</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Possible expansions</h2>
+
+<p>There are good and complex features that can be added to this list. Here are few that will be useful,</p>
+
+<ul>
+<li>Remove duplicate nodes.</li>
+<li>Move nodes around.</li>
+<li>Sorting.</li>
+</ul>
+
+
+<p>Probably we will see these features in another post.</p>
+</div>
+
+</article>
+
+	<div class="share">
+	<div class="share_icon_group addthis_toolbox addthis_default_style addthis_32x32_style">
+	
+  <a class="share_icon addthis_button_preferred_1"></a>
+	
+	
+	
+	<a class="share_icon addthis_button_preferred_4"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - nkn -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span> - Theme by <a href="http://alexgaribay.com">Alex Garibay</a>
+</p>
+
+<p>Theme: <a href="https://github.com/qingwang/octopress-theme-yinyang">YinYang</a></p>
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'lovetocode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://navaneeth.github.io/blog/2009/08/18/circular-linked-list-an-implementation-using-c-number/';
+        var disqus_url = 'http://navaneeth.github.io/blog/2009/08/18/circular-linked-list-an-implementation-using-c-number/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-38544003-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: datastructures | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/datastructures/atom.xml" rel="self"/>
+  <link href="http://navaneeth.github.io/"/>
+  <updated>2014-06-16T12:07:52+05:30</updated>
+  <id>http://navaneeth.github.io/</id>
+  <author>
+    <name><![CDATA[nkn]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Simple, generic and dynamically allocated array in C]]></title>
+    <link href="http://navaneeth.github.io/blog/2012/05/11/simple-generic-and-dynamically-allocated-array-in-c/"/>
+    <updated>2012-05-11T23:31:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2012/05/11/simple-generic-and-dynamically-allocated-array-in-c</id>
+    <content type="html"><![CDATA[<p>C is a very good language. I have been using for quite some time for my opensource project. The flexibility C offers is really good. But sometimes, lack of simple datastructures like a dynamically growing array will slow down the programmer. There are tons of implementation available online, but most of them are overcomplicated, got lot of dependencies or tough to understand and incorporate with your application. In this post, I present a simple array which grows dynamically, reuses the memory, supports any pointer type and easy to copy to your code base.</p>
+
+<p>Here is the code.</p>
+
+<p>```c</p>
+
+<p>typedef struct varray_t
+{
+   void **memory;
+   size_t allocated;
+   size_t used;
+   int index;
+} varray;</p>
+
+<p>void
+varray_init(varray <em><em>array)
+{
+   </em>array = (varray</em>) malloc (sizeof(varray));
+   (<em>array)&ndash;>memory = NULL;
+   (</em>array)&ndash;>allocated = 0;
+   (<em>array)&ndash;>used = 0;
+   (</em>array)&ndash;>index = -1;
+}</p>
+
+<p>void
+varray_push(varray <em>array, void </em>data)
+{
+   size_t toallocate;
+   size_t size = sizeof(void*);
+   if ((array->allocated &ndash; array->used) &lt; size) {</p>
+
+<pre><code>  toallocate = array-&gt;allocated == 0 ? size : (array-&gt;allocated * 2);
+  array-&gt;memory = realloc(array-&gt;memory, toallocate);
+  array-&gt;allocated = toallocate;
+</code></pre>
+
+<p>   }</p>
+
+<p>   array->memory[++array->index] = data;
+   array->used = array->used + size;
+}</p>
+
+<p>int
+varray_length(varray *array)
+{
+   return array->index + 1;
+}</p>
+
+<p>void
+varray_clear(varray *array)
+{
+   int i;
+   for(i = 0; i &lt; varray_length(array); i++)
+   {</p>
+
+<pre><code>  array-&gt;memory[i] = NULL;
+</code></pre>
+
+<p>   }
+   array->used = 0;
+   array->index = -1;
+}</p>
+
+<p>void
+varray_free(varray *array)
+{
+   free(array->memory);
+   free(array);
+}</p>
+
+<p>void<em>
+varray_get(varray </em>array, int index)
+{
+   if (index &lt; 0 || index > array->index)</p>
+
+<pre><code>  return NULL;
+</code></pre>
+
+<p>   return array->memory[index];
+}</p>
+
+<p>void
+varray_insert(varray <em>array, int index, void </em>data)
+{
+   if (index &lt; 0 || index > array->index)</p>
+
+<pre><code>  return;
+</code></pre>
+
+<p>   array->memory[index] = data;
+}
+```</p>
+
+<p>This array doesn’t take ownership of the data it contains. Ownership has to be managed separately. When adding a new item, array grows in constant propotion yielding inserts in amortized constant time. I have omitted error checking for malloc and realloc for simplicity.</p>
+
+<p>Hope you enjoy the post.</p>
+]]></content>
+  </entry>
+  
+</feed>

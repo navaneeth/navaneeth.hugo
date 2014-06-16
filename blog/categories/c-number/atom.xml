@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: c# | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/c-number/atom.xml" rel="self"/>
+  <link href="http://navaneeth.github.io/"/>
+  <updated>2014-06-16T12:07:52+05:30</updated>
+  <id>http://navaneeth.github.io/</id>
+  <author>
+    <name><![CDATA[nkn]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Circular linked list – An implementation using C#]]></title>
+    <link href="http://navaneeth.github.io/blog/2009/08/18/circular-linked-list-an-implementation-using-c-number/"/>
+    <updated>2009-08-18T22:12:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2009/08/18/circular-linked-list-an-implementation-using-c-number</id>
+    <content type="html"><![CDATA[<p>In this post, I will explain about creating a circular doubly linked list using C#. .NET framework provides a doubly linked list implementation in System.Collections.Generic.LinkedList<T> class . But this class is not providing the behavior of a circular linked list and it is very tough to extend for supporting circular linked list requirements.</p>
+
+<p>In a normal doubly linked list, each node will have a link to its previous and next nodes. In a circular doubly linked list, tail node’s next node will be head and head node’s previous node will be tail. Here is an image taken from wikipedia which visualizes circular linked list.</p>
+
+<p><img src="images/posts/circular_linked_list.png" title="Circular linked list" alt="Alt text" /></p>
+
+<p> Here is our requirements for the circular linked list</p>
+
+<ul>
+<li>Adding items to the list should be O(1).</li>
+<li>Provide similar interface like the standard LinkedList<T> class.</li>
+<li>Keep items in a type-safe way.</li>
+<li>Avoid using collections like List or array internally for keeping items.</li>
+<li>Should provide access to Head and Tail</li>
+<li>Option to enumerate all items</li>
+<li>Reverse enumeration</li>
+<li>Access items with an index.</li>
+<li>Maintain collection semantics.</li>
+</ul>
+
+
+<p>Here is the class diagram.</p>
+
+<p><img src="images/posts/classdiagram1.png" title="Class diagram" alt="Alt text" /></p>
+
+<h2>Node&lt;T&gt; class</h2>
+
+<blockquote><p>Every problem can be solved by adding another layer of indirection.</p></blockquote>
+
+<p>Node class is a layer of indirection added to hold the linked list value. It manages the next and previous items and provides an option to get the current value. This class is immutable. Here is Node class looks like,</p>
+
+<p>```csharp
+/// <summary>
+/// Represents a node
+/// </summary>
+/// <typeparam name="T"></typeparam>
+[DebuggerDisplay(&ldquo;Value = {Value}&rdquo;)]
+public sealed class Node<T>
+{</p>
+
+<pre><code>/// &lt;summary&gt;
+/// Gets the Value
+/// &lt;/summary&gt;
+public T Value { get; private set; }
+
+/// &lt;summary&gt;
+/// Gets next node
+/// &lt;/summary&gt;
+public Node&lt;T&gt; Next { get; internal set; }
+
+/// &lt;summary&gt;
+/// Gets previous node
+/// &lt;/summary&gt;
+public Node&lt;T&gt; Previous { get; internal set; }
+
+/// &lt;summary&gt;
+/// Initializes a new &lt;see cref="Node"/&gt; instance
+/// &lt;/summary&gt;
+/// &lt;param name="item"&gt;Value to be assigned&lt;/param&gt;
+internal Node(T item)
+{
+    this.Value = item;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>CircularLinkedList&lt;T&gt; class</h2>
+
+<p>Keeping the requirements in mind, let us start writing the generic CircularLinkedList<T>. Some linked list implementations maintains only a link to the head node and when adding a new item to the list, each node in the list has to be traveled till tail node is found and this gives O(n) complexity for the algorithm.</p>
+
+<p>Maintaining link to head and tail helps us to do insertions with a O(1) complexity. In such cases, list traversal is not required. All we need is to change the pointer in the tail node. Head and tail node are member variables of CircularLinkedList class.</p>
+
+<p>```csharp
+public sealed class CircularLinkedList<T>
+{</p>
+
+<pre><code>[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+Node head = null;
+
+[DebuggerBrowsable(DebuggerBrowsableState.Never)]
+Node tail = null;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>To add an item to the last, we need to create a new node from the supplied item. Set the new node’s next pointer pointing to the list’s head and previous pointing to the tail. Finally, tail will be replaced with the new node. Here is the <code>AddLast()</code> method implementation.</p>
+
+<p>```csharp
+public void AddLast(T item)
+{</p>
+
+<pre><code>// if head is null, then this will be the first item
+if (head == null)
+    this.AddFirstItem(item);
+else
+{
+    Node&lt;T&gt; newNode = new Node&lt;T&gt;(item);
+    tail.Next = newNode;
+    newNode.Next = head;
+    newNode.Previous = tail;
+    tail = newNode;
+    head.Previous = tail;
+}
+++count;
+</code></pre>
+
+<p>}</p>
+
+<p>void AddFirstItem(T item)
+{</p>
+
+<pre><code>head = new Node&lt;T&gt;(item);
+tail = head;
+head.Next = tail;
+head.Previous = tail;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>We can easily add another method that will add item to the first position in the list. Implementation looks similar like <code>AddLast()</code>. Unlike <code>AddLast()</code>, head node’s previous pointer will be re-pointed to the new node. The new node’s previous and next pointer will be pointed to tail and head respectively. Finally head will be replaced with the new node.</p>
+
+<p>```csharp
+public void AddFirst(T item)
+{</p>
+
+<pre><code>if (head == null)
+    this.AddFirstItem(item);
+else
+{
+    Node&lt;T&gt; newNode = new Node&lt;T&gt;(item);
+    head.Previous = newNode;
+    newNode.Previous = tail;
+    newNode.Next = head;
+    tail.Next = newNode;
+    head = newNode;
+}
+++count;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Finding an item from the list will have a <code>O(n)</code> complexity as it needs to traverse through all items in the list until we get a matching item. Here is a recursive implementation.</p>
+
+<p>```csharp
+public Node<T> Find(T item)
+{</p>
+
+<pre><code>Node&lt;T&gt; node = FindNode(head, item);
+return node;
+</code></pre>
+
+<p>}</p>
+
+<p>Node<T> FindNode(Node<T> node, T valueToCompare)
+{</p>
+
+<pre><code>Node&lt;T&gt; result = null;
+if (comparer.Equals(node.Value, valueToCompare))
+    result = node;
+else if (result == null &amp;&amp; node.Next != head)
+    result = FindNode(node.Next, valueToCompare);
+return result;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Providing an iterator to iterate the items in the list will be useful. Since this is a circular linked list, a reverse iterator also makes sense. <code>yield</code> keyword makes iterator implementations almost trivial.</p>
+
+<p>```csharp
+public IEnumerator<T> GetEnumerator()
+{</p>
+
+<pre><code>Node&lt;T&gt; current = head;
+if (current != null)
+{
+    do
+    {
+        yield return current.Value;
+        current = current.Next;
+    } while (current != head);
+}
+</code></pre>
+
+<p>}</p>
+
+<p>public IEnumerator<T> GetReverseEnumerator()
+{</p>
+
+<pre><code>Node&lt;T&gt; current = tail;
+if (current != null)
+{
+    do
+    {
+        yield return current.Value;
+        current = current.Previous;
+    } while (current != tail);
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Removing items from list is also just re-pointing the previous and next pointers of the node’s previous.</p>
+
+<p>```csharp
+public bool Remove(T item)
+{</p>
+
+<pre><code>// finding the first occurance of this item
+Node&lt;T&gt; nodeToRemove = this.Find(item);
+if (nodeToRemove != null)
+    return this.RemoveNode(nodeToRemove);
+return false;
+</code></pre>
+
+<p>}</p>
+
+<p>bool RemoveNode(Node<T> nodeToRemove)
+{</p>
+
+<pre><code>Node&lt;T&gt; previous = nodeToRemove.Previous;
+previous.Next = nodeToRemove.Next;
+nodeToRemove.Next.Previous = nodeToRemove.Previous;
+
+// if this is head, we need to update the head reference
+if (head == nodeToRemove)
+    head = nodeToRemove.Next;
+else if (tail == nodeToRemove)
+    tail = tail.Previous;
+
+--count;
+return true;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Finally, an indexer is provided so that list items can be accessed using an index. Like <code>Find()</code> method, this also has a <code>O(n)</code> complexity.</p>
+
+<p>```csharp
+public Node<T> this[int index]
+{</p>
+
+<pre><code>get
+{
+    if (index &gt;= count || index &lt; 0)
+        throw new ArgumentOutOfRangeException("index");
+    else
+    {
+        Node&lt;T&gt; node = this.head;
+        for (int i = 0; i &lt; index; i++)
+            node = node.Next;
+        return node;
+    }
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>To get a collection semantics and maintain similar interface like the standard LinkedList, we implement <code>ICollection&lt;T&gt;</code> and <code>IEnumerable&lt;T&gt;</code> interfaces.</p>
+
+<p>```csharp
+public sealed class CircularLinkedList<T> : ICollection<T>, IEnumerable<T>
+{</p>
+
+<pre><code>// code
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>Test harness</h2>
+
+<p>Following code shows how this class can be used,</p>
+
+<p>```csharp
+static void Main(string[] args)
+{</p>
+
+<pre><code>CircularLinkedList&lt;int&gt; list = new CircularLinkedList&lt;int&gt;();
+list.AddLast(1);
+list.AddLast(2);
+list.AddLast(3);
+Console.WriteLine("List count = {0}", list.Count);
+Console.WriteLine("Head  = {0}", list.Head.Value);
+Console.WriteLine("Tail  = {0}", list.Tail.Value);
+Console.WriteLine("Head's Previous  = {0}", list.Head.Previous.Value);
+Console.WriteLine("Tail's Next  = {0}", list.Tail.Next.Value);
+Console.WriteLine("************List Items***********");
+foreach (int i in list)
+    Console.WriteLine(i);
+
+Console.WriteLine("************List Items in reverse***********");
+for (IEnumerator&lt;int&gt; r = list.GetReverseEnumerator(); r.MoveNext(); )
+    Console.WriteLine(r.Current);
+
+Console.WriteLine("************Adding a new item at first***********");
+list.AddFirst(0);
+foreach (int i in list)
+    Console.WriteLine(i);
+
+Console.WriteLine("************Adding item before***********");
+list.AddBefore(2,11);
+foreach (int i in list)
+    Console.WriteLine(i);
+
+Console.WriteLine("************Adding item after***********");
+list.AddAfter(3, 4);
+foreach (int i in list)
+    Console.WriteLine(i);
+
+Console.ReadKey();
+</code></pre>
+
+<p>}
+```</p>
+
+<h2>Possible expansions</h2>
+
+<p>There are good and complex features that can be added to this list. Here are few that will be useful,</p>
+
+<ul>
+<li>Remove duplicate nodes.</li>
+<li>Move nodes around.</li>
+<li>Sorting.</li>
+</ul>
+
+
+<p>Probably we will see these features in another post.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[What Great .NET Developers Ought To Know (More .NET Interview Questions and Answers) – Part1]]></title>
+    <link href="http://navaneeth.github.io/blog/2009/08/13/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/"/>
+    <updated>2009-08-13T20:43:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2009/08/13/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1</id>
+    <content type="html"><![CDATA[<p>In this series of posts, I will try to answer the questions posted by Scott Hanselman <a href="http://www.hanselman.com/blog/WhatGreatNETDevelopersOughtToKnowMoreNETInterviewQuestions.aspx">here</a>. This part we will be seeing the first set of questions he has given under <em>Everyone who writes code</em> heading.</p>
+
+<p><strong>Q) Describe the difference between a Thread and a Process?</strong></p>
+
+<p>A Thread is a small unit of code in execution. A process is an instance of program which will have multiple threads running. A process can host multiple threads. Thread will always belong to a process. Communication between multiple processes are difficult but communication between threads is easy.</p>
+
+<p><strong>Q) What is a Windows Service and how does its lifecycle differ from a “standard” EXE?</strong></p>
+
+<p>Windows service is a long running program which can run without user interaction. It is used for applications that should work always, e.g: a HTTP server. Unlike standard EXE, a windows service can’t be started by double clicking the EXE. It should be installed on the system as a service using installutil tool. Service control manager manges a windows service by providing options to start/stop a service.</p>
+
+<p>Like a standard EXE, windows services lifecycle also begins from the main method. After that it fires the event OnStart in which you can write code for starting a service.</p>
+
+<p><strong>Q) What is the difference between an EXE and a DLL?</strong></p>
+
+<p>A executable file(EXE) is ready to execute wherein a Dynamic Link Library(DLL) contains types and methods that can be used from a EXE. DLLs are not meant to be executed directly and it is very helpful to organize and isolate common code which can be used with multiple applications.</p>
+
+<p>Finally, EXE will have an entry point. DLLs will not have an entry point and all it does is to expose the types and methods. The direct equivalent of a DLL in LINUX is Shared Libraries(SO).</p>
+
+<p><strong>Q) What is strong-typing versus weak-typing? Which is preferred? Why?</strong></p>
+
+<p>Strong-typing defines some restrictions on how operations are done when different data types are involved. Consider the following example</p>
+
+<p><code>csharp
+int a = 10;
+a = "You can't assign a string!";
+</code></p>
+
+<p>Above code won’t compile as variable a is strongly-typed and it can hold only an integer value.</p>
+
+<p>Weak-typing is just opposite of strong-typing. C# is a strongly-typed language. But since most of the types derives from System.Object, you can write like.</p>
+
+<p><code>csharp
+object o = 10;
+</code></p>
+
+<p>This can be called as weak-typing. Of course, strong-typing is preferred over weak-typing. To understand why, consider the following example in which we have a collection of age.</p>
+
+<p><code>csharp
+ArrayList ages = new ArrayList();
+ages.Add(10);
+ages.Add(20);
+ages.Add(30);
+ages.Add("Hey, I am not an age!");
+</code></p>
+
+<p>Our intention is to have only ages in this collection. But since ArrayList is weakly-typed, we inserted a value which is not an age. Here is a strongly-types version of this code.</p>
+
+<p><code>csharp
+List&lt;int&gt; ages = new List&lt;int&gt;();
+ages.Add(10);
+ages.Add(20);
+ages.Add(30);
+ages.Add("I am not an age"); // &lt;- compiler error here
+</code></p>
+
+<p><strong>Q) What is a PID? How is it useful when troubleshooting a system?</strong></p>
+
+<p>PID is Process Identifier and used by operating system to identify processes uniquely. I am not sure how it is used for troubleshooting. If some can provide insights into this, I will update this area.</p>
+
+<p><strong>Q) How many processes can listen on a single TCP/IP port?</strong></p>
+
+<p>Only one.</p>
+
+<p><strong>Q) What is the GAC? What problem does it solve?</strong></p>
+
+<p>GAC stands for Global Assembly Cache. It provides a centralized storage for assemblies that needs to be shared across applications. It solved the versioning problem and allows side-by-side execution. It can be used when assemblies require elevated permission to do the job.</p>
+]]></content>
+  </entry>
+  
+</feed>

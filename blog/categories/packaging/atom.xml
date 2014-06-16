@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: packaging | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/packaging/atom.xml" rel="self"/>
+  <link href="http://navaneeth.github.io/"/>
+  <updated>2014-06-16T12:07:52+05:30</updated>
+  <id>http://navaneeth.github.io/</id>
+  <author>
+    <name><![CDATA[nkn]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to get debian lintian warnings when using ubuntu]]></title>
+    <link href="http://navaneeth.github.io/blog/2014/03/23/how-to-get-debian-lintian-warnings-when-using-ubuntu/"/>
+    <updated>2014-03-23T13:00:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2014/03/23/how-to-get-debian-lintian-warnings-when-using-ubuntu</id>
+    <content type="html"><![CDATA[<p>Recently, I started to package <a href="https://gitorious.org/varnamproject/libvarnam">libvarnam</a> for Debian. I followed the debian packaging guidelines and successfully created a package. I am using Ubuntu instead of Debian to do the packaging. Since Ubuntu is based on Debian, packaging also has the same procedure.</p>
+
+<p>Debian requires all the packages to be <code>lintian</code> clean. Lintian is a command line utility which checks for errors and standards violations in the package files. My package was lintian clean and I have uploaded it into the debian mentors page seeking for sponsors. Then I noticed several lintian errors showing up in the mentors page. This was not coming up in my local lintian run.</p>
+
+<p>The main reason why lintian errors was showing differently on my local machine was because my local lintian uses Ubuntu&rsquo;s profile settings and Debian has more strict rules than Ubuntu.</p>
+
+<p>When lintian is installed, it installs the files in to the following directory.</p>
+
+<p>```bash</p>
+
+<blockquote><p>ls /usr/share/lintian/profiles
+debian  ubuntu
+```</p></blockquote>
+
+<p>To get the warnings which lintian emits on a Debian machine, use the following command.</p>
+
+<p>```bash</p>
+
+<blockquote><p>lintian &mdash;pedantic &mdash;profile debian yourpackage.changes
+```</p></blockquote>
+
+<p>This will show the exact warnings which mentors.debian.net is showing. This way you can do the debian packaging within ubuntu and make sure all the debian lintian checks are passing before uploading the package.</p>
+]]></content>
+  </entry>
+  
+</feed>
