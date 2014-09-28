@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: javascript, | {love to code}]]></title>
-  <link href="http://navaneeth.github.io/blog/categories/javascript/atom.xml" rel="self"/>
+  <title><![CDATA[Category: angularjs, | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/angularjs/atom.xml" rel="self"/>
   <link href="http://navaneeth.github.io/"/>
   <updated>2014-09-28T11:56:39+05:30</updated>
   <id>http://navaneeth.github.io/</id>
@@ -77,33 +77,6 @@ angularApp.controller(&lsquo;MenuCtrl&rsquo;, [&lsquo;$scope&rsquo;, &lsquo;$loc
 
 <p>]);
 ```</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[nodejs0.10.2 is not backward compatible]]></title>
-    <link href="http://navaneeth.github.io/blog/2013/04/02/nodejs0-dot-10-dot-2-is-not-backward-compatible/"/>
-    <updated>2013-04-02T08:56:00+05:30</updated>
-    <id>http://navaneeth.github.io/blog/2013/04/02/nodejs0-dot-10-dot-2-is-not-backward-compatible</id>
-    <content type="html"><![CDATA[<p>I have a node module which failed to compile on node0.10.2. I have the following code.</p>
-
-<p><code>javascript
-uv_queue_work (uv_default_loop(), &amp;data-&gt;request, perform_learn_async, after_learn);
-</code></p>
-
-<p>Running</p>
-
-<p><code>bash
-$ node-gyp build
-</code></p>
-
-<p>will fail with error saying the 4th argument to <code>uv_queue_work</code> is incorrect. Node version 0.10.2 onwards, you have to explicitly cast the function reference to <code>uv_after_work_cb</code> to get it working. Something like,</p>
-
-<p><code>javascript
-uv_queue_work (uv_default_loop(), &amp;data-&gt;request, perform_learn_async, (uv_after_work_cb) after_learn);
-</code></p>
-
-<p>I also find nodejs version numbers are not very informative. They always increase the minor and patch version and not the major version. I&rsquo;d expect major version to be incremented if it has breaking changes.</p>
 ]]></content>
   </entry>
   
