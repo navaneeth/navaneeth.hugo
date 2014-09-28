@@ -1,0 +1,264 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>What Great .NET Developers Ought To Know (More .NET Interview Questions and Answers) – Part1 - {love to code}</title>
+	<meta name="author" content="nkn">
+
+	
+	<meta name="description" content="What Great .NET Developers Ought to Know (More .NET Interview Questions and Answers) – Part1 Aug 13th, 2009 In this series of posts, I will try to &hellip;">
+	
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="{love to code}" type="application/atom+xml">
+	
+	<link rel="canonical" href="http://navaneeth.github.io/blog/2009/08/13/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	Included file 'custom/head.html' not found in _includes directory
+</head>
+
+
+<body>
+	<div class="container">
+		<div class="left-col">
+			<div class="intrude-less">
+			<header id="header" class="inner"><nav id="main-nav"><ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul></nav>
+<!-- <nav id="sub-nav">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/navaneethkn" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/navaneeth" title="GitHub">GitHub</a>
+		
+		
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+	</div>
+</nav> -->
+<div class="profile-container">
+  <div class="profilepic">
+    <script src="/javascripts/md5.js"></script>
+    <script type="text/javascript">
+$(function(){
+  $('.profilepic').append("<img src='http://www.gravatar.com/avatar/" + MD5("navaneethkn@gmail.com") + "?s=160' alt='Profile Picture' style='width: 160px;' />");
+});
+    </script>
+  </div>
+  <hgroup>
+  <h1 class="site-title"><a href="/">{love to code}</a></h1>
+  
+  <p class="site-subtitle">Random thoughts on programming and travel.</p>
+  
+  </hgroup>
+  
+</div>
+</header>
+			</div>
+		</div>
+		<div class="mid-col">
+			
+				
+			
+			<div class="mid-col-container">
+				<div id="content" class="article-inner"><article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+	<h1 class="title" itemprop="name">What Great .NET Developers Ought to Know (More .NET Interview Questions and Answers) – Part1</h1>
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+  <div class="post-date"><time datetime="2009-08-13T20:43:00+05:30" data-updated="true" itemprop="datePublished">Aug 13<span>th</span>, 2009</time></div>
+	<div class="entry-content" itemprop="articleBody"><p>In this series of posts, I will try to answer the questions posted by Scott Hanselman <a href="http://www.hanselman.com/blog/WhatGreatNETDevelopersOughtToKnowMoreNETInterviewQuestions.aspx">here</a>. This part we will be seeing the first set of questions he has given under <em>Everyone who writes code</em> heading.</p>
+
+<p><strong>Q) Describe the difference between a Thread and a Process?</strong></p>
+
+<p>A Thread is a small unit of code in execution. A process is an instance of program which will have multiple threads running. A process can host multiple threads. Thread will always belong to a process. Communication between multiple processes are difficult but communication between threads is easy.</p>
+
+<p><strong>Q) What is a Windows Service and how does its lifecycle differ from a “standard” EXE?</strong></p>
+
+<p>Windows service is a long running program which can run without user interaction. It is used for applications that should work always, e.g: a HTTP server. Unlike standard EXE, a windows service can’t be started by double clicking the EXE. It should be installed on the system as a service using installutil tool. Service control manager manges a windows service by providing options to start/stop a service.</p>
+
+<p>Like a standard EXE, windows services lifecycle also begins from the main method. After that it fires the event OnStart in which you can write code for starting a service.</p>
+
+<p><strong>Q) What is the difference between an EXE and a DLL?</strong></p>
+
+<p>A executable file(EXE) is ready to execute wherein a Dynamic Link Library(DLL) contains types and methods that can be used from a EXE. DLLs are not meant to be executed directly and it is very helpful to organize and isolate common code which can be used with multiple applications.</p>
+
+<p>Finally, EXE will have an entry point. DLLs will not have an entry point and all it does is to expose the types and methods. The direct equivalent of a DLL in LINUX is Shared Libraries(SO).</p>
+
+<p><strong>Q) What is strong-typing versus weak-typing? Which is preferred? Why?</strong></p>
+
+<p>Strong-typing defines some restrictions on how operations are done when different data types are involved. Consider the following example</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">int</span> <span class="n">a</span> <span class="p">=</span> <span class="m">10</span><span class="p">;</span>
+</span><span class='line'><span class="n">a</span> <span class="p">=</span> <span class="s">&quot;You can&#39;t assign a string!&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Above code won’t compile as variable a is strongly-typed and it can hold only an integer value.</p>
+
+<p>Weak-typing is just opposite of strong-typing. C# is a strongly-typed language. But since most of the types derives from System.Object, you can write like.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="kt">object</span> <span class="n">o</span> <span class="p">=</span> <span class="m">10</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This can be called as weak-typing. Of course, strong-typing is preferred over weak-typing. To understand why, consider the following example in which we have a collection of age.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">ArrayList</span> <span class="n">ages</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="p">();</span>
+</span><span class='line'><span class="n">ages</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="m">10</span><span class="p">);</span>
+</span><span class='line'><span class="n">ages</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="m">20</span><span class="p">);</span>
+</span><span class='line'><span class="n">ages</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="m">30</span><span class="p">);</span>
+</span><span class='line'><span class="n">ages</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;Hey, I am not an age!&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Our intention is to have only ages in this collection. But since ArrayList is weakly-typed, we inserted a value which is not an age. Here is a strongly-types version of this code.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="n">List</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="n">ages</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;();</span>
+</span><span class='line'><span class="n">ages</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="m">10</span><span class="p">);</span>
+</span><span class='line'><span class="n">ages</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="m">20</span><span class="p">);</span>
+</span><span class='line'><span class="n">ages</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="m">30</span><span class="p">);</span>
+</span><span class='line'><span class="n">ages</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;I am not an age&quot;</span><span class="p">);</span> <span class="c1">// &lt;- compiler error here</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Q) What is a PID? How is it useful when troubleshooting a system?</strong></p>
+
+<p>PID is Process Identifier and used by operating system to identify processes uniquely. I am not sure how it is used for troubleshooting. If some can provide insights into this, I will update this area.</p>
+
+<p><strong>Q) How many processes can listen on a single TCP/IP port?</strong></p>
+
+<p>Only one.</p>
+
+<p><strong>Q) What is the GAC? What problem does it solve?</strong></p>
+
+<p>GAC stands for Global Assembly Cache. It provides a centralized storage for assemblies that needs to be shared across applications. It solved the versioning problem and allows side-by-side execution. It can be used when assemblies require elevated permission to do the job.</p>
+</div>
+	<div class="meta"><span class="tags">
+
+
+	<a class='category' href='/blog/categories/dot-net/'>.net,</a>, <a class='category' href='/blog/categories/c-number/'>c#</a>
+
+
+</span></div>
+
+</article>
+
+	<div class="share">
+	<div class="share_icon_group addthis_toolbox addthis_default_style addthis_32x32_style">
+	
+  <a class="share_icon addthis_button_preferred_1"></a>
+	
+	
+	
+	<a class="share_icon addthis_button_preferred_4"></a>
+	</div>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+</div>
+
+
+
+<section id="comment">
+    <h1 class="title">Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+			</div>
+			<footer id="footer" class="inner"><p>
+  Copyright &copy; 2014 - nkn -
+  <span class="credit"><a href="http://octopress.org">Octopress</a></span>
+</p>
+
+
+<p>Theme: <a href="https://github.com/qingwang/octopress-theme-yinyang">YinYang</a></p>
+</footer>
+			<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'lovetocode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://navaneeth.github.io/blog/2009/08/13/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/';
+        var disqus_url = 'http://navaneeth.github.io/blog/2009/08/13/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-38544003-1']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+		</div>
+	</div>
+</body>
+</html>

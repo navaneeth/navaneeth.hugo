@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: "visual | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/visual/atom.xml" rel="self"/>
+  <link href="http://navaneeth.github.io/"/>
+  <updated>2014-06-16T19:34:48+05:30</updated>
+  <id>http://navaneeth.github.io/</id>
+  <author>
+    <name><![CDATA[nkn]]></name>
+    <email><![CDATA[navaneethkn@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Disabling a custom control from Visual Studio’s toolbox]]></title>
+    <link href="http://navaneeth.github.io/blog/2009/09/15/disabling-a-custom-control-from-visual-studios-toolbox/"/>
+    <updated>2009-09-15T23:52:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2009/09/15/disabling-a-custom-control-from-visual-studios-toolbox</id>
+    <content type="html"><![CDATA[<p>When a custom control is created, Visual Studio will show it in the toolbox for dragging and dropping. This can be annoying when you create a composite control which is a combination of several other custom controls where VS will display all custom controls in the toolbox. <code>System.ComponentModel.ToolBoxItemAttribute</code> can be used with the controls that you want to hide from toolbox. Apply this attribute to all the controls that you want to hide from toolbox.</p>
+
+<p>Sample code</p>
+
+<p><code>csharp
+[System.ComponentModel.ToolboxItem(false)]
+public class MyCustomControl : Label
+{
+}
+</code></p>
+
+<p><code>MyCustomControl</code> will not be displayed on the toolbox.</p>
+]]></content>
+  </entry>
+  
+</feed>

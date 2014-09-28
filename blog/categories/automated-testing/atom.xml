@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: automated-testing | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/automated-testing/atom.xml" rel="self"/>
+  <link href="http://navaneeth.github.io/"/>
+  <updated>2014-06-16T19:34:48+05:30</updated>
+  <id>http://navaneeth.github.io/</id>
+  <author>
+    <name><![CDATA[nkn]]></name>
+    <email><![CDATA[navaneethkn@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to upload files when testing using Selenium Webdriver]]></title>
+    <link href="http://navaneeth.github.io/blog/2013/02/20/how-to-upload-files-when-testing-using-selenium-webdriver/"/>
+    <updated>2013-02-20T15:42:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2013/02/20/how-to-upload-files-when-testing-using-selenium-webdriver</id>
+    <content type="html"><![CDATA[<p>You can use the following code to set a file path to the file upload control.</p>
+
+<p><code>java
+WebElement file = driver.findElement(By.id("control_id"));
+file.sendKeys("/full/path/to/file");
+</code></p>
+
+<p>You need to pass full path to the <code>sendKeys()</code> for it to work. Otherwise <code>sendKeys()</code> fails silently.</p>
+]]></content>
+  </entry>
+  
+</feed>

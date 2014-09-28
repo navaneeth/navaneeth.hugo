@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: command-line | {love to code}]]></title>
+  <link href="http://navaneeth.github.io/blog/categories/command-line/atom.xml" rel="self"/>
+  <link href="http://navaneeth.github.io/"/>
+  <updated>2014-06-16T19:34:48+05:30</updated>
+  <id>http://navaneeth.github.io/</id>
+  <author>
+    <name><![CDATA[nkn]]></name>
+    <email><![CDATA[navaneethkn@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to use individual lines pulled from stdin in the middle of a command when using xargs]]></title>
+    <link href="http://navaneeth.github.io/blog/2013/02/28/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/"/>
+    <updated>2013-02-28T10:57:00+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2013/02/28/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs</id>
+    <content type="html"><![CDATA[<p><code>xargs</code> is very powerful commandline utility. Here is what Wikipedia says about <code>xargs</code></p>
+
+<blockquote><p>xargs is a command on Unix and most Unix-like operating systems used to build and execute command lines from standard input</p></blockquote>
+
+<p>Most common use of <code>xargs</code> would be to do something like,</p>
+
+<p><code>bash
+find . -type f -print0 | xargs -0 rm
+</code></p>
+
+<p>Let us assume that you have a file with list of files to be downloaded from a website. Something like,</p>
+
+<p><code>
+one.zip
+two.zip
+three.zip
+</code></p>
+
+<p>With <code>wget</code> and <code>xargs</code> all these files can be downloaded easily with just one command.</p>
+
+<p><code>bash
+cat filenames.txt | xargs -I filename wget http://download.com/filename
+</code></p>
+
+<p><code>-I</code> flag takes a replacement string and <code>xargs</code> will then replace <code>filename</code> with the value obtained from <code>stdin</code>.</p>
+]]></content>
+  </entry>
+  
+</feed>
