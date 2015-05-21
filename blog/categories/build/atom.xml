@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: build, | {love to code}]]></title>
+  <title><![CDATA[Category: build | {love to code}]]></title>
   <link href="http://navaneeth.github.io/blog/categories/build/atom.xml" rel="self"/>
   <link href="http://navaneeth.github.io/"/>
-  <updated>2014-11-25T12:37:31+05:30</updated>
+  <updated>2015-05-21T11:11:07+05:30</updated>
   <id>http://navaneeth.github.io/</id>
   <author>
     <name><![CDATA[nkn]]></name>
@@ -14,21 +14,53 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Building static and shared libraries using CMake]]></title>
-    <link href="http://navaneeth.github.io/blog/2013/07/28/building-static-and-shared-libraries-using-cmake/"/>
-    <updated>2013-07-28T19:46:00+05:30</updated>
-    <id>http://navaneeth.github.io/blog/2013/07/28/building-static-and-shared-libraries-using-cmake</id>
-    <content type="html"><![CDATA[<p>Recently in <a href="https://github.com/navaneeth/libvarnam">libvarnam</a>, I had to build a static and shared library from the same source files. This was much harder before CMake 2.8. From CMake 2.8.8, CMake has support for <code>Object library</code> which made it very simple.</p>
+    <title type="html"><![CDATA[Function strdup implicitly converted to pointer]]></title>
+    <link href="http://navaneeth.github.io/blog/2015/05/21/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/"/>
+    <updated>2015-05-21T10:50:48+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2015/05/21/how-i-fixed-function-slash-`strdup-slash-`-implicitly-converted-to-pointer-error</id>
+    <content type="html"><![CDATA[<p>I was trying to make a debian package for <a href="http://varnamproject.com">libvarnam</a>. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:</p>
 
-<p>Basic idea is to use <code>add_library</code> with <code>OBJECT</code> type. CMake will compile all the source files provided in this target and makes the object files for it. It won&rsquo;t create a temporary static library with all these object files. These object files can later be referred in the target which builds the library. In my CMakeLists.txt, I have the following.</p>
+<blockquote><p>Our automated build log filter detected the problem(s) above that will
+likely cause your package to segfault on architectures where the size of
+a pointer is greater than the size of an integer, such as ia64 and amd64.</p>
 
-<p><code>c
-add_library (core OBJECT ${SOURCES})
-add_library (static STATIC $&lt;TARGET_OBJECTS:core&gt;)
-add_library (shared SHARED $&lt;TARGET_OBJECTS:core&gt;)
-</code></p>
+<p>This is often due to a missing function prototype definition.</p>
 
-<p>The above will build static and shared library from the same set of object files. This improves compilation time considerably as source files will be compiled only once and used in multiple targets.</p>
+<p>Since use of implicitly converted pointers is always fatal to the application
+on ia64, they are errors. Please correct them for your next upload.</p>
+
+<p>More information can be found at: <a href="http://wiki.debian.org/ImplicitPointerConversions">http://wiki.debian.org/ImplicitPointerConversions</a></p></blockquote>
+
+<p>The above error failed the build.</p>
+
+<p>The relevant code where the failure happened looks like the following:</p>
+
+<p>```c
+char<em>
+strbuf_get_last_unicode_char(strbuf </em>word)
+{
+  varray <em>characters = NULL;
+  char </em>lastUnicodeChar = NULL;
+  characters = strbuf_chars(word);</p>
+
+<p>  if (varray_is_empty (characters)) {</p>
+
+<pre><code>varray_free (characters, NULL);
+return NULL;
+</code></pre>
+
+<p>  }</p>
+
+<p>  lastUnicodeChar = strdup ((const char<em>) varray_get(characters, varray_length(characters) &ndash; 1)); /</em> &ndash;> Error here <em>/
+  varray_free(characters, &amp;free);
+  /</em>ending should be freed in the calling function*/
+  return lastUnicodeChar;
+}
+```</p>
+
+<p><code>strdup</code> is not a ANSI C function, hence it is not portable and not available with all compilers. This has caused the function prototype to be not found. When a function prototype is missing, gcc by default return an integer value. De-referencing the returned pointer will cause a segfault.</p>
+
+<p>To fix this, I found a portable <code>strdup</code> implementation in the OpenBSD source code. I have used that and disabled the default <code>strdup</code>.</p>
 ]]></content>
   </entry>
   

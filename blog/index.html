@@ -7,8 +7,7 @@
 	<meta name="author" content="nkn">
 
 	
-	<meta name="description" content="Starting &amp; Stopping Redis on OS X The easiest way to install redis on OS X is to run: 1
-brew install redis To ease starting &amp; stopping the &hellip;">
+	<meta name="description" content="Function Strdup Implicitly Converted to Pointer I was trying to make a debian package for libvarnam. Lot of work went into making the package ready &hellip;">
 	
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,6 +82,74 @@ $(function(){
 			
 			<div class="mid-col-container">
 				<div id="content" class="article-inner">
+
+
+    <article class="post">
+	<h1 class="title" itemprop="name"><a href="/blog/2015/05/21/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/" itemprop="url">Function Strdup Implicitly Converted to Pointer</a></h1>
+	<div class="entry-content" itemprop="articleBody">
+		<p>I was trying to make a debian package for <a href="http://varnamproject.com">libvarnam</a>. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:</p>
+
+<blockquote><p>Our automated build log filter detected the problem(s) above that will
+likely cause your package to segfault on architectures where the size of
+a pointer is greater than the size of an integer, such as ia64 and amd64.</p>
+
+<p>This is often due to a missing function prototype definition.</p>
+
+<p>Since use of implicitly converted pointers is always fatal to the application
+on ia64, they are errors. Please correct them for your next upload.</p>
+
+<p>More information can be found at: <a href="http://wiki.debian.org/ImplicitPointerConversions">http://wiki.debian.org/ImplicitPointerConversions</a></p></blockquote>
+
+<p>The above error failed the build.</p>
+
+<p>The relevant code where the failure happened looks like the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">char</span><span class="o">*</span>
+</span><span class='line'><span class="nf">strbuf_get_last_unicode_char</span><span class="p">(</span><span class="n">strbuf</span> <span class="o">*</span><span class="n">word</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">varray</span> <span class="o">*</span><span class="n">characters</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">lastUnicodeChar</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">characters</span> <span class="o">=</span> <span class="n">strbuf_chars</span><span class="p">(</span><span class="n">word</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">varray_is_empty</span> <span class="p">(</span><span class="n">characters</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">varray_free</span> <span class="p">(</span><span class="n">characters</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">lastUnicodeChar</span> <span class="o">=</span> <span class="n">strdup</span> <span class="p">((</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="n">varray_get</span><span class="p">(</span><span class="n">characters</span><span class="p">,</span> <span class="n">varray_length</span><span class="p">(</span><span class="n">characters</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span> <span class="cm">/* -&gt; Error here */</span>
+</span><span class='line'>  <span class="n">varray_free</span><span class="p">(</span><span class="n">characters</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">free</span><span class="p">);</span>
+</span><span class='line'>  <span class="cm">/*ending should be freed in the calling function*/</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">lastUnicodeChar</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>strdup</code> is not a ANSI C function, hence it is not portable and not available with all compilers. This has caused the function prototype to be not found. When a function prototype is missing, gcc by default return an integer value. De-referencing the returned pointer will cause a segfault.</p>
+
+<p>To fix this, I found a portable <code>strdup</code> implementation in the OpenBSD source code. I have used that and disabled the default <code>strdup</code>.</p>
+
+		
+		
+	</div>
+
+</article>
 
 
     <article class="post">
@@ -654,47 +721,6 @@ $(function(){
 
 </article>
 
-
-    <article class="post">
-	<h1 class="title" itemprop="name"><a href="/blog/2013/02/19/is-thread-dot-sleep-evil/" itemprop="url">Is Thread.Sleep() Evil?</a></h1>
-	<div class="entry-content" itemprop="articleBody">
-		<p>If you search for this topic, you will find lots of information and many of them claiming <code>Thread.Sleep()</code> is evil. However, I think this evilness is mostly dependent on which context <code>Thread.Sleep()</code> is used.</p>
-
-<p>You might have seen code like the below one.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='csharp'><span class='line'><span class="k">while</span> <span class="p">(!</span><span class="n">exit</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="n">DoWork</span><span class="p">();</span>
-</span><span class='line'>    <span class="n">Thread</span><span class="p">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">10000</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This code example does some work and sleeps for 1 minute before does the job again. This simple example has some potential issues.</p>
-
-<p>Internally <code>Thread.Sleep()</code> calls WIN32&rsquo;s <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms686298%28v=vs.85%29.aspx">Sleep</a> function. This is what MSDN says about Sleep function.</p>
-
-<blockquote><p>This function causes a thread to relinquish the remainder of its time slice and become unrunnable for an interval based on the value of dwMilliseconds. The system clock &ldquo;ticks&rdquo; at a constant rate. If dwMilliseconds is less than the resolution of the system clock, the thread may sleep for less than the specified length of time. If dwMilliseconds is greater than one tick but less than two, the wait can be anywhere between one and two ticks, and so on.</p></blockquote>
-
-<p>It is clear that <code>Sleep()</code> won&rsquo;t sleep exactly for the interval specified. This can be problematic if your application needs to be accurate with the intervals. This is also dependent on how much load CPU has. If CPU is really overloaded, this time could be longer. This also makes it hard to tell when the job will run next time. If you have done some action which needs to be processed by the background job and not knowing when background job will kick in next time is bad.</p>
-
-<p>If your thread is running with a low priority, sleep duration could be more than the specified interval.</p>
-
-<p>If you are trying to implement something which runs periodically, use <code>System.Threading.Timer</code> class which provides better scheduling capabilities. It runs the callback at specified intervals on a thread pool thread.</p>
-
-<p>Is <code>Thread.Sleep()</code> really evil? NO, if you understand all the above problems and you are OK with the above behaviour. Yes otherwise.</p>
-
-		
-		
-	</div>
-
-</article>
-
 <nav id="pagenavi">
     
     
@@ -704,7 +730,7 @@ $(function(){
 </div>
 			</div>
 			<footer id="footer" class="inner"><p>
-  Copyright &copy; 2014 - nkn -
+  Copyright &copy; 2015 - nkn -
   <span class="credit"><a href="http://octopress.org">Octopress</a></span>
 </p>
 

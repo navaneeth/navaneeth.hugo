@@ -4,7 +4,7 @@
   <title><![CDATA[{love to code}]]></title>
   <link href="http://navaneeth.github.io/atom.xml" rel="self"/>
   <link href="http://navaneeth.github.io/"/>
-  <updated>2014-11-25T12:37:31+05:30</updated>
+  <updated>2015-05-21T11:11:07+05:30</updated>
   <id>http://navaneeth.github.io/</id>
   <author>
     <name><![CDATA[nkn]]></name>
@@ -12,6 +12,71 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Function strdup implicitly converted to pointer]]></title>
+    <link href="http://navaneeth.github.io/blog/2015/05/21/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/"/>
+    <updated>2015-05-21T10:50:48+05:30</updated>
+    <id>http://navaneeth.github.io/blog/2015/05/21/how-i-fixed-function-slash-`strdup-slash-`-implicitly-converted-to-pointer-error</id>
+    <content type="html"><![CDATA[<p>I was trying to make a debian package for <a href="http://varnamproject.com">libvarnam</a>. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:</p>
+
+<blockquote><p>Our automated build log filter detected the problem(s) above that will
+likely cause your package to segfault on architectures where the size of
+a pointer is greater than the size of an integer, such as ia64 and amd64.</p>
+
+<p>This is often due to a missing function prototype definition.</p>
+
+<p>Since use of implicitly converted pointers is always fatal to the application
+on ia64, they are errors. Please correct them for your next upload.</p>
+
+<p>More information can be found at: <a href="http://wiki.debian.org/ImplicitPointerConversions">http://wiki.debian.org/ImplicitPointerConversions</a></p></blockquote>
+
+<p>The above error failed the build.</p>
+
+<p>The relevant code where the failure happened looks like the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="kt">char</span><span class="o">*</span>
+</span><span class='line'><span class="nf">strbuf_get_last_unicode_char</span><span class="p">(</span><span class="n">strbuf</span> <span class="o">*</span><span class="n">word</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">varray</span> <span class="o">*</span><span class="n">characters</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">lastUnicodeChar</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">characters</span> <span class="o">=</span> <span class="n">strbuf_chars</span><span class="p">(</span><span class="n">word</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">varray_is_empty</span> <span class="p">(</span><span class="n">characters</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">varray_free</span> <span class="p">(</span><span class="n">characters</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">lastUnicodeChar</span> <span class="o">=</span> <span class="n">strdup</span> <span class="p">((</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">)</span> <span class="n">varray_get</span><span class="p">(</span><span class="n">characters</span><span class="p">,</span> <span class="n">varray_length</span><span class="p">(</span><span class="n">characters</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">));</span> <span class="cm">/* -&gt; Error here */</span>
+</span><span class='line'>  <span class="n">varray_free</span><span class="p">(</span><span class="n">characters</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">free</span><span class="p">);</span>
+</span><span class='line'>  <span class="cm">/*ending should be freed in the calling function*/</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">lastUnicodeChar</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>strdup</code> is not a ANSI C function, hence it is not portable and not available with all compilers. This has caused the function prototype to be not found. When a function prototype is missing, gcc by default return an integer value. De-referencing the returned pointer will cause a segfault.</p>
+
+<p>To fix this, I found a portable <code>strdup</code> implementation in the OpenBSD source code. I have used that and disabled the default <code>strdup</code>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Starting &amp; stopping redis on OS X]]></title>
