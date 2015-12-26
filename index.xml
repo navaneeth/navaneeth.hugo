@@ -1,0 +1,1387 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{love to code}</title>
+    <link>https://navaneeth.github.io/</link>
+    <description>Recent content on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 26 Dec 2015 12:26:42 +0530</lastBuildDate>
+    <atom:link href="https://navaneeth.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Bringing business ideas to live in 3 months</title>
+      <link>https://navaneeth.github.io/post/Bringing%20business%20ideas%20to%20live%20in%203%20months/</link>
+      <pubDate>Sat, 26 Dec 2015 12:26:42 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/Bringing%20business%20ideas%20to%20live%20in%203%20months/</guid>
+      <description>
+
+&lt;p&gt;Early July, we started working with 2 ex-yahoo friends who had a nice product idea that they wanted to make it live. They had some screen designs on paper and clear cut vision on what the product should look like.&lt;/p&gt;
+
+&lt;p&gt;We started with the development, post a week of ideation and technical spikes, and guess what, we had MVP ready for a limited user release in less than 9 weeks and a full production version by the end of October.&lt;/p&gt;
+
+&lt;p&gt;The product is called &lt;a href=&#34;http://www.shopinsync.com/&#34;&gt;ShopInSync&lt;/a&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;It enables a user to search through millions of products from top ecommerce sites like Flipkart, Snapdeal, and Amazon, and compare prices and offers before buying.&lt;/p&gt;
+
+&lt;p&gt;The app lets shoppers consult their family and friends too – through an integrated messaging service. That is important in a country like India, where even minor shopping decisions can be influenced by social factors.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Here are some screenshots&lt;/p&gt;
+
+&lt;p&gt;
+&lt;figure &gt;
+    
+        &lt;img src=&#34;https://navaneeth.github.io/imgs/2015/12/unnamed.png&#34; /&gt;
+    
+    
+    &lt;figcaption&gt;
+        &lt;h4&gt;Browse millions of products&lt;/h4&gt;
+        
+    &lt;/figcaption&gt;
+    
+&lt;/figure&gt;
+
+
+&lt;figure &gt;
+    
+        &lt;img src=&#34;https://navaneeth.github.io/imgs/2015/12/unnamed3.png&#34; /&gt;
+    
+    
+    &lt;figcaption&gt;
+        &lt;h4&gt;Chat with friends and family about products&lt;/h4&gt;
+        
+    &lt;/figcaption&gt;
+    
+&lt;/figure&gt;
+
+
+&lt;figure &gt;
+    
+        &lt;img src=&#34;https://navaneeth.github.io/imgs/2015/12/unnamed1.png&#34; /&gt;
+    
+    
+    &lt;figcaption&gt;
+        &lt;h4&gt;Compare price across different stores&lt;/h4&gt;
+        
+    &lt;/figcaption&gt;
+    
+&lt;/figure&gt;
+
+
+&lt;figure &gt;
+    
+        &lt;img src=&#34;https://navaneeth.github.io/imgs/2015/12/unnamed4.png&#34; /&gt;
+    
+    
+    &lt;figcaption&gt;
+        &lt;h4&gt;See all previous chats&lt;/h4&gt;
+        
+    &lt;/figcaption&gt;
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&#34;from-design-to-implementation:44ca01d4ee143ac56b0530eee2388f0a&#34;&gt;From design to implementation&lt;/h2&gt;
+
+&lt;p&gt;We started small. 4 member team working full time on Android, REST services and the feed pipeline. We used weekly iterations and delivered clear cut features every week. Slowly we could see the product shaping up. We were able to unblock each of us so that we could progress in parallel and faster.&lt;/p&gt;
+
+&lt;p&gt;The team had not much of overhead. Tasks was prioritized using &lt;a href=&#34;http://asana.com/&#34;&gt;Asana&lt;/a&gt;. We do a weekly plan every Monday and did an internal release every Friday. Build was automated using Jenkins. Every code check-in trigger a Jenkins build. &lt;em&gt;Jenkins-bot&lt;/em&gt; reports the build status to our Slack channel. We had a single testing server where we can deploy via Jenkins using Ansible. Automating most of the repeated tasks allowed us to move faster and very less time was spent on maintaining the environments.&lt;/p&gt;
+
+&lt;p&gt;We were using many &lt;em&gt;SaaS&lt;/em&gt; services, as much as we could. &lt;em&gt;ElasticCache&lt;/em&gt;, &lt;em&gt;Amazon RDS&lt;/em&gt; etc. This also reduced the time spent on maintaining different environments. By late October, we made the first beta release to a closed circle!&lt;/p&gt;
+
+&lt;h2 id=&#34;beta-testing-with-friends-and-family:44ca01d4ee143ac56b0530eee2388f0a&#34;&gt;Beta testing with friends and family&lt;/h2&gt;
+
+&lt;p&gt;Team identified and reached out to a small set of people who helped us in beta testing the application. Many feedback, suggestions, pain points are all addressed. This is the best part in the overall product design cycle. You get to see how people actually see and use the application. Lot of ideas got validated and we were confident that we can move to the public launch.&lt;/p&gt;
+
+&lt;h2 id=&#34;scaling-to-millions-production-setup:44ca01d4ee143ac56b0530eee2388f0a&#34;&gt;Scaling to millions - Production setup&lt;/h2&gt;
+
+&lt;p&gt;Production setup was another interesting part in the whole game. We had to support many concurrent users and we have pretty huge data too. Production setup was on Amazon AWS. A cluster of EC2 machines, load-balanced using &lt;em&gt;AWS Elastic Load Balancer&lt;/em&gt; acted as the front-end servers. &lt;em&gt;PostgreSQL&lt;/em&gt; running &lt;em&gt;Amazon RDS&lt;/em&gt; with a read replica mode is the database server. All of them was created in a separate VPC.&lt;/p&gt;
+
+&lt;p&gt;Here is the server details:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;3 Front end servers (&lt;em&gt;m4.xlarge&lt;/em&gt;) running &lt;em&gt;Ruby On Rails&lt;/em&gt; load balanced using &lt;em&gt;ELB&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;PostgreSQL&lt;/em&gt; master and read replica running on &lt;em&gt;Amazon RDS&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/mperham/sidekiq/&#34;&gt;Sidekiq&lt;/a&gt; for background processing. 350 workers processing different queues, like search indexing etc&lt;/li&gt;
+&lt;li&gt;Redis cluster of size 3 (&lt;em&gt;cache.r3.large&lt;/em&gt;) on &lt;em&gt;Amazon elastic cache service&lt;/em&gt; is used for the caching layer&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Elastic search&lt;/em&gt; cluster with 6 nodes powering the search index and aggregations&lt;/li&gt;
+&lt;li&gt;Cloundfront CDN&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://layer.com/&#34;&gt;Layer&lt;/a&gt; for messaging&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The above setup had enough room for supporting many concurrent users. We also came up with a plan to scale up if the traffic spikes really high.&lt;/p&gt;
+
+&lt;p&gt;We had huge data to process too. Here is some of the statistics&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;We had most of the products from Amazon, Flipkart and Snapdeal. PostgreSQL DB holds 30+ million records.&lt;/li&gt;
+&lt;li&gt;Elastic search index also holds 30+ million products&lt;/li&gt;
+&lt;li&gt;API uses heavy use of cache and it caches as much as possible for high performance&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With all of these, we were able to achieve the following&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;All of the API endpoints responded with an average latency of 200-300ms&lt;/li&gt;
+&lt;li&gt;All long running calculations are done in the background jobs causing no blocking for API clients&lt;/li&gt;
+&lt;li&gt;Load balancing provided high availability and throughput&lt;/li&gt;
+&lt;li&gt;Database queries performed really well with the indices on frequently used columns&lt;/li&gt;
+&lt;li&gt;Search index was returning search results with milliseconds&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;press-release:44ca01d4ee143ac56b0530eee2388f0a&#34;&gt;Press release&lt;/h2&gt;
+
+&lt;p&gt;Product release is incomplete without some publicity. ShopInSync received very good publicity. Many national and local new papers covered the story.&lt;/p&gt;
+
+&lt;p&gt;From &lt;a href=&#34;http://techcircle.vccircle.com/2015/11/26/shopinsync-makes-online-shopping-a-collaborative-experience/&#34;&gt;Techcircle&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;“With the e-commerce sector booming and expanding, we realised that consumers have multiple options to choose from when it comes to online shopping. What we also comprehended is most of these purchases are done in consultation with friends and family. So the idea behind ShopinSync is to bring these two worlds together and make online shopping a more convenient process for the shoppers,” Raj Ramaswamy, co-founder, ShopInSync, told Techcircle.in.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;From &lt;a href=&#34;http://www.thehindu.com/business/Industry/silicon-valley-investors-back-shopinsync-app/article7909227.ece?utm_source=RSS_Feed&amp;amp;utm_medium=RSS&amp;amp;utm_campaign=RSS_Syndication&#34;&gt;The Hindu&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;A group of Silicon Valley-based investors, including Vijay Ragavan, former head of engineering at Internet company,Yahoo, are backing a four-month-old ecommerce technology startup ShopInSync.&lt;/p&gt;
+
+&lt;p&gt;The firm has built an app that enables shoppers to search and buy products from various online retailers such as Flipkart, Snapdeal and Amazon by integrating them on to a single platform. The app, which was released on Monday on Google&amp;rsquo;s Android platform, offers features such as comparison of product prices. It also enables consumers to collaborate with friends and family to buy products via an integrated messaging service.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;From &lt;a href=&#34;https://www.techinasia.com/exyahoo-friends-human-shop&#34;&gt;TechInAsia&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;It happens often. You impulse-buy a gadget and end up regretting it. If your best friend had been around, you might have known of a smarter, cheaper, alternative in the store next door. That’s equally true of clothes, furniture, and a zillion other things.&lt;/p&gt;
+
+&lt;p&gt;Friends and family often hold the key to a happy purchase. They help you make an informed choice and pick the right stuff – especially when you are buying online. But how do you get them to see and approve from miles away?&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;It was an awesome experience to watch the monitoring dashboards and seeing traffic spiking. The kick that you get from seeing this can only be experienced!&lt;/p&gt;
+
+&lt;h2 id=&#34;road-forward:44ca01d4ee143ac56b0530eee2388f0a&#34;&gt;Road forward&lt;/h2&gt;
+
+&lt;p&gt;Journey continues. There will be more new features, more stores and many more performance improvements. We plan to release iOS first week on January.&lt;/p&gt;
+
+&lt;p&gt;You have an idea, now what? Just contact us to get started.&lt;/p&gt;
+
+&lt;p&gt;Cheers!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Function strdup implicitly converted to pointer</title>
+      <link>https://navaneeth.github.io/post/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/</link>
+      <pubDate>Thu, 21 May 2015 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/</guid>
+      <description>&lt;p&gt;I was trying to make a debian package for &lt;a href=&#34;http://varnamproject.com&#34;&gt;libvarnam&lt;/a&gt;. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Our automated build log filter detected the problem(s) above that will
+likely cause your package to segfault on architectures where the size of
+a pointer is greater than the size of an integer, such as ia64 and amd64.&lt;/p&gt;
+
+&lt;p&gt;This is often due to a missing function prototype definition.&lt;/p&gt;
+
+&lt;p&gt;Since use of implicitly converted pointers is always fatal to the application
+on ia64, they are errors. Please correct them for your next upload.&lt;/p&gt;
+
+&lt;p&gt;More information can be found at: &lt;a href=&#34;http://wiki.debian.org/ImplicitPointerConversions&#34;&gt;http://wiki.debian.org/ImplicitPointerConversions&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The above error failed the build.&lt;/p&gt;
+
+&lt;p&gt;The relevant code where the failure happened looks like the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;char*
+strbuf_get_last_unicode_char(strbuf *word)
+{
+  varray *characters = NULL;
+  char *lastUnicodeChar = NULL;
+  characters = strbuf_chars(word);
+
+  if (varray_is_empty (characters)) {
+    varray_free (characters, NULL);
+    return NULL;
+  }
+
+  lastUnicodeChar = strdup ((const char*) varray_get(characters, varray_length(characters) - 1)); /* -&amp;gt; Error here */
+  varray_free(characters, &amp;amp;free);
+  /*ending should be freed in the calling function*/
+  return lastUnicodeChar;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;strdup&lt;/code&gt; is not a ANSI C function, hence it is not portable and not available with all compilers. This has caused the function prototype to be not found. When a function prototype is missing, gcc by default return an integer value. De-referencing the returned pointer will cause a segfault.&lt;/p&gt;
+
+&lt;p&gt;To fix this, I found a portable &lt;code&gt;strdup&lt;/code&gt; implementation in the OpenBSD source code. I have used that and disabled the default &lt;code&gt;strdup&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Function strdup implicitly converted to pointer</title>
+      <link>https://navaneeth.github.io/post/Function%20strdup%20implicitly%20converted%20to%20pointer/</link>
+      <pubDate>Thu, 21 May 2015 10:50:48 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/Function%20strdup%20implicitly%20converted%20to%20pointer/</guid>
+      <description>&lt;p&gt;I was trying to make a debian package for &lt;a href=&#34;http://varnamproject.com&#34;&gt;libvarnam&lt;/a&gt;. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Our automated build log filter detected the problem(s) above that will
+likely cause your package to segfault on architectures where the size of
+a pointer is greater than the size of an integer, such as ia64 and amd64.&lt;/p&gt;
+
+&lt;p&gt;This is often due to a missing function prototype definition.&lt;/p&gt;
+
+&lt;p&gt;Since use of implicitly converted pointers is always fatal to the application
+on ia64, they are errors. Please correct them for your next upload.&lt;/p&gt;
+
+&lt;p&gt;More information can be found at: &lt;a href=&#34;http://wiki.debian.org/ImplicitPointerConversions&#34;&gt;http://wiki.debian.org/ImplicitPointerConversions&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The above error failed the build.&lt;/p&gt;
+
+&lt;p&gt;The relevant code where the failure happened looks like the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;char*
+strbuf_get_last_unicode_char(strbuf *word)
+{
+  varray *characters = NULL;
+  char *lastUnicodeChar = NULL;
+  characters = strbuf_chars(word);
+
+  if (varray_is_empty (characters)) {
+    varray_free (characters, NULL);
+    return NULL;
+  }
+
+  lastUnicodeChar = strdup ((const char*) varray_get(characters, varray_length(characters) - 1)); /* -&amp;gt; Error here */
+  varray_free(characters, &amp;amp;free);
+  /*ending should be freed in the calling function*/
+  return lastUnicodeChar;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;strdup&lt;/code&gt; is not a ANSI C function, hence it is not portable and not available with all compilers. This has caused the function prototype to be not found. When a function prototype is missing, gcc by default return an integer value. De-referencing the returned pointer will cause a segfault.&lt;/p&gt;
+
+&lt;p&gt;To fix this, I found a portable &lt;code&gt;strdup&lt;/code&gt; implementation in the OpenBSD source code. I have used that and disabled the default &lt;code&gt;strdup&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>document.ready() handler not getting fired   Rails4</title>
+      <link>https://navaneeth.github.io/post/document.ready%28%29%20handler%20not%20getting%20fired%20-%20Rails4/</link>
+      <pubDate>Tue, 18 Nov 2014 12:55:32 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/document.ready%28%29%20handler%20not%20getting%20fired%20-%20Rails4/</guid>
+      <description>&lt;p&gt;Rails4 uses a gem called &lt;a href=&#34;https://github.com/rails/turbolinks&#34;&gt;turbolinks&lt;/a&gt; which makes following links on the web application faster. This gem is added to the Gemfile by default when a new rails project is initialized. However, there are few side effects this can cause.&lt;/p&gt;
+
+&lt;p&gt;Consider the following JS, added into app/assets/javascripts/projects.js:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;$(function () {
+  $(&#39;#startDate&#39;).datetimepicker({
+		pickTime: false
+	});
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This looks alright, but won&amp;rsquo;t work as expected.&lt;/p&gt;
+
+&lt;p&gt;When rails navigates to the page following a link, turbolink comes into picture and makes it faster by caching the JS contents. This leads into the ready handler not being fired. Which means, the datetimepicker used in the above example won&amp;rsquo;t work without a full page refresh.&lt;/p&gt;
+
+&lt;p&gt;Luckily, this can be fixed by using &lt;a href=&#34;https://github.com/kossnocorp/jquery.turbolinks&#34;&gt;jquery.turbolinks&lt;/a&gt; gem which works with turbolinks gem ensures the ready handlers are called.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hiding menu when clicking outside - AngularJS</title>
+      <link>https://navaneeth.github.io/post/Hiding%20menu%20when%20clicking%20outside%20-%20AngularJS/</link>
+      <pubDate>Sun, 28 Sep 2014 11:29:28 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/Hiding%20menu%20when%20clicking%20outside%20-%20AngularJS/</guid>
+      <description>&lt;p&gt;Assume you have a menu which looks like the following:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;right-menu&amp;quot;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;ng-click=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;toggleMenu($event);&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;src=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;img/RightMenuIcon.png&amp;quot;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;alt=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;ng-show=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;menuOpened&amp;quot;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;menu-dropdown-right&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;ul&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;ng-hide=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;loggedIn&amp;quot;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;class&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;#/authenticate&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;Login&lt;span class=&#34;nt&#34;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;ng-show=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;loggedIn&amp;quot;&lt;/span&gt;  &lt;span class=&#34;na&#34;&gt;ng-click=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;logOut()&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;#&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;Logout&lt;span class=&#34;nt&#34;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;When the div gets a click event, angular calls &lt;code&gt;toggleMenu&lt;/code&gt; which toggles the &lt;code&gt;menuOpened&lt;/code&gt; variable. Changing the value of this variable in turn makes the div show/hide.&lt;/p&gt;
+
+&lt;p&gt;To hide the menu when clicking outside of the div, we add a &lt;code&gt;onclick&lt;/code&gt; handler to &lt;code&gt;window&lt;/code&gt; object which checks the &lt;code&gt;menuOpened&lt;/code&gt; variable and updates it if the menu is visible.&lt;/p&gt;
+
+&lt;p&gt;Here is the code for &lt;code&gt;MenuCtrl&lt;/code&gt; and the &lt;code&gt;onclick&lt;/code&gt; handler:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;angularApp.controller(&#39;MenuCtrl&#39;, [&#39;$scope&#39;, &#39;$location&#39;, &#39;$rootScope&#39;,
+
+  function($scope, $location, $rootScope) {
+
+		$scope.menuOpened = false;
+
+		$scope.toggleMenu = function(event) {
+			$scope.menuOpened = !($scope.menuOpened);
+
+      // Important part in the implementation
+      // Stopping event propagation means window.onclick won&#39;t get called when someone clicks
+      // on the menu div. Without this, menu will be hidden immediately
+			event.stopPropagation();
+		};
+
+		window.onclick = function() {
+			if ($scope.menuOpened) {
+				$scope.menuOpened = false;
+
+        // You should let angular know about the update that you have made, so that it can refresh the UI
+				$scope.$apply();
+			}
+		};
+	}
+]);
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>how to get lintian warnings when using ubuntu</title>
+      <link>https://navaneeth.github.io/post/how-to-get-lintian-warnings-when-using-ubuntu/</link>
+      <pubDate>Sun, 23 Mar 2014 13:00:00 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/how-to-get-lintian-warnings-when-using-ubuntu/</guid>
+      <description>&lt;p&gt;Recently, I started to package &lt;a href=&#34;https://gitorious.org/varnamproject/libvarnam&#34;&gt;libvarnam&lt;/a&gt; for Debian. I followed the debian packaging guidelines and successfully created a package. I am using Ubuntu instead of Debian to do the packaging. Since Ubuntu is based on Debian, packaging also has the same procedure.&lt;/p&gt;
+
+&lt;p&gt;Debian requires all the packages to be &lt;code&gt;lintian&lt;/code&gt; clean. Lintian is a command line utility which checks for errors and standards violations in the package files. My package was lintian clean and I have uploaded it into the debian mentors page seeking for sponsors. Then I noticed several lintian errors showing up in the mentors page. This was not coming up in my local lintian run.&lt;/p&gt;
+
+&lt;p&gt;The main reason why lintian errors was showing differently on my local machine was because my local lintian uses Ubuntu&amp;rsquo;s profile settings and Debian has more strict rules than Ubuntu.&lt;/p&gt;
+
+&lt;p&gt;When lintian is installed, it installs the files in to the following directory.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; ls /usr/share/lintian/profiles
+debian  ubuntu
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To get the warnings which lintian emits on a Debian machine, use the following command.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; lintian --pedantic --profile debian yourpackage.changes
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will show the exact warnings which mentors.debian.net is showing. This way you can do the debian packaging within ubuntu and make sure all the debian lintian checks are passing before uploading the package.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Channels in libuv</title>
+      <link>https://navaneeth.github.io/post/Channels%20in%20libuv/</link>
+      <pubDate>Fri, 02 Aug 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/Channels%20in%20libuv/</guid>
+      <description>
+
+&lt;p&gt;&lt;code&gt;go&lt;/code&gt; programming language provides a very powerful synchronization mechanism called &lt;a href=&#34;http://golang.org/doc/effective_go.html#channels&#34;&gt;channels&lt;/a&gt;. Channels simplifies communication between threads and makes it very easy to send and receive data from go routines.&lt;/p&gt;
+
+&lt;p&gt;I always missed such functionalities when using &lt;code&gt;libuv&lt;/code&gt;. &lt;code&gt;libuv&lt;/code&gt; has &lt;code&gt;uv async_send&lt;/code&gt;, but it can be used only to wakeup the event loop. In this post, we will implement channels in &lt;code&gt;C&lt;/code&gt; using &lt;code&gt;libuv&lt;/code&gt;. The idea is to implement a channel so that user can use it without worrying about manually doing the synchronization.&lt;/p&gt;
+
+&lt;h1 id=&#34;implementation:8acece6ccdbb27d74705676873e0c80e&#34;&gt;Implementation&lt;/h1&gt;
+
+&lt;p&gt;A channel will have a queue, a mutex to synchronize the sending and receiving and a condition variable to signal receivers when data is available. When &lt;code&gt;uv_chan_send&lt;/code&gt; is called, it takes the data and puts it into a internal queue and signal all receivers about the data. &lt;code&gt;uv_chan_receive&lt;/code&gt; will acquire a lock, dequeue the data and unlock the lock.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;uv-channel.h&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;typedef struct uv_chan_s uv_chan_t;
+
+struct uv_chan_s {
+  uv_mutex_t mutex;
+  uv_cond_t cond;
+  void* q[2];
+};
+
+int uv_chan_init(uv_chan_t* chan);
+void uv_chan_send(uv_chan_t* chan, void* data);
+void* uv_chan_receive(uv_chan_t* chan);
+void uv_chan_destroy(uv_chan_t* chan);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;uv-channel.c&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;typedef struct {
+  void* data;
+  uv_req_type type;
+  void* active_queue[2];
+} uv__chan_item_t;
+
+int uv_chan_init(uv_chan_t* chan) {
+  int r = uv_mutex_init (&amp;amp;chan-&amp;gt;mutex);
+  if (r == -1)
+    return r;
+
+  QUEUE_INIT(&amp;amp;chan-&amp;gt;q);
+
+  return uv_cond_init (&amp;amp;chan-&amp;gt;cond);
+}
+
+void uv_chan_send(uv_chan_t* chan, void* data) {
+  uv__chan_item_t* item = malloc(sizeof(uv__chan_item_t));
+  item-&amp;gt;data = data;
+
+  uv_mutex_lock (&amp;amp;chan-&amp;gt;mutex);
+  QUEUE_INSERT_TAIL(&amp;amp;chan-&amp;gt;q, &amp;amp;item-&amp;gt;active_queue);
+  uv_cond_signal (&amp;amp;chan-&amp;gt;cond);
+  uv_mutex_unlock (&amp;amp;chan-&amp;gt;mutex);
+}
+
+void* uv_chan_receive(uv_chan_t* chan) {
+  uv__chan_item_t* item;
+  QUEUE* head;
+  void* data = NULL;
+
+  uv_mutex_lock (&amp;amp;chan-&amp;gt;mutex);
+  while (QUEUE_EMPTY(&amp;amp;chan-&amp;gt;q)) {
+    uv_cond_wait (&amp;amp;chan-&amp;gt;cond, &amp;amp;chan-&amp;gt;mutex);
+  }
+
+  head = QUEUE_HEAD (&amp;amp;chan-&amp;gt;q);
+  item = QUEUE_DATA (head, uv__chan_item_t, active_queue);
+  data = item-&amp;gt;data;
+  QUEUE_REMOVE (head);
+  free (item);
+  uv_mutex_unlock (&amp;amp;chan-&amp;gt;mutex);
+  return data;
+}
+
+void uv_chan_destroy(uv_chan_t* chan) {
+  uv_cond_destroy (&amp;amp;chan-&amp;gt;cond);
+  uv_mutex_destroy (&amp;amp;chan-&amp;gt;mutex);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;example:8acece6ccdbb27d74705676873e0c80e&#34;&gt;Example&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;quot;uv.h&amp;quot;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;stdlib.h&amp;gt;
+#include &amp;lt;string.h&amp;gt;
+
+static void worker(void* arg) {
+  int i;
+  char* string;
+  uv_chan_t* chan = arg;
+
+  for (i = 0; i &amp;lt; 10; i++) {
+    string = malloc(sizeof(char) * 2);
+    sprintf(string, &amp;quot;%d&amp;quot;, i);
+    uv_chan_send (chan, string);
+    uv_sleep (10);
+  }
+  uv_chan_send (chan, NULL);
+}
+
+int main(int argc, char** argv) {
+  int threads_exited = 0;
+  char* message;
+  uv_chan_t chan;
+  uv_thread_t thread1, thread2;
+
+  uv_chan_init (&amp;amp;chan);
+  uv_thread_create(&amp;amp;thread1, worker, &amp;amp;chan);
+  uv_thread_create(&amp;amp;thread2, worker, &amp;amp;chan);
+
+  while (threads_exited &amp;lt; 2) {
+    message = uv_chan_receive(&amp;amp;chan);
+    if (message == NULL)
+      ++threads_exited;
+    else {
+      printf(&amp;quot;Message : %\n&amp;quot;, message);
+      free(message);
+    }
+  }
+
+  uv_chan_destroy (&amp;amp;chan);
+  return 0;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In this example, I am executing two threads and each will execute the &lt;code&gt;worker&lt;/code&gt; function. &lt;code&gt;worker&lt;/code&gt; function will get an instance of the channel. Each worker will push some data into the channel and main thread receives all the data. Worker thread signals end of messages by passing a &lt;code&gt;NULL&lt;/code&gt; value to the channel. &lt;code&gt;uv_chan_receive&lt;/code&gt; blocks until the channel gets some data.&lt;/p&gt;
+
+&lt;p&gt;Note: you need to allocate/deep copy the data before sending to the channel. Otherwise, worker would have overwritten the data before receiver gets it.&lt;/p&gt;
+
+&lt;h1 id=&#34;future-work:8acece6ccdbb27d74705676873e0c80e&#34;&gt;Future work&lt;/h1&gt;
+
+&lt;p&gt;Some ideas which would be nice to have:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Implement a timeout on &lt;code&gt;uv_chan_receive&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Provide a deep copy callback on the channel, so that data can be send to the channel without copying and channel will take care of deep copying by invoking the specified callback.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Happy programming!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building static and shared libraries using CMake</title>
+      <link>https://navaneeth.github.io/post/Building%20static%20and%20shared%20libraries%20using%20CMake/</link>
+      <pubDate>Sun, 28 Jul 2013 13:02:25 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/Building%20static%20and%20shared%20libraries%20using%20CMake/</guid>
+      <description>&lt;p&gt;Recently in &lt;a href=&#34;https://github.com/navaneeth/libvarnam&#34;&gt;libvarnam&lt;/a&gt;, I had to build a static and shared library from the same source files. This was much harder before CMake 2.8. From CMake 2.8.8, CMake has support for &lt;code&gt;Object library&lt;/code&gt; which made it very simple.&lt;/p&gt;
+
+&lt;p&gt;Basic idea is to use &lt;code&gt;add_library&lt;/code&gt; with &lt;code&gt;OBJECT&lt;/code&gt; type. CMake will compile all the source files provided in this target and makes the object files for it. It won&amp;rsquo;t create a temporary static library with all these object files. These object files can later be referred in the target which builds the library. In my CMakeLists.txt, I have the following.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;add_library (core OBJECT ${SOURCES})
+add_library (static STATIC $&amp;lt;TARGET_OBJECTS:core&amp;gt;)
+add_library (shared SHARED $&amp;lt;TARGET_OBJECTS:core&amp;gt;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The above will build static and shared library from the same set of object files. This improves compilation time considerably as source files will be compiled only once and used in multiple targets.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to use individual lines pulled from stdin in the middle of a command when using xargs</title>
+      <link>https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/</link>
+      <pubDate>Thu, 28 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/</guid>
+      <description>&lt;p&gt;&lt;code&gt;xargs&lt;/code&gt; is very powerful commandline utility. Here is what Wikipedia says about &lt;code&gt;xargs&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;xargs is a command on Unix and most Unix-like operating systems used to build and execute command lines from standard input&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Most common use of &lt;code&gt;xargs&lt;/code&gt; would be to do something like,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;find . -type f -print0 | xargs -0 rm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let us assume that you have a file with list of files to be downloaded from a website. Something like,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;one.zip
+two.zip
+three.zip
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With &lt;code&gt;wget&lt;/code&gt; and &lt;code&gt;xargs&lt;/code&gt; all these files can be downloaded easily with just one command.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cat filenames.txt | xargs -I filename wget http://download.com/filename
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;-I&lt;/code&gt; flag takes a replacement string and &lt;code&gt;xargs&lt;/code&gt; will then replace &lt;code&gt;filename&lt;/code&gt; with the value obtained from &lt;code&gt;stdin&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to upload files when testing using Selenium Webdriver</title>
+      <link>https://navaneeth.github.io/post/how-to-upload-files-when-testing-using-selenium-webdriver/</link>
+      <pubDate>Wed, 20 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/how-to-upload-files-when-testing-using-selenium-webdriver/</guid>
+      <description>&lt;p&gt;You can use the following code to set a file path to the file upload control.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;WebElement file = driver.findElement(By.id(&amp;quot;control_id&amp;quot;));
+file.sendKeys(&amp;quot;/full/path/to/file&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You need to pass full path to the &lt;code&gt;sendKeys()&lt;/code&gt; for it to work. Otherwise &lt;code&gt;sendKeys()&lt;/code&gt; fails silently.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Is Thread.Sleep() evil?</title>
+      <link>https://navaneeth.github.io/post/is-thread-dot-sleep-evil/</link>
+      <pubDate>Tue, 19 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/is-thread-dot-sleep-evil/</guid>
+      <description>&lt;p&gt;If you search for this topic, you will find lots of information and many of them claiming &lt;code&gt;Thread.Sleep()&lt;/code&gt; is evil. However, I think this evilness is mostly dependent on which context &lt;code&gt;Thread.Sleep()&lt;/code&gt; is used.&lt;/p&gt;
+
+&lt;p&gt;You might have seen code like the below one.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;while (!exit)
+{
+    DoWork();
+    Thread.Sleep(10000);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This code example does some work and sleeps for 1 minute before does the job again. This simple example has some potential issues.&lt;/p&gt;
+
+&lt;p&gt;Internally &lt;code&gt;Thread.Sleep()&lt;/code&gt; calls WIN32&amp;rsquo;s &lt;a href=&#34;http://msdn.microsoft.com/en-us/library/windows/desktop/ms686298%28v=vs.85%29.aspx&#34;&gt;Sleep&lt;/a&gt; function. This is what MSDN says about Sleep function.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;This function causes a thread to relinquish the remainder of its time slice and become unrunnable for an interval based on the value of dwMilliseconds. The system clock &amp;ldquo;ticks&amp;rdquo; at a constant rate. If dwMilliseconds is less than the resolution of the system clock, the thread may sleep for less than the specified length of time. If dwMilliseconds is greater than one tick but less than two, the wait can be anywhere between one and two ticks, and so on.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;It is clear that &lt;code&gt;Sleep()&lt;/code&gt; won&amp;rsquo;t sleep exactly for the interval specified. This can be problematic if your application needs to be accurate with the intervals. This is also dependent on how much load CPU has. If CPU is really overloaded, this time could be longer. This also makes it hard to tell when the job will run next time. If you have done some action which needs to be processed by the background job and not knowing when background job will kick in next time is bad.&lt;/p&gt;
+
+&lt;p&gt;If your thread is running with a low priority, sleep duration could be more than the specified interval.&lt;/p&gt;
+
+&lt;p&gt;If you are trying to implement something which runs periodically, use &lt;code&gt;System.Threading.Timer&lt;/code&gt; class which provides better scheduling capabilities. It runs the callback at specified intervals on a thread pool thread.&lt;/p&gt;
+
+&lt;p&gt;Is &lt;code&gt;Thread.Sleep()&lt;/code&gt; really evil? NO, if you understand all the above problems and you are OK with the above behaviour. Yes otherwise.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Working with native code easily in C# with the help of C&#43;&#43;/CLI</title>
+      <link>https://navaneeth.github.io/post/working-with-native-code-in-csharp-easily-with-cplusplus-cli/</link>
+      <pubDate>Sun, 17 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/working-with-native-code-in-csharp-easily-with-cplusplus-cli/</guid>
+      <description>
+
+&lt;p&gt;.NET comes with pretty good interoperability options which would enable unmanaged code to be used from a managed environment. In C#, to call a function which is available in a DLL, &lt;code&gt;PInvoke&lt;/code&gt; (Platform invocation service) can be used. Here is what MSDN says.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Platform Invocation Services (PInvoke) allows managed code to call unmanaged functions that are implemented in a DLL.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This is very helpful when you need to call some system functions from your C# application. Now let us assume that you have lot of code which is written in C or C++. You are writing a brand new application in C# which internally uses the C/C++ code available. Since C/C++ code is categorised as unmanaged code, you can&amp;rsquo;t directly use them in C#. At C# side, wrapper classes and functions has to be written to interop properly with the native code. As I said earlier, if you just need to use a single function, it is easy to do directly from C# using &lt;code&gt;PInvoke&lt;/code&gt;. But when you need almost all the functionalities/API to be available as a managed object, &lt;code&gt;PInvoke&lt;/code&gt; would be a pain to use. Let us take an example from &lt;a href=&#34;http://msdn.microsoft.com/en-us/library/aa288468%28v=vs.71%29.aspx&#34;&gt;MSDN&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;typedef struct tagLOGFONT
+{
+   LONG lfHeight;
+   LONG lfWidth;
+   LONG lfEscapement;
+   LONG lfOrientation;
+   LONG lfWeight;
+   BYTE lfItalic;
+   BYTE lfUnderline;
+   BYTE lfStrikeOut;
+   BYTE lfCharSet;
+   BYTE lfOutPrecision;
+   BYTE lfClipPrecision;
+   BYTE lfQuality;
+   BYTE lfPitchAndFamily;
+   TCHAR lfFaceName[LF_FACESIZE];
+} LOGFONT;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In C#, this can be represented as&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;// logfont.cs
+// compile with: /target:module
+using System;
+using System.Runtime.InteropServices;
+
+[StructLayout(LayoutKind.Sequential)]
+public class LOGFONT
+{
+    public const int LF_FACESIZE = 32;
+    public int lfHeight;
+    public int lfWidth;
+    public int lfEscapement;
+    public int lfOrientation;
+    public int lfWeight;
+    public byte lfItalic;
+    public byte lfUnderline;
+    public byte lfStrikeOut;
+    public byte lfCharSet;
+    public byte lfOutPrecision;
+    public byte lfClipPrecision;
+    public byte lfQuality;
+    public byte lfPitchAndFamily;
+
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst=LF_FACESIZE)]
+    public string lfFaceName;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Look at the C# example. It is not as clean as the structure definition at the C side. It contains attributes which specify the structure alignment, then marshaling etc. When the structure contains references to other structures, things gets complicated.&lt;/p&gt;
+
+&lt;p&gt;For C or C++ programmers, it is always convenient to declare the struct as they normally do. That&amp;rsquo;s the beauty of &lt;code&gt;C++/CLI&lt;/code&gt; which allows you to combine managed and unmanaged code together and makes interoperability very straightforward.&lt;/p&gt;
+
+&lt;p&gt;In this post, we will take &lt;code&gt;SQLite&lt;/code&gt; as an example and write a managed class which can be consumed from C#. We will wrap SQLite code using &lt;code&gt;C++/CLI&lt;/code&gt; and consume from C#. SQLite has a huge API and we won&amp;rsquo;t be covering all of them. We will cover APIs which will allow to open a DB connection and execute a simple query.&lt;/p&gt;
+
+&lt;p&gt;Note: SQLite is chosen as an example. The correct way to wrap SQLite is adhering to ADO.NET standards and providing a API by extending IDBConnection. But for this post, we will ignore this and provide a custom simple API.&lt;/p&gt;
+
+&lt;h2 id=&#34;sqlite-api:7e82bd22871e49f5b795e67f510f204b&#34;&gt;SQLite API&lt;/h2&gt;
+
+&lt;p&gt;We will wrap the following functions&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;int sqlite3_open(const char *filename, sqlite3 **ppDb);
+int sqlite3_exec(
+  sqlite3*,                                  /* An open database */
+  const char *sql,                           /* SQL to be evaluated */
+  int (*callback)(void*,int,char**,char**),  /* Callback function */
+  void *,                                    /* 1st argument to callback */
+  char **errmsg                              /* Error msg written here */
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Our managed API will look like,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;SQLite db = new SQLite(filePath);
+db.Execute(sql, callback);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;callback&lt;/code&gt; can be assigned to a function which takes 2 parameters of type &lt;code&gt;List&amp;lt;String&amp;gt;&lt;/code&gt;. It will contain column names and values respectively.&lt;/p&gt;
+
+&lt;h2 id=&#34;wrapper-class-in-c-cli:7e82bd22871e49f5b795e67f510f204b&#34;&gt;Wrapper class in C++/CLI&lt;/h2&gt;
+
+&lt;p&gt;We will have a Visual studio solution with 3 projects.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Static library which contains SQLite source code. This will be compiled as C and produces a static library.&lt;/li&gt;
+&lt;li&gt;C++/CLI library project which adds the first project as a reference.&lt;/li&gt;
+&lt;li&gt;A C# console application for testing. This project will have a reference to the assembly generated by C++/CLI project.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://navaneeth.github.io/images/posts/20130217/solution_explorer.png&#34; alt=&#34;Solution explorer&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In C++/CLI, we start off by creating the following class.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;// SQLiteWrapper.h
+
+#pragma once
+
+#include &amp;quot;sqlite3.h&amp;quot;
+
+using namespace System;
+using namespace System::Collections::Generic;
+
+namespace SQLiteWrapper {
+
+    // Main class that wraps the native API
+    public ref class SQLite : IDisposable
+    {
+    public:
+        SQLite(String^ filePath);
+        void Execute(String^ sql, Action&amp;lt;List&amp;lt;String^&amp;gt;^, List&amp;lt;String^&amp;gt;^&amp;gt;^ callback);
+        ~SQLite();
+
+    private:
+        sqlite3* db;
+    };
+
+    public ref class SQLiteError : Exception
+    {
+    public:
+        SQLiteError(String^ errorMessage);
+    };
+
+    private ref class SQLiteDataCarrier
+    {
+    public:
+        SQLiteDataCarrier(List&amp;lt;String^&amp;gt;^ columnNames, List&amp;lt;String^&amp;gt;^ columnValues)
+        {
+            this-&amp;gt;columnNames = columnNames;
+            this-&amp;gt;columnValues = columnValues;
+        }
+
+        property List&amp;lt;String^&amp;gt;^ ColumnNames
+        {
+            List&amp;lt;String^&amp;gt;^ get()
+            {
+                return columnNames;
+            }
+        }
+
+        property List&amp;lt;String^&amp;gt;^ ColumnValues
+        {
+            List&amp;lt;String^&amp;gt;^ get()
+            {
+                return columnValues;
+            }
+        }
+
+    private:
+        List&amp;lt;String^&amp;gt;^ columnNames;
+        List&amp;lt;String^&amp;gt;^ columnValues;
+    };
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This class holds an instance to &lt;code&gt;sqlite3&lt;/code&gt; structure which is the core of SQLite library. Even though the class is a managed class, C++/CLI allows you to hold a pointer which points to &lt;code&gt;sqlite3&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Our constructor can be implemented like,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;// Constructor for managed class SQLite
+SQLite::SQLite(String^ filePath)
+{
+    IntPtr p = Marshal::StringToHGlobalAnsi(filePath);
+    const char* _filePath = static_cast&amp;lt;const char*&amp;gt;(p.ToPointer());
+
+    try
+    {
+        sqlite3* d;
+        int status = sqlite3_open(_filePath, &amp;amp;d);
+        if (status)
+            throw gcnew SQLiteError(&amp;quot;Unable to open database&amp;quot;);
+
+
+        // Holding the DB pointer as a field
+        // This is a pointer to native struct, but it can be stored in managed class!
+        db = d;
+    }
+    finally
+    {
+        Marshal::FreeHGlobal(p);
+
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This code shows how well C++/CLI allows you to mix types from both managed and unmanaged world. It is beautiful!&lt;/p&gt;
+
+&lt;p&gt;All this constructor does is to initialize &lt;code&gt;sqlite3&lt;/code&gt; instance and update the &lt;code&gt;db&lt;/code&gt; pointer with correct reference.&lt;/p&gt;
+
+&lt;p&gt;Here is how &lt;code&gt;Execute()&lt;/code&gt; method is implemented.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;// Callback function called by SQLite.
+// This function shows how native and managed objects can work together!
+static int _callback(void *userData, int argc, char **argv, char **azColName)
+{
+    IntPtr pointer(userData);
+    GCHandle handle = GCHandle::FromIntPtr(pointer);
+    SQLiteDataCarrier^ carrier = (SQLiteDataCarrier^) handle.Target;
+
+    for(int i = 0; i &amp;lt; argc; i++)
+    {
+        const char* columnName = azColName[i];
+        const char* columnValue = argv[i];
+
+        carrier-&amp;gt;ColumnNames-&amp;gt;Add(gcnew String(columnName));
+        carrier-&amp;gt;ColumnValues-&amp;gt;Add(gcnew String(columnValue));
+    }
+
+    return 0;
+}
+
+
+void SQLite::Execute(String^ sql, Action&amp;lt;List&amp;lt;String^&amp;gt;^, List&amp;lt;String^&amp;gt;^&amp;gt;^ callback)
+{
+    IntPtr p = Marshal::StringToHGlobalAnsi(sql);
+    const char* _sql = static_cast&amp;lt;const char*&amp;gt;(p.ToPointer());
+
+    // Output will be stored in these lists
+    List&amp;lt;String^&amp;gt;^ columnNames = gcnew List&amp;lt;String^&amp;gt;();
+    List&amp;lt;String^&amp;gt;^ columnValues = gcnew List&amp;lt;String^&amp;gt;();
+
+    // A simple class to aggregate columnNames and columnValues so that it can be passed to SQLite and SQLite will give it back in the callback function
+    SQLiteDataCarrier^ carrier = gcnew SQLiteDataCarrier(columnNames, columnValues);
+
+    // Converting carrier to void*
+    GCHandle handle = GCHandle::Alloc(carrier);
+    IntPtr pointer = GCHandle::ToIntPtr(handle);
+
+    char *zErrMsg = 0;
+    int status = sqlite3_exec(db, _sql, _callback, pointer.ToPointer(), &amp;amp;zErrMsg);
+    if (status != SQLITE_OK)
+    {
+        String^ message = gcnew String(sqlite3_errmsg(db));
+        throw gcnew SQLiteError(message);
+    }
+
+    callback-&amp;gt;Invoke(columnNames, columnValues);
+
+    handle.Free();
+    Marshal::FreeHGlobal(p);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To add results into the list, we are passing both lists to the &lt;code&gt;sqlite3_exec()&lt;/code&gt; function so that SQLite will pass that back to the &lt;code&gt;_callback&lt;/code&gt; function. This is very powerful because we just passed a managed object into a native function call. Then in a native function, we obtained the managed instance and modified properties on it.&lt;/p&gt;
+
+&lt;p&gt;Once the querying is done, database has to be closed. We do that in the destructor.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c++&#34;&gt;// In C++/CLI destructor will be implemented using Dispose() pattern
+SQLite::~SQLite()
+{
+    sqlite3_close(db);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;using-from-c:7e82bd22871e49f5b795e67f510f204b&#34;&gt;Using from C#&lt;/h2&gt;
+
+&lt;p&gt;Usage from C# now becomes pretty straightforward.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;namespace ConsoleApplication1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            SQLite db = new SQLite(&amp;quot;C:\\Users\\navaneeth\\Desktop\\test\\example.db&amp;quot;);
+            string sql = &amp;quot;create table if not exists foos (name text);\n&amp;quot; +
+                &amp;quot;insert into foos values (&#39;sample1&#39;);&amp;quot; +
+                &amp;quot;insert into foos values (&#39;sample2&#39;);&amp;quot; +
+                &amp;quot;select * from foos;&amp;quot;;
+            db.Execute(sql, (columnNames, columnValues) =&amp;gt; {
+                foreach (var name in columnNames)
+                {
+                    Console.WriteLine(name);
+                }
+                foreach (var value in columnValues)
+                {
+                    Console.WriteLine(value);
+                }
+            });
+            db.Dispose();
+            Console.Read();
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can download the code &lt;a href=&#34;https://dl.dropbox.com/u/52296034/blog/SQLiteWrapper.zip&#34;&gt;here&lt;/a&gt;. Happy programming!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Simple, generic and dynamically allocated array in C</title>
+      <link>https://navaneeth.github.io/post/simple-generic-and-dynamically-allocated-array-in-c/</link>
+      <pubDate>Fri, 11 May 2012 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/simple-generic-and-dynamically-allocated-array-in-c/</guid>
+      <description>&lt;p&gt;C is a very good language. I have been using for quite some time for my opensource project. The flexibility C offers is really good. But sometimes, lack of simple datastructures like a dynamically growing array will slow down the programmer. There are tons of implementation available online, but most of them are overcomplicated, got lot of dependencies or tough to understand and incorporate with your application. In this post, I present a simple array which grows dynamically, reuses the memory, supports any pointer type and easy to copy to your code base.&lt;/p&gt;
+
+&lt;p&gt;Here is the code.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;
+typedef struct varray_t
+{
+   void **memory;
+   size_t allocated;
+   size_t used;
+   int index;
+} varray;
+
+void
+varray_init(varray **array)
+{
+   *array = (varray*) malloc (sizeof(varray));
+   (*array)-&amp;gt;memory = NULL;
+   (*array)-&amp;gt;allocated = 0;
+   (*array)-&amp;gt;used = 0;
+   (*array)-&amp;gt;index = -1;
+}
+
+void
+varray_push(varray *array, void *data)
+{
+   size_t toallocate;
+   size_t size = sizeof(void*);
+   if ((array-&amp;gt;allocated - array-&amp;gt;used) &amp;lt; size) {
+      toallocate = array-&amp;gt;allocated == 0 ? size : (array-&amp;gt;allocated * 2);
+      array-&amp;gt;memory = realloc(array-&amp;gt;memory, toallocate);
+      array-&amp;gt;allocated = toallocate;
+   }
+
+   array-&amp;gt;memory[++array-&amp;gt;index] = data;
+   array-&amp;gt;used = array-&amp;gt;used + size;
+}
+
+int
+varray_length(varray *array)
+{
+   return array-&amp;gt;index + 1;
+}
+
+void
+varray_clear(varray *array)
+{
+   int i;
+   for(i = 0; i &amp;lt; varray_length(array); i++)
+   {
+      array-&amp;gt;memory[i] = NULL;
+   }
+   array-&amp;gt;used = 0;
+   array-&amp;gt;index = -1;
+}
+
+void
+varray_free(varray *array)
+{
+   free(array-&amp;gt;memory);
+   free(array);
+}
+
+void*
+varray_get(varray *array, int index)
+{
+   if (index &amp;lt; 0 || index &amp;gt; array-&amp;gt;index)
+      return NULL;
+
+   return array-&amp;gt;memory[index];
+}
+
+void
+varray_insert(varray *array, int index, void *data)
+{
+   if (index &amp;lt; 0 || index &amp;gt; array-&amp;gt;index)
+      return;
+
+   array-&amp;gt;memory[index] = data;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This array doesn’t take ownership of the data it contains. Ownership has to be managed separately. When adding a new item, array grows in constant propotion yielding inserts in amortized constant time. I have omitted error checking for malloc and realloc for simplicity.&lt;/p&gt;
+
+&lt;p&gt;Hope you enjoy the post.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Simple egg timer on Linux for Pomodoro technique</title>
+      <link>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</link>
+      <pubDate>Sun, 19 Dec 2010 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</guid>
+      <description>&lt;p&gt;Recently I have started evaluating the Pomodoro Technique which I found quite interesting. I am still evaluating the technique and not yet concluded on whether I should continue using it.&lt;/p&gt;
+
+&lt;p&gt;To implement pomodoro technique, you need a kitchen timer or egg timer. Since I use pomodoro for my programming work, I obviously don’t want to use a physical timer. I couldn’t find a decent timer for linux especially one that works well with Xfce. In this blog post, I will explain building a kitchen timer with basic linux programming techniques. This also gives an idea about how simple linux tools can be combined to do useful stuff.&lt;/p&gt;
+
+&lt;p&gt;Things that are used&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Shell scripting&lt;/li&gt;
+&lt;li&gt;Notification mechanisms on popular desktops like Gnome and Xfce. (I use Xfce in this example)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The shell script is actually a modified version of the one published here (&lt;a href=&#34;http://mostlylinux.wordpress.com/commandline/eggtimer/&#34;&gt;http://mostlylinux.wordpress.com/commandline/eggtimer/&lt;/a&gt;).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/bash
+counter=0
+limit=$1
+summary=$2
+startmessage=$3
+endmessage=$4
+notify-send -u critical -i appointment -t 600 &amp;quot;$summary&amp;quot; &amp;quot;$startmessage&amp;quot;
+echo
+while [ $counter != $limit ]; do
+   echo &amp;quot;$counter minutes so far...&amp;quot;;
+   sleep 60
+   let &amp;quot;counter = $counter + 1&amp;quot;
+done
+if [ $counter = $limit ]; then
+   echo
+   notify-send -u critical -i appointment &amp;quot;$summary&amp;quot; &amp;quot;$endmessage&amp;quot;
+   echo -e &#39;\a&#39; &amp;amp;gt;&amp;amp;amp;2
+   exit 0
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;All it does is wait until the limit reaches. It uses the sleep(1) command to sleep for a minute. notify-send is used for sending notifications to the desktop environment.&lt;/p&gt;
+
+&lt;p&gt;This script can be invoked using,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;./p-timer.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you use bash, you can add an alias for convenience.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;alias begin-pomodoro=&#39;sh ~/utils/p-timer.sh 25 &amp;quot;Pomodoro&amp;quot; &amp;quot;Pomodoro started, you have 25 minutes left&amp;quot; &amp;quot;Pomodoro ended. Please stop the work and take short break&amp;quot;&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This post is written on one pomodoro!&lt;/p&gt;
+
+&lt;p&gt;Happy programming!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Circular linked list – An implementation using C#</title>
+      <link>https://navaneeth.github.io/post/circular-linked-list-an-implementation-using-c-number/</link>
+      <pubDate>Tue, 18 Aug 2009 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/circular-linked-list-an-implementation-using-c-number/</guid>
+      <description>
+
+&lt;p&gt;In this post, I will explain about creating a circular doubly linked list using C#. .NET framework provides a doubly linked list implementation in System.Collections.Generic.LinkedList&lt;T&gt; class . But this class is not providing the behavior of a circular linked list and it is very tough to extend for supporting circular linked list requirements.&lt;/p&gt;
+
+&lt;p&gt;In a normal doubly linked list, each node will have a link to its previous and next nodes. In a circular doubly linked list, tail node’s next node will be head and head node’s previous node will be tail. Here is an image taken from wikipedia which visualizes circular linked list.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;images/posts/circular_linked_list.png&#34; alt=&#34;Alt text&#34; title=&#34;Circular linked list&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here is our requirements for the circular linked list&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Adding items to the list should be O(1).&lt;/li&gt;
+&lt;li&gt;Provide similar interface like the standard LinkedList&lt;T&gt; class.&lt;/li&gt;
+&lt;li&gt;Keep items in a type-safe way.&lt;/li&gt;
+&lt;li&gt;Avoid using collections like List or array internally for keeping items.&lt;/li&gt;
+&lt;li&gt;Should provide access to Head and Tail&lt;/li&gt;
+&lt;li&gt;Option to enumerate all items&lt;/li&gt;
+&lt;li&gt;Reverse enumeration&lt;/li&gt;
+&lt;li&gt;Access items with an index.&lt;/li&gt;
+&lt;li&gt;Maintain collection semantics.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Here is the class diagram.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;images/posts/classdiagram1.png&#34; alt=&#34;Alt text&#34; title=&#34;Class diagram&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;node-lt-t-gt-class:c4b153d1621eb531bb575e5dfac92e1a&#34;&gt;Node&amp;lt;T&amp;gt; class&lt;/h2&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Every problem can be solved by adding another layer of indirection.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Node class is a layer of indirection added to hold the linked list value. It manages the next and previous items and provides an option to get the current value. This class is immutable. Here is Node class looks like,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;/// &amp;lt;summary&amp;gt;
+/// Represents a node
+/// &amp;lt;/summary&amp;gt;
+/// &amp;lt;typeparam name=&amp;quot;T&amp;quot;&amp;gt;&amp;lt;/typeparam&amp;gt;
+[DebuggerDisplay(&amp;quot;Value = {Value}&amp;quot;)]
+public sealed class Node&amp;lt;T&amp;gt;
+{
+    /// &amp;lt;summary&amp;gt;
+    /// Gets the Value
+    /// &amp;lt;/summary&amp;gt;
+    public T Value { get; private set; }
+
+    /// &amp;lt;summary&amp;gt;
+    /// Gets next node
+    /// &amp;lt;/summary&amp;gt;
+    public Node&amp;lt;T&amp;gt; Next { get; internal set; }
+
+    /// &amp;lt;summary&amp;gt;
+    /// Gets previous node
+    /// &amp;lt;/summary&amp;gt;
+    public Node&amp;lt;T&amp;gt; Previous { get; internal set; }
+
+    /// &amp;lt;summary&amp;gt;
+    /// Initializes a new &amp;lt;see cref=&amp;quot;Node&amp;quot;/&amp;gt; instance
+    /// &amp;lt;/summary&amp;gt;
+    /// &amp;lt;param name=&amp;quot;item&amp;quot;&amp;gt;Value to be assigned&amp;lt;/param&amp;gt;
+    internal Node(T item)
+    {
+        this.Value = item;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;circularlinkedlist-lt-t-gt-class:c4b153d1621eb531bb575e5dfac92e1a&#34;&gt;CircularLinkedList&amp;lt;T&amp;gt; class&lt;/h2&gt;
+
+&lt;p&gt;Keeping the requirements in mind, let us start writing the generic CircularLinkedList&lt;T&gt;. Some linked list implementations maintains only a link to the head node and when adding a new item to the list, each node in the list has to be traveled till tail node is found and this gives O(n) complexity for the algorithm.&lt;/p&gt;
+
+&lt;p&gt;Maintaining link to head and tail helps us to do insertions with a O(1) complexity. In such cases, list traversal is not required. All we need is to change the pointer in the tail node. Head and tail node are member variables of CircularLinkedList class.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public sealed class CircularLinkedList&amp;lt;T&amp;gt;
+{
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    Node head = null;
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    Node tail = null;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To add an item to the last, we need to create a new node from the supplied item. Set the new node’s next pointer pointing to the list’s head and previous pointing to the tail. Finally, tail will be replaced with the new node. Here is the &lt;code&gt;AddLast()&lt;/code&gt; method implementation.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public void AddLast(T item)
+{
+    // if head is null, then this will be the first item
+    if (head == null)
+        this.AddFirstItem(item);
+    else
+    {
+        Node&amp;lt;T&amp;gt; newNode = new Node&amp;lt;T&amp;gt;(item);
+        tail.Next = newNode;
+        newNode.Next = head;
+        newNode.Previous = tail;
+        tail = newNode;
+        head.Previous = tail;
+    }
+    ++count;
+}
+
+void AddFirstItem(T item)
+{
+    head = new Node&amp;lt;T&amp;gt;(item);
+    tail = head;
+    head.Next = tail;
+    head.Previous = tail;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We can easily add another method that will add item to the first position in the list. Implementation looks similar like &lt;code&gt;AddLast()&lt;/code&gt;. Unlike &lt;code&gt;AddLast()&lt;/code&gt;, head node’s previous pointer will be re-pointed to the new node. The new node’s previous and next pointer will be pointed to tail and head respectively. Finally head will be replaced with the new node.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public void AddFirst(T item)
+{
+    if (head == null)
+        this.AddFirstItem(item);
+    else
+    {
+        Node&amp;lt;T&amp;gt; newNode = new Node&amp;lt;T&amp;gt;(item);
+        head.Previous = newNode;
+        newNode.Previous = tail;
+        newNode.Next = head;
+        tail.Next = newNode;
+        head = newNode;
+    }
+    ++count;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Finding an item from the list will have a &lt;code&gt;O(n)&lt;/code&gt; complexity as it needs to traverse through all items in the list until we get a matching item. Here is a recursive implementation.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public Node&amp;lt;T&amp;gt; Find(T item)
+{
+    Node&amp;lt;T&amp;gt; node = FindNode(head, item);
+    return node;
+}
+
+Node&amp;lt;T&amp;gt; FindNode(Node&amp;lt;T&amp;gt; node, T valueToCompare)
+{
+    Node&amp;lt;T&amp;gt; result = null;
+    if (comparer.Equals(node.Value, valueToCompare))
+        result = node;
+    else if (result == null &amp;amp;&amp;amp; node.Next != head)
+        result = FindNode(node.Next, valueToCompare);
+    return result;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Providing an iterator to iterate the items in the list will be useful. Since this is a circular linked list, a reverse iterator also makes sense. &lt;code&gt;yield&lt;/code&gt; keyword makes iterator implementations almost trivial.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public IEnumerator&amp;lt;T&amp;gt; GetEnumerator()
+{
+    Node&amp;lt;T&amp;gt; current = head;
+    if (current != null)
+    {
+        do
+        {
+            yield return current.Value;
+            current = current.Next;
+        } while (current != head);
+    }
+}
+
+public IEnumerator&amp;lt;T&amp;gt; GetReverseEnumerator()
+{
+    Node&amp;lt;T&amp;gt; current = tail;
+    if (current != null)
+    {
+        do
+        {
+            yield return current.Value;
+            current = current.Previous;
+        } while (current != tail);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Removing items from list is also just re-pointing the previous and next pointers of the node’s previous.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public bool Remove(T item)
+{
+    // finding the first occurance of this item
+    Node&amp;lt;T&amp;gt; nodeToRemove = this.Find(item);
+    if (nodeToRemove != null)
+        return this.RemoveNode(nodeToRemove);
+    return false;
+}
+
+bool RemoveNode(Node&amp;lt;T&amp;gt; nodeToRemove)
+{
+    Node&amp;lt;T&amp;gt; previous = nodeToRemove.Previous;
+    previous.Next = nodeToRemove.Next;
+    nodeToRemove.Next.Previous = nodeToRemove.Previous;
+
+    // if this is head, we need to update the head reference
+    if (head == nodeToRemove)
+        head = nodeToRemove.Next;
+    else if (tail == nodeToRemove)
+        tail = tail.Previous;
+
+    --count;
+    return true;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Finally, an indexer is provided so that list items can be accessed using an index. Like &lt;code&gt;Find()&lt;/code&gt; method, this also has a &lt;code&gt;O(n)&lt;/code&gt; complexity.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public Node&amp;lt;T&amp;gt; this[int index]
+{
+    get
+    {
+        if (index &amp;gt;= count || index &amp;lt; 0)
+            throw new ArgumentOutOfRangeException(&amp;quot;index&amp;quot;);
+        else
+        {
+            Node&amp;lt;T&amp;gt; node = this.head;
+            for (int i = 0; i &amp;lt; index; i++)
+                node = node.Next;
+            return node;
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To get a collection semantics and maintain similar interface like the standard LinkedList, we implement &lt;code&gt;ICollection&amp;lt;T&amp;gt;&lt;/code&gt; and &lt;code&gt;IEnumerable&amp;lt;T&amp;gt;&lt;/code&gt; interfaces.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public sealed class CircularLinkedList&amp;lt;T&amp;gt; : ICollection&amp;lt;T&amp;gt;, IEnumerable&amp;lt;T&amp;gt;
+{
+    // code
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;test-harness:c4b153d1621eb531bb575e5dfac92e1a&#34;&gt;Test harness&lt;/h2&gt;
+
+&lt;p&gt;Following code shows how this class can be used,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;static void Main(string[] args)
+{
+    CircularLinkedList&amp;lt;int&amp;gt; list = new CircularLinkedList&amp;lt;int&amp;gt;();
+    list.AddLast(1);
+    list.AddLast(2);
+    list.AddLast(3);
+    Console.WriteLine(&amp;quot;List count = {0}&amp;quot;, list.Count);
+    Console.WriteLine(&amp;quot;Head  = {0}&amp;quot;, list.Head.Value);
+    Console.WriteLine(&amp;quot;Tail  = {0}&amp;quot;, list.Tail.Value);
+    Console.WriteLine(&amp;quot;Head&#39;s Previous  = {0}&amp;quot;, list.Head.Previous.Value);
+    Console.WriteLine(&amp;quot;Tail&#39;s Next  = {0}&amp;quot;, list.Tail.Next.Value);
+    Console.WriteLine(&amp;quot;************List Items***********&amp;quot;);
+    foreach (int i in list)
+        Console.WriteLine(i);
+
+    Console.WriteLine(&amp;quot;************List Items in reverse***********&amp;quot;);
+    for (IEnumerator&amp;lt;int&amp;gt; r = list.GetReverseEnumerator(); r.MoveNext(); )
+        Console.WriteLine(r.Current);
+
+    Console.WriteLine(&amp;quot;************Adding a new item at first***********&amp;quot;);
+    list.AddFirst(0);
+    foreach (int i in list)
+        Console.WriteLine(i);
+
+    Console.WriteLine(&amp;quot;************Adding item before***********&amp;quot;);
+    list.AddBefore(2,11);
+    foreach (int i in list)
+        Console.WriteLine(i);
+
+    Console.WriteLine(&amp;quot;************Adding item after***********&amp;quot;);
+    list.AddAfter(3, 4);
+    foreach (int i in list)
+        Console.WriteLine(i);
+
+    Console.ReadKey();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;possible-expansions:c4b153d1621eb531bb575e5dfac92e1a&#34;&gt;Possible expansions&lt;/h2&gt;
+
+&lt;p&gt;There are good and complex features that can be added to this list. Here are few that will be useful,&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Remove duplicate nodes.&lt;/li&gt;
+&lt;li&gt;Move nodes around.&lt;/li&gt;
+&lt;li&gt;Sorting.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Probably we will see these features in another post.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

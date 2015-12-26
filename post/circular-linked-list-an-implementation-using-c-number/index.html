@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Circular linked list – An implementation using C# &middot; nkn</title>
+
+  
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://navaneeth.github.io/touch-icon-144-precomposed.png">
+  <link href="https://navaneeth.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>nkn</h1>
+      <p class="lead">{love to code}</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/">blog</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/about/">about</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://www.flickr.com/photos/navaneethkn"><i class="fa fa-flickr fa-3x"></i></a>
+      <a href="https://github.com/navaneeth/"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      
+      <a href="http://twitter.com/navaneethkn"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="https://navaneeth.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="https://navaneeth.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>Circular linked list – An implementation using C#</h1>
+    <span class="post-date">Aug 18, 2009 &middot; 6 minute read
+    
+    <br/>
+    <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/datastructures">datastructures</a><a class="label" href="https://navaneeth.github.io/categories/c">c#</a>
+    </span>
+    
+
+<p>In this post, I will explain about creating a circular doubly linked list using C#. .NET framework provides a doubly linked list implementation in System.Collections.Generic.LinkedList<T> class . But this class is not providing the behavior of a circular linked list and it is very tough to extend for supporting circular linked list requirements.</p>
+
+<p>In a normal doubly linked list, each node will have a link to its previous and next nodes. In a circular doubly linked list, tail node’s next node will be head and head node’s previous node will be tail. Here is an image taken from wikipedia which visualizes circular linked list.</p>
+
+<p><img src="images/posts/circular_linked_list.png" alt="Alt text" title="Circular linked list" /></p>
+
+<p>Here is our requirements for the circular linked list</p>
+
+<ul>
+<li>Adding items to the list should be O(1).</li>
+<li>Provide similar interface like the standard LinkedList<T> class.</li>
+<li>Keep items in a type-safe way.</li>
+<li>Avoid using collections like List or array internally for keeping items.</li>
+<li>Should provide access to Head and Tail</li>
+<li>Option to enumerate all items</li>
+<li>Reverse enumeration</li>
+<li>Access items with an index.</li>
+<li>Maintain collection semantics.</li>
+</ul>
+
+<p>Here is the class diagram.</p>
+
+<p><img src="images/posts/classdiagram1.png" alt="Alt text" title="Class diagram" /></p>
+
+<h2 id="node-lt-t-gt-class:c4b153d1621eb531bb575e5dfac92e1a">Node&lt;T&gt; class</h2>
+
+<blockquote>
+<p>Every problem can be solved by adding another layer of indirection.</p>
+</blockquote>
+
+<p>Node class is a layer of indirection added to hold the linked list value. It manages the next and previous items and provides an option to get the current value. This class is immutable. Here is Node class looks like,</p>
+
+<pre><code class="language-csharp">/// &lt;summary&gt;
+/// Represents a node
+/// &lt;/summary&gt;
+/// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;
+[DebuggerDisplay(&quot;Value = {Value}&quot;)]
+public sealed class Node&lt;T&gt;
+{
+    /// &lt;summary&gt;
+    /// Gets the Value
+    /// &lt;/summary&gt;
+    public T Value { get; private set; }
+
+    /// &lt;summary&gt;
+    /// Gets next node
+    /// &lt;/summary&gt;
+    public Node&lt;T&gt; Next { get; internal set; }
+
+    /// &lt;summary&gt;
+    /// Gets previous node
+    /// &lt;/summary&gt;
+    public Node&lt;T&gt; Previous { get; internal set; }
+
+    /// &lt;summary&gt;
+    /// Initializes a new &lt;see cref=&quot;Node&quot;/&gt; instance
+    /// &lt;/summary&gt;
+    /// &lt;param name=&quot;item&quot;&gt;Value to be assigned&lt;/param&gt;
+    internal Node(T item)
+    {
+        this.Value = item;
+    }
+}
+</code></pre>
+
+<h2 id="circularlinkedlist-lt-t-gt-class:c4b153d1621eb531bb575e5dfac92e1a">CircularLinkedList&lt;T&gt; class</h2>
+
+<p>Keeping the requirements in mind, let us start writing the generic CircularLinkedList<T>. Some linked list implementations maintains only a link to the head node and when adding a new item to the list, each node in the list has to be traveled till tail node is found and this gives O(n) complexity for the algorithm.</p>
+
+<p>Maintaining link to head and tail helps us to do insertions with a O(1) complexity. In such cases, list traversal is not required. All we need is to change the pointer in the tail node. Head and tail node are member variables of CircularLinkedList class.</p>
+
+<pre><code class="language-csharp">public sealed class CircularLinkedList&lt;T&gt;
+{
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    Node head = null;
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    Node tail = null;
+}
+</code></pre>
+
+<p>To add an item to the last, we need to create a new node from the supplied item. Set the new node’s next pointer pointing to the list’s head and previous pointing to the tail. Finally, tail will be replaced with the new node. Here is the <code>AddLast()</code> method implementation.</p>
+
+<pre><code class="language-csharp">public void AddLast(T item)
+{
+    // if head is null, then this will be the first item
+    if (head == null)
+        this.AddFirstItem(item);
+    else
+    {
+        Node&lt;T&gt; newNode = new Node&lt;T&gt;(item);
+        tail.Next = newNode;
+        newNode.Next = head;
+        newNode.Previous = tail;
+        tail = newNode;
+        head.Previous = tail;
+    }
+    ++count;
+}
+
+void AddFirstItem(T item)
+{
+    head = new Node&lt;T&gt;(item);
+    tail = head;
+    head.Next = tail;
+    head.Previous = tail;
+}
+</code></pre>
+
+<p>We can easily add another method that will add item to the first position in the list. Implementation looks similar like <code>AddLast()</code>. Unlike <code>AddLast()</code>, head node’s previous pointer will be re-pointed to the new node. The new node’s previous and next pointer will be pointed to tail and head respectively. Finally head will be replaced with the new node.</p>
+
+<pre><code class="language-csharp">public void AddFirst(T item)
+{
+    if (head == null)
+        this.AddFirstItem(item);
+    else
+    {
+        Node&lt;T&gt; newNode = new Node&lt;T&gt;(item);
+        head.Previous = newNode;
+        newNode.Previous = tail;
+        newNode.Next = head;
+        tail.Next = newNode;
+        head = newNode;
+    }
+    ++count;
+}
+</code></pre>
+
+<p>Finding an item from the list will have a <code>O(n)</code> complexity as it needs to traverse through all items in the list until we get a matching item. Here is a recursive implementation.</p>
+
+<pre><code class="language-csharp">public Node&lt;T&gt; Find(T item)
+{
+    Node&lt;T&gt; node = FindNode(head, item);
+    return node;
+}
+
+Node&lt;T&gt; FindNode(Node&lt;T&gt; node, T valueToCompare)
+{
+    Node&lt;T&gt; result = null;
+    if (comparer.Equals(node.Value, valueToCompare))
+        result = node;
+    else if (result == null &amp;&amp; node.Next != head)
+        result = FindNode(node.Next, valueToCompare);
+    return result;
+}
+</code></pre>
+
+<p>Providing an iterator to iterate the items in the list will be useful. Since this is a circular linked list, a reverse iterator also makes sense. <code>yield</code> keyword makes iterator implementations almost trivial.</p>
+
+<pre><code class="language-csharp">public IEnumerator&lt;T&gt; GetEnumerator()
+{
+    Node&lt;T&gt; current = head;
+    if (current != null)
+    {
+        do
+        {
+            yield return current.Value;
+            current = current.Next;
+        } while (current != head);
+    }
+}
+
+public IEnumerator&lt;T&gt; GetReverseEnumerator()
+{
+    Node&lt;T&gt; current = tail;
+    if (current != null)
+    {
+        do
+        {
+            yield return current.Value;
+            current = current.Previous;
+        } while (current != tail);
+    }
+}
+</code></pre>
+
+<p>Removing items from list is also just re-pointing the previous and next pointers of the node’s previous.</p>
+
+<pre><code class="language-csharp">public bool Remove(T item)
+{
+    // finding the first occurance of this item
+    Node&lt;T&gt; nodeToRemove = this.Find(item);
+    if (nodeToRemove != null)
+        return this.RemoveNode(nodeToRemove);
+    return false;
+}
+
+bool RemoveNode(Node&lt;T&gt; nodeToRemove)
+{
+    Node&lt;T&gt; previous = nodeToRemove.Previous;
+    previous.Next = nodeToRemove.Next;
+    nodeToRemove.Next.Previous = nodeToRemove.Previous;
+
+    // if this is head, we need to update the head reference
+    if (head == nodeToRemove)
+        head = nodeToRemove.Next;
+    else if (tail == nodeToRemove)
+        tail = tail.Previous;
+
+    --count;
+    return true;
+}
+</code></pre>
+
+<p>Finally, an indexer is provided so that list items can be accessed using an index. Like <code>Find()</code> method, this also has a <code>O(n)</code> complexity.</p>
+
+<pre><code class="language-csharp">public Node&lt;T&gt; this[int index]
+{
+    get
+    {
+        if (index &gt;= count || index &lt; 0)
+            throw new ArgumentOutOfRangeException(&quot;index&quot;);
+        else
+        {
+            Node&lt;T&gt; node = this.head;
+            for (int i = 0; i &lt; index; i++)
+                node = node.Next;
+            return node;
+        }
+    }
+}
+</code></pre>
+
+<p>To get a collection semantics and maintain similar interface like the standard LinkedList, we implement <code>ICollection&lt;T&gt;</code> and <code>IEnumerable&lt;T&gt;</code> interfaces.</p>
+
+<pre><code class="language-csharp">public sealed class CircularLinkedList&lt;T&gt; : ICollection&lt;T&gt;, IEnumerable&lt;T&gt;
+{
+    // code
+}
+</code></pre>
+
+<h2 id="test-harness:c4b153d1621eb531bb575e5dfac92e1a">Test harness</h2>
+
+<p>Following code shows how this class can be used,</p>
+
+<pre><code class="language-csharp">static void Main(string[] args)
+{
+    CircularLinkedList&lt;int&gt; list = new CircularLinkedList&lt;int&gt;();
+    list.AddLast(1);
+    list.AddLast(2);
+    list.AddLast(3);
+    Console.WriteLine(&quot;List count = {0}&quot;, list.Count);
+    Console.WriteLine(&quot;Head  = {0}&quot;, list.Head.Value);
+    Console.WriteLine(&quot;Tail  = {0}&quot;, list.Tail.Value);
+    Console.WriteLine(&quot;Head's Previous  = {0}&quot;, list.Head.Previous.Value);
+    Console.WriteLine(&quot;Tail's Next  = {0}&quot;, list.Tail.Next.Value);
+    Console.WriteLine(&quot;************List Items***********&quot;);
+    foreach (int i in list)
+        Console.WriteLine(i);
+
+    Console.WriteLine(&quot;************List Items in reverse***********&quot;);
+    for (IEnumerator&lt;int&gt; r = list.GetReverseEnumerator(); r.MoveNext(); )
+        Console.WriteLine(r.Current);
+
+    Console.WriteLine(&quot;************Adding a new item at first***********&quot;);
+    list.AddFirst(0);
+    foreach (int i in list)
+        Console.WriteLine(i);
+
+    Console.WriteLine(&quot;************Adding item before***********&quot;);
+    list.AddBefore(2,11);
+    foreach (int i in list)
+        Console.WriteLine(i);
+
+    Console.WriteLine(&quot;************Adding item after***********&quot;);
+    list.AddAfter(3, 4);
+    foreach (int i in list)
+        Console.WriteLine(i);
+
+    Console.ReadKey();
+}
+</code></pre>
+
+<h2 id="possible-expansions:c4b153d1621eb531bb575e5dfac92e1a">Possible expansions</h2>
+
+<p>There are good and complex features that can be added to this list. Here are few that will be useful,</p>
+
+<ul>
+<li>Remove duplicate nodes.</li>
+<li>Move nodes around.</li>
+<li>Sorting.</li>
+</ul>
+
+<p>Probably we will see these features in another post.</p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://navaneeth.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+

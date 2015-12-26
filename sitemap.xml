@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://navaneeth.github.io/</loc>
+    <lastmod>2015-12-26T12:26:42+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/Bringing%20business%20ideas%20to%20live%20in%203%20months/</loc>
+    <lastmod>2015-12-26T12:26:42+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/</loc>
+    <lastmod>2015-05-21T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/Function%20strdup%20implicitly%20converted%20to%20pointer/</loc>
+    <lastmod>2015-05-21T10:50:48+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/document.ready%28%29%20handler%20not%20getting%20fired%20-%20Rails4/</loc>
+    <lastmod>2014-11-18T12:55:32+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/Hiding%20menu%20when%20clicking%20outside%20-%20AngularJS/</loc>
+    <lastmod>2014-09-28T11:29:28+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/how-to-get-lintian-warnings-when-using-ubuntu/</loc>
+    <lastmod>2014-03-23T13:00:00+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/Channels%20in%20libuv/</loc>
+    <lastmod>2013-08-02T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/Building%20static%20and%20shared%20libraries%20using%20CMake/</loc>
+    <lastmod>2013-07-28T13:02:25+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/</loc>
+    <lastmod>2013-02-28T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/how-to-upload-files-when-testing-using-selenium-webdriver/</loc>
+    <lastmod>2013-02-20T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/is-thread-dot-sleep-evil/</loc>
+    <lastmod>2013-02-19T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/working-with-native-code-in-csharp-easily-with-cplusplus-cli/</loc>
+    <lastmod>2013-02-17T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/simple-generic-and-dynamically-allocated-array-in-c/</loc>
+    <lastmod>2012-05-11T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</loc>
+    <lastmod>2010-12-19T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/circular-linked-list-an-implementation-using-c-number/</loc>
+    <lastmod>2009-08-18T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/</loc>
+    <lastmod>2009-08-13T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/ado-dot-net-best-practices-reading-data-from-data-reader/</loc>
+    <lastmod>2009-07-11T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/about/</loc>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/license/</loc>
+  </url>
+  
+</urlset>

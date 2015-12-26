@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/linux/</link>
+    <description>Recent content in Linux on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 21 May 2015 12:59:50 +0530</lastBuildDate>
+    <atom:link href="https://navaneeth.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Function strdup implicitly converted to pointer</title>
+      <link>https://navaneeth.github.io/post/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/</link>
+      <pubDate>Thu, 21 May 2015 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/</guid>
+      <description>&lt;p&gt;I was trying to make a debian package for &lt;a href=&#34;http://varnamproject.com&#34;&gt;libvarnam&lt;/a&gt;. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Our automated build log filter detected the problem(s) above that will
+likely cause your package to segfault on architectures where the size of
+a pointer is greater than the size of an integer, such as ia64 and amd64.&lt;/p&gt;
+
+&lt;p&gt;This is often due to a missing function prototype definition.&lt;/p&gt;
+
+&lt;p&gt;Since use of implicitly converted pointers is always fatal to the application
+on ia64, they are errors. Please correct them for your next upload.&lt;/p&gt;
+
+&lt;p&gt;More information can be found at: &lt;a href=&#34;http://wiki.debian.org/ImplicitPointerConversions&#34;&gt;http://wiki.debian.org/ImplicitPointerConversions&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The above error failed the build.&lt;/p&gt;
+
+&lt;p&gt;The relevant code where the failure happened looks like the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;char*
+strbuf_get_last_unicode_char(strbuf *word)
+{
+  varray *characters = NULL;
+  char *lastUnicodeChar = NULL;
+  characters = strbuf_chars(word);
+
+  if (varray_is_empty (characters)) {
+    varray_free (characters, NULL);
+    return NULL;
+  }
+
+  lastUnicodeChar = strdup ((const char*) varray_get(characters, varray_length(characters) - 1)); /* -&amp;gt; Error here */
+  varray_free(characters, &amp;amp;free);
+  /*ending should be freed in the calling function*/
+  return lastUnicodeChar;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;strdup&lt;/code&gt; is not a ANSI C function, hence it is not portable and not available with all compilers. This has caused the function prototype to be not found. When a function prototype is missing, gcc by default return an integer value. De-referencing the returned pointer will cause a segfault.&lt;/p&gt;
+
+&lt;p&gt;To fix this, I found a portable &lt;code&gt;strdup&lt;/code&gt; implementation in the OpenBSD source code. I have used that and disabled the default &lt;code&gt;strdup&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How to use individual lines pulled from stdin in the middle of a command when using xargs</title>
+      <link>https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/</link>
+      <pubDate>Thu, 28 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/</guid>
+      <description>&lt;p&gt;&lt;code&gt;xargs&lt;/code&gt; is very powerful commandline utility. Here is what Wikipedia says about &lt;code&gt;xargs&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;xargs is a command on Unix and most Unix-like operating systems used to build and execute command lines from standard input&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Most common use of &lt;code&gt;xargs&lt;/code&gt; would be to do something like,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;find . -type f -print0 | xargs -0 rm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Let us assume that you have a file with list of files to be downloaded from a website. Something like,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;one.zip
+two.zip
+three.zip
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With &lt;code&gt;wget&lt;/code&gt; and &lt;code&gt;xargs&lt;/code&gt; all these files can be downloaded easily with just one command.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cat filenames.txt | xargs -I filename wget http://download.com/filename
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;-I&lt;/code&gt; flag takes a replacement string and &lt;code&gt;xargs&lt;/code&gt; will then replace &lt;code&gt;filename&lt;/code&gt; with the value obtained from &lt;code&gt;stdin&lt;/code&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Simple egg timer on Linux for Pomodoro technique</title>
+      <link>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</link>
+      <pubDate>Sun, 19 Dec 2010 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</guid>
+      <description>&lt;p&gt;Recently I have started evaluating the Pomodoro Technique which I found quite interesting. I am still evaluating the technique and not yet concluded on whether I should continue using it.&lt;/p&gt;
+
+&lt;p&gt;To implement pomodoro technique, you need a kitchen timer or egg timer. Since I use pomodoro for my programming work, I obviously don’t want to use a physical timer. I couldn’t find a decent timer for linux especially one that works well with Xfce. In this blog post, I will explain building a kitchen timer with basic linux programming techniques. This also gives an idea about how simple linux tools can be combined to do useful stuff.&lt;/p&gt;
+
+&lt;p&gt;Things that are used&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Shell scripting&lt;/li&gt;
+&lt;li&gt;Notification mechanisms on popular desktops like Gnome and Xfce. (I use Xfce in this example)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The shell script is actually a modified version of the one published here (&lt;a href=&#34;http://mostlylinux.wordpress.com/commandline/eggtimer/&#34;&gt;http://mostlylinux.wordpress.com/commandline/eggtimer/&lt;/a&gt;).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/bash
+counter=0
+limit=$1
+summary=$2
+startmessage=$3
+endmessage=$4
+notify-send -u critical -i appointment -t 600 &amp;quot;$summary&amp;quot; &amp;quot;$startmessage&amp;quot;
+echo
+while [ $counter != $limit ]; do
+   echo &amp;quot;$counter minutes so far...&amp;quot;;
+   sleep 60
+   let &amp;quot;counter = $counter + 1&amp;quot;
+done
+if [ $counter = $limit ]; then
+   echo
+   notify-send -u critical -i appointment &amp;quot;$summary&amp;quot; &amp;quot;$endmessage&amp;quot;
+   echo -e &#39;\a&#39; &amp;amp;gt;&amp;amp;amp;2
+   exit 0
+fi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;All it does is wait until the limit reaches. It uses the sleep(1) command to sleep for a minute. notify-send is used for sending notifications to the desktop environment.&lt;/p&gt;
+
+&lt;p&gt;This script can be invoked using,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;./p-timer.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you use bash, you can add an alias for convenience.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;alias begin-pomodoro=&#39;sh ~/utils/p-timer.sh 25 &amp;quot;Pomodoro&amp;quot; &amp;quot;Pomodoro started, you have 25 minutes left&amp;quot; &amp;quot;Pomodoro ended. Please stop the work and take short break&amp;quot;&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This post is written on one pomodoro!&lt;/p&gt;
+
+&lt;p&gt;Happy programming!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

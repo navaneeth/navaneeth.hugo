@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Hiding menu when clicking outside - AngularJS &middot; nkn</title>
+
+  
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://navaneeth.github.io/touch-icon-144-precomposed.png">
+  <link href="https://navaneeth.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>nkn</h1>
+      <p class="lead">{love to code}</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/">blog</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/about/">about</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://www.flickr.com/photos/navaneethkn"><i class="fa fa-flickr fa-3x"></i></a>
+      <a href="https://github.com/navaneeth/"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      
+      <a href="http://twitter.com/navaneethkn"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="https://navaneeth.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="https://navaneeth.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>Hiding menu when clicking outside - AngularJS</h1>
+    <span class="post-date">Sep 28, 2014 &middot; 1 minute read
+    
+    <br/>
+    <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/angularjs">angularjs</a><a class="label" href="https://navaneeth.github.io/categories/web">web</a>
+    </span>
+    <p>Assume you have a menu which looks like the following:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;right-menu&quot;</span> <span class="na">ng-click=</span><span class="s">&quot;toggleMenu($event);&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;img/RightMenuIcon.png&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;div</span> <span class="na">ng-show=</span><span class="s">&quot;menuOpened&quot;</span> <span class="na">class=</span><span class="s">&quot;menu-dropdown-right&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">ng-hide=</span><span class="s">&quot;loggedIn&quot;</span> <span class="na">class=</span><span class="s">&quot;class&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#/authenticate&quot;</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">ng-show=</span><span class="s">&quot;loggedIn&quot;</span>  <span class="na">ng-click=</span><span class="s">&quot;logOut()&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Logout<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+
+
+<p>When the div gets a click event, angular calls <code>toggleMenu</code> which toggles the <code>menuOpened</code> variable. Changing the value of this variable in turn makes the div show/hide.</p>
+
+<p>To hide the menu when clicking outside of the div, we add a <code>onclick</code> handler to <code>window</code> object which checks the <code>menuOpened</code> variable and updates it if the menu is visible.</p>
+
+<p>Here is the code for <code>MenuCtrl</code> and the <code>onclick</code> handler:</p>
+
+<pre><code class="language-js">angularApp.controller('MenuCtrl', ['$scope', '$location', '$rootScope',
+
+  function($scope, $location, $rootScope) {
+
+		$scope.menuOpened = false;
+
+		$scope.toggleMenu = function(event) {
+			$scope.menuOpened = !($scope.menuOpened);
+
+      // Important part in the implementation
+      // Stopping event propagation means window.onclick won't get called when someone clicks
+      // on the menu div. Without this, menu will be hidden immediately
+			event.stopPropagation();
+		};
+
+		window.onclick = function() {
+			if ($scope.menuOpened) {
+				$scope.menuOpened = false;
+
+        // You should let angular know about the update that you have made, so that it can refresh the UI
+				$scope.$apply();
+			}
+		};
+	}
+]);
+</code></pre>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://navaneeth.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+

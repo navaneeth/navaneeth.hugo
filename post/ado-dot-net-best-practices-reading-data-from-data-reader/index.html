@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>ADO.NET best practices – Reading data from data reader &middot; nkn</title>
+
+  
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://navaneeth.github.io/touch-icon-144-precomposed.png">
+  <link href="https://navaneeth.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>nkn</h1>
+      <p class="lead">{love to code}</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/">blog</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/about/">about</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://www.flickr.com/photos/navaneethkn"><i class="fa fa-flickr fa-3x"></i></a>
+      <a href="https://github.com/navaneeth/"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      
+      <a href="http://twitter.com/navaneethkn"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="https://navaneeth.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="https://navaneeth.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>ADO.NET best practices – Reading data from data reader</h1>
+    <span class="post-date">Jul 11, 2009 &middot; 4 minute read
+    
+    <br/>
+    <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/.net">.net</a><a class="label" href="https://navaneeth.github.io/categories/c">c#</a>
+    </span>
+    
+
+<p>I have seen many people using DataReader incorrectly. In this post, I will try to explain some good practices that can be followed when reading from a data reader. Consider the following problematic code,</p>
+
+<pre><code class="language-csharp">SqlDataReader reader = /* ... */;
+while (reader.Read())
+{
+    string userName = reader[&quot;user_name&quot;].ToString();
+    int age = int.Parse( reader[&quot;age&quot;].ToString() );
+    /* ... */
+}
+reader.Close();
+</code></pre>
+
+<p>How many problems can you figure out from the above code? There are many problems with this code,</p>
+
+<ul>
+<li>The columns “user_name” and “age” may or may not exist. If the column does not exist in the reader, it will throw error.</li>
+<li>You may be calling <code>ToString()</code> on an object which may be pointing to <code>NULL</code>. This will lead to a null reference exception.</li>
+<li><code>SqlDataReader</code> implements <code>IDisposable</code> and user code has to call <code>Dispose()</code> each time to release the resources deterministically. This is not happening here.</li>
+<li><code>reader[&quot;age&quot;]</code> may contain values that are not compatible with integer. In such case, <code>int.Parse()</code> will throw a <code>FormatException</code>.</li>
+</ul>
+
+<p>Following sections will show a safe method to read data from DataReader.</p>
+
+<h2 id="understanding-ordinals:0cd52065e9b2dd1b300f1283c1b80438">Understanding ordinals</h2>
+
+<p>Ordinal is the index of a column in the reader. <code>GetOrdinal()</code> method will give you the ordinal for the column name supplied. So the first step in reading data from reader should be to find the ordinal of the columns which we want to read. Before getting the ordinal values, you have to ensure that the reader can read. SqlDataReader provides a HasRows property which can be useful here. Here is how you read the ordinals</p>
+
+<pre><code class="language-csharp">SqlDataReader reader = /* ... */;
+int userNameOrdinal;
+int ageOrdinal;
+if (reader.HasRows)
+{
+     try
+     {
+           userNameOrdinal = reader.GetOrdinal(&quot;user_name&quot;);
+     }
+     catch (IndexOutOfRangeException)
+     {
+           throw new YourCustomException(&quot;Expected column 'user_name' not found&quot;);
+     }
+     try
+     {
+           ageOrdinal = reader.GetOrdinal(&quot;age&quot;);
+     }
+     catch (IndexOutOfRangeException)
+     {
+           throw new YourCustomException(&quot;Expected column 'age' not found&quot;);
+     }
+}
+</code></pre>
+
+<p>If you have support to “Extension methods”, this code can be simplified further.</p>
+
+<pre><code class="language-csharp">public static class SqlDataReaderExtensions
+{
+    public static int GetOrdinalOrThrow(this SqlDataReader reader, string columnName)
+    {
+        try
+        {
+            return reader.GetOrdinal(columnName);
+        }
+        catch (IndexOutOfRangeException)
+        {
+            throw new YourCustomException(string.Format(&quot;Expected column '{0}' not found&quot;,columnName));
+        }
+    }
+}
+
+SqlDataReader reader = /* ... */;
+int userNameOrdinal;
+int ageOrdinal;
+if (reader.HasRows)
+{
+      userNameOrdinal = reader.GetOrdinalOrThrow(&quot;user_name&quot;);
+      ageOrdinal = reader.GetOrdinalOrThrow(&quot;age&quot;);
+}
+</code></pre>
+
+<p>This makes the code more clean. However, I really wish to see a <code>TryGetOrdinal()</code> method on <code>IDataReader</code> so that we can save the cost of exception handling.</p>
+
+<p>GetOrdinal() method first does a case-sensitive lookup for the column name. If it fails, case-insensitive search is performed. Thus, using the column name in correct case with GetOrdinal() will be more efficient.</p>
+
+<h2 id="respecting-type-safety:0cd52065e9b2dd1b300f1283c1b80438">Respecting type safety</h2>
+
+<p>C# is a strongly typed language and each programmer should take full advantage of this. Reading data like, <code>reader[&quot;user_name&quot;]</code> is not a type safe way as it returns a object. Data reader provides methods to read data in a type safe way.</p>
+
+<p>Here is what MSDN says about it</p>
+
+<blockquote>
+<pre><code>When accessing column data use the typed accessors like GetString, GetInt32, and so on. This saves you the processing required to cast the Object returned from GetValue as a particular type.
+</code></pre>
+</blockquote>
+
+<p>Now let us follow the above suggestion and rewrite our code like,</p>
+
+<pre><code class="language-csharp">while (reader.Read())
+{
+   string userName = reader.GetString(userNameOrdinal);
+   int age = -1;
+   try
+   {
+         age = reader.GetInt32(ageOrdinal);
+   }
+   catch (InvalidCastException)
+   {
+         throw new YourCustomException(&quot;Unable to read age. Expecting integer value&quot;);
+   }
+   /* ... */
+}
+</code></pre>
+
+<h2 id="releasing-resources:0cd52065e9b2dd1b300f1283c1b80438">Releasing resources</h2>
+
+<p>If any type implements IDisposable, it is like saying “I have something to release explicitly rather than garbage collector to release it“. So it is programmers duty to ensure the calls to Dispose() when using disposable types. C# has “using” statement (stack semantics can be used in C++/CLI) which will ensure calls to Dispose(). Since DataReader is a disposable object, we can write like</p>
+
+<pre><code class="language-csharp">using(SqlDataReader reader = command.ExecuteReader())
+{
+      while (reader.Read())
+      {
+          string userName = reader.GetString(userNameOrdinal);
+          int age = -1;
+          try
+          {
+              age = reader.GetInt32(ageOrdinal);
+          }
+          catch (InvalidCastException)
+          {
+              throw new YourCustomException(&quot;Unable to read age. Expecting integer value&quot;);
+          }
+          /* ... */
+      }
+}
+</code></pre>
+
+<p>This ensures that the reader is disposed properly even in exceptional situations.</p>
+
+<h2 id="putting-everything-together:0cd52065e9b2dd1b300f1283c1b80438">Putting everything together</h2>
+
+<p>If you put everything together, code will be like</p>
+
+<pre><code class="language-csharp">public static class SqlDataReaderExtensions
+{
+    public static int GetOrdinalOrThrow(this SqlDataReader reader, string columnName)
+    {
+        try
+        {
+            return reader.GetOrdinal(columnName);
+        }
+        catch (IndexOutOfRangeException)
+        {
+            throw new YourCustomException(string.Format(&quot;Expected column '{0}' not found&quot;,columnName));
+        }
+    }
+}
+
+int userNameOrdinal = -1;
+int ageOrdinal = -1;
+if (reader.HasRows)
+{
+    userNameOrdinal = reader.GetOrdinalOrThrow(&quot;user_name&quot;);
+    ageOrdinal = reader.GetOrdinalOrThrow(&quot;age&quot;);
+}
+using (SqlDataReader reader = GetReader())
+{
+    while (reader.Read())
+    {
+        string userName = reader.GetString(userNameOrdinal);
+        int age = -1;
+        try
+        {
+            age = reader.GetInt32(ageOrdinal);
+        }
+        catch (InvalidCastException)
+        {
+            throw new YourCustomException(&quot;Unable to read age. Expecting integer value&quot;);
+        }
+        /* ... */
+    }
+}
+</code></pre>
+
+<p>We have got clean code now. It handles the exceptions and throws informative exceptions to the caller rather than throwing Boneheaded exceptions, we have avoided explicit casting and DataReader is disposed properly.</p>
+
+<p>These are applicable for all types which implements <code>IDataReader</code>. <code>SqlDataReader</code> is used in this post just for explanation.</p>
+
+<p>Happy programming!</p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://navaneeth.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+

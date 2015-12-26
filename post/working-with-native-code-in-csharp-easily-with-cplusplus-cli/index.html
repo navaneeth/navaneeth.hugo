@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Working with native code easily in C# with the help of C&#43;&#43;/CLI &middot; nkn</title>
+
+  
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://navaneeth.github.io/touch-icon-144-precomposed.png">
+  <link href="https://navaneeth.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>nkn</h1>
+      <p class="lead">{love to code}</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/">blog</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/about/">about</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://www.flickr.com/photos/navaneethkn"><i class="fa fa-flickr fa-3x"></i></a>
+      <a href="https://github.com/navaneeth/"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      
+      <a href="http://twitter.com/navaneethkn"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="https://navaneeth.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="https://navaneeth.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>Working with native code easily in C# with the help of C&#43;&#43;/CLI</h1>
+    <span class="post-date">Feb 17, 2013 &middot; 6 minute read
+    
+    <br/>
+    <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/.net">.net</a><a class="label" href="https://navaneeth.github.io/categories/c/cli">c&#43;&#43;/cli</a>
+    </span>
+    
+
+<p>.NET comes with pretty good interoperability options which would enable unmanaged code to be used from a managed environment. In C#, to call a function which is available in a DLL, <code>PInvoke</code> (Platform invocation service) can be used. Here is what MSDN says.</p>
+
+<blockquote>
+<p>Platform Invocation Services (PInvoke) allows managed code to call unmanaged functions that are implemented in a DLL.</p>
+</blockquote>
+
+<p>This is very helpful when you need to call some system functions from your C# application. Now let us assume that you have lot of code which is written in C or C++. You are writing a brand new application in C# which internally uses the C/C++ code available. Since C/C++ code is categorised as unmanaged code, you can&rsquo;t directly use them in C#. At C# side, wrapper classes and functions has to be written to interop properly with the native code. As I said earlier, if you just need to use a single function, it is easy to do directly from C# using <code>PInvoke</code>. But when you need almost all the functionalities/API to be available as a managed object, <code>PInvoke</code> would be a pain to use. Let us take an example from <a href="http://msdn.microsoft.com/en-us/library/aa288468%28v=vs.71%29.aspx">MSDN</a></p>
+
+<pre><code class="language-c">typedef struct tagLOGFONT
+{
+   LONG lfHeight;
+   LONG lfWidth;
+   LONG lfEscapement;
+   LONG lfOrientation;
+   LONG lfWeight;
+   BYTE lfItalic;
+   BYTE lfUnderline;
+   BYTE lfStrikeOut;
+   BYTE lfCharSet;
+   BYTE lfOutPrecision;
+   BYTE lfClipPrecision;
+   BYTE lfQuality;
+   BYTE lfPitchAndFamily;
+   TCHAR lfFaceName[LF_FACESIZE];
+} LOGFONT;
+</code></pre>
+
+<p>In C#, this can be represented as</p>
+
+<pre><code class="language-csharp">// logfont.cs
+// compile with: /target:module
+using System;
+using System.Runtime.InteropServices;
+
+[StructLayout(LayoutKind.Sequential)]
+public class LOGFONT
+{
+    public const int LF_FACESIZE = 32;
+    public int lfHeight;
+    public int lfWidth;
+    public int lfEscapement;
+    public int lfOrientation;
+    public int lfWeight;
+    public byte lfItalic;
+    public byte lfUnderline;
+    public byte lfStrikeOut;
+    public byte lfCharSet;
+    public byte lfOutPrecision;
+    public byte lfClipPrecision;
+    public byte lfQuality;
+    public byte lfPitchAndFamily;
+
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst=LF_FACESIZE)]
+    public string lfFaceName;
+}
+</code></pre>
+
+<p>Look at the C# example. It is not as clean as the structure definition at the C side. It contains attributes which specify the structure alignment, then marshaling etc. When the structure contains references to other structures, things gets complicated.</p>
+
+<p>For C or C++ programmers, it is always convenient to declare the struct as they normally do. That&rsquo;s the beauty of <code>C++/CLI</code> which allows you to combine managed and unmanaged code together and makes interoperability very straightforward.</p>
+
+<p>In this post, we will take <code>SQLite</code> as an example and write a managed class which can be consumed from C#. We will wrap SQLite code using <code>C++/CLI</code> and consume from C#. SQLite has a huge API and we won&rsquo;t be covering all of them. We will cover APIs which will allow to open a DB connection and execute a simple query.</p>
+
+<p>Note: SQLite is chosen as an example. The correct way to wrap SQLite is adhering to ADO.NET standards and providing a API by extending IDBConnection. But for this post, we will ignore this and provide a custom simple API.</p>
+
+<h2 id="sqlite-api:7e82bd22871e49f5b795e67f510f204b">SQLite API</h2>
+
+<p>We will wrap the following functions</p>
+
+<pre><code class="language-c">int sqlite3_open(const char *filename, sqlite3 **ppDb);
+int sqlite3_exec(
+  sqlite3*,                                  /* An open database */
+  const char *sql,                           /* SQL to be evaluated */
+  int (*callback)(void*,int,char**,char**),  /* Callback function */
+  void *,                                    /* 1st argument to callback */
+  char **errmsg                              /* Error msg written here */
+);
+</code></pre>
+
+<p>Our managed API will look like,</p>
+
+<pre><code class="language-csharp">SQLite db = new SQLite(filePath);
+db.Execute(sql, callback);
+</code></pre>
+
+<p><code>callback</code> can be assigned to a function which takes 2 parameters of type <code>List&lt;String&gt;</code>. It will contain column names and values respectively.</p>
+
+<h2 id="wrapper-class-in-c-cli:7e82bd22871e49f5b795e67f510f204b">Wrapper class in C++/CLI</h2>
+
+<p>We will have a Visual studio solution with 3 projects.</p>
+
+<ul>
+<li>Static library which contains SQLite source code. This will be compiled as C and produces a static library.</li>
+<li>C++/CLI library project which adds the first project as a reference.</li>
+<li>A C# console application for testing. This project will have a reference to the assembly generated by C++/CLI project.</li>
+</ul>
+
+<p><img src="/images/posts/20130217/solution_explorer.png" alt="Solution explorer" /></p>
+
+<p>In C++/CLI, we start off by creating the following class.</p>
+
+<pre><code class="language-c++">// SQLiteWrapper.h
+
+#pragma once
+
+#include &quot;sqlite3.h&quot;
+
+using namespace System;
+using namespace System::Collections::Generic;
+
+namespace SQLiteWrapper {
+
+    // Main class that wraps the native API
+    public ref class SQLite : IDisposable
+    {
+    public:
+        SQLite(String^ filePath);
+        void Execute(String^ sql, Action&lt;List&lt;String^&gt;^, List&lt;String^&gt;^&gt;^ callback);
+        ~SQLite();
+
+    private:
+        sqlite3* db;
+    };
+
+    public ref class SQLiteError : Exception
+    {
+    public:
+        SQLiteError(String^ errorMessage);
+    };
+
+    private ref class SQLiteDataCarrier
+    {
+    public:
+        SQLiteDataCarrier(List&lt;String^&gt;^ columnNames, List&lt;String^&gt;^ columnValues)
+        {
+            this-&gt;columnNames = columnNames;
+            this-&gt;columnValues = columnValues;
+        }
+
+        property List&lt;String^&gt;^ ColumnNames
+        {
+            List&lt;String^&gt;^ get()
+            {
+                return columnNames;
+            }
+        }
+
+        property List&lt;String^&gt;^ ColumnValues
+        {
+            List&lt;String^&gt;^ get()
+            {
+                return columnValues;
+            }
+        }
+
+    private:
+        List&lt;String^&gt;^ columnNames;
+        List&lt;String^&gt;^ columnValues;
+    };
+}
+</code></pre>
+
+<p>This class holds an instance to <code>sqlite3</code> structure which is the core of SQLite library. Even though the class is a managed class, C++/CLI allows you to hold a pointer which points to <code>sqlite3</code>.</p>
+
+<p>Our constructor can be implemented like,</p>
+
+<pre><code class="language-c++">// Constructor for managed class SQLite
+SQLite::SQLite(String^ filePath)
+{
+    IntPtr p = Marshal::StringToHGlobalAnsi(filePath);
+    const char* _filePath = static_cast&lt;const char*&gt;(p.ToPointer());
+
+    try
+    {
+        sqlite3* d;
+        int status = sqlite3_open(_filePath, &amp;d);
+        if (status)
+            throw gcnew SQLiteError(&quot;Unable to open database&quot;);
+
+
+        // Holding the DB pointer as a field
+        // This is a pointer to native struct, but it can be stored in managed class!
+        db = d;
+    }
+    finally
+    {
+        Marshal::FreeHGlobal(p);
+
+    }
+}
+</code></pre>
+
+<p>This code shows how well C++/CLI allows you to mix types from both managed and unmanaged world. It is beautiful!</p>
+
+<p>All this constructor does is to initialize <code>sqlite3</code> instance and update the <code>db</code> pointer with correct reference.</p>
+
+<p>Here is how <code>Execute()</code> method is implemented.</p>
+
+<pre><code class="language-c++">// Callback function called by SQLite.
+// This function shows how native and managed objects can work together!
+static int _callback(void *userData, int argc, char **argv, char **azColName)
+{
+    IntPtr pointer(userData);
+    GCHandle handle = GCHandle::FromIntPtr(pointer);
+    SQLiteDataCarrier^ carrier = (SQLiteDataCarrier^) handle.Target;
+
+    for(int i = 0; i &lt; argc; i++)
+    {
+        const char* columnName = azColName[i];
+        const char* columnValue = argv[i];
+
+        carrier-&gt;ColumnNames-&gt;Add(gcnew String(columnName));
+        carrier-&gt;ColumnValues-&gt;Add(gcnew String(columnValue));
+    }
+
+    return 0;
+}
+
+
+void SQLite::Execute(String^ sql, Action&lt;List&lt;String^&gt;^, List&lt;String^&gt;^&gt;^ callback)
+{
+    IntPtr p = Marshal::StringToHGlobalAnsi(sql);
+    const char* _sql = static_cast&lt;const char*&gt;(p.ToPointer());
+
+    // Output will be stored in these lists
+    List&lt;String^&gt;^ columnNames = gcnew List&lt;String^&gt;();
+    List&lt;String^&gt;^ columnValues = gcnew List&lt;String^&gt;();
+
+    // A simple class to aggregate columnNames and columnValues so that it can be passed to SQLite and SQLite will give it back in the callback function
+    SQLiteDataCarrier^ carrier = gcnew SQLiteDataCarrier(columnNames, columnValues);
+
+    // Converting carrier to void*
+    GCHandle handle = GCHandle::Alloc(carrier);
+    IntPtr pointer = GCHandle::ToIntPtr(handle);
+
+    char *zErrMsg = 0;
+    int status = sqlite3_exec(db, _sql, _callback, pointer.ToPointer(), &amp;zErrMsg);
+    if (status != SQLITE_OK)
+    {
+        String^ message = gcnew String(sqlite3_errmsg(db));
+        throw gcnew SQLiteError(message);
+    }
+
+    callback-&gt;Invoke(columnNames, columnValues);
+
+    handle.Free();
+    Marshal::FreeHGlobal(p);
+}
+</code></pre>
+
+<p>To add results into the list, we are passing both lists to the <code>sqlite3_exec()</code> function so that SQLite will pass that back to the <code>_callback</code> function. This is very powerful because we just passed a managed object into a native function call. Then in a native function, we obtained the managed instance and modified properties on it.</p>
+
+<p>Once the querying is done, database has to be closed. We do that in the destructor.</p>
+
+<pre><code class="language-c++">// In C++/CLI destructor will be implemented using Dispose() pattern
+SQLite::~SQLite()
+{
+    sqlite3_close(db);
+}
+</code></pre>
+
+<h2 id="using-from-c:7e82bd22871e49f5b795e67f510f204b">Using from C#</h2>
+
+<p>Usage from C# now becomes pretty straightforward.</p>
+
+<pre><code class="language-csharp">namespace ConsoleApplication1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            SQLite db = new SQLite(&quot;C:\\Users\\navaneeth\\Desktop\\test\\example.db&quot;);
+            string sql = &quot;create table if not exists foos (name text);\n&quot; +
+                &quot;insert into foos values ('sample1');&quot; +
+                &quot;insert into foos values ('sample2');&quot; +
+                &quot;select * from foos;&quot;;
+            db.Execute(sql, (columnNames, columnValues) =&gt; {
+                foreach (var name in columnNames)
+                {
+                    Console.WriteLine(name);
+                }
+                foreach (var value in columnValues)
+                {
+                    Console.WriteLine(value);
+                }
+            });
+            db.Dispose();
+            Console.Read();
+        }
+    }
+}
+</code></pre>
+
+<p>You can download the code <a href="https://dl.dropbox.com/u/52296034/blog/SQLiteWrapper.zip">here</a>. Happy programming!</p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://navaneeth.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>What Great .NET Developers Ought To Know (More .NET Interview Questions and Answers) – Part1 &middot; nkn</title>
+
+  
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://navaneeth.github.io/touch-icon-144-precomposed.png">
+  <link href="https://navaneeth.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>nkn</h1>
+      <p class="lead">{love to code}</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/">blog</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/about/">about</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://www.flickr.com/photos/navaneethkn"><i class="fa fa-flickr fa-3x"></i></a>
+      <a href="https://github.com/navaneeth/"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      
+      <a href="http://twitter.com/navaneethkn"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="https://navaneeth.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="https://navaneeth.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>What Great .NET Developers Ought To Know (More .NET Interview Questions and Answers) – Part1</h1>
+    <span class="post-date">Aug 13, 2009 &middot; 3 minute read
+    
+    <br/>
+    <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/.net">.net</a><a class="label" href="https://navaneeth.github.io/categories/c">c#</a>
+    </span>
+    <p>In this series of posts, I will try to answer the questions posted by Scott Hanselman <a href="http://www.hanselman.com/blog/WhatGreatNETDevelopersOughtToKnowMoreNETInterviewQuestions.aspx">here</a>. This part we will be seeing the first set of questions he has given under <em>Everyone who writes code</em> heading.</p>
+
+<p><strong>Q) Describe the difference between a Thread and a Process?</strong></p>
+
+<p>A Thread is a small unit of code in execution. A process is an instance of program which will have multiple threads running. A process can host multiple threads. Thread will always belong to a process. Communication between multiple processes are difficult but communication between threads is easy.</p>
+
+<p><strong>Q) What is a Windows Service and how does its lifecycle differ from a “standard” EXE?</strong></p>
+
+<p>Windows service is a long running program which can run without user interaction. It is used for applications that should work always, e.g: a HTTP server. Unlike standard EXE, a windows service can’t be started by double clicking the EXE. It should be installed on the system as a service using installutil tool. Service control manager manges a windows service by providing options to start/stop a service.</p>
+
+<p>Like a standard EXE, windows services lifecycle also begins from the main method. After that it fires the event OnStart in which you can write code for starting a service.</p>
+
+<p><strong>Q) What is the difference between an EXE and a DLL?</strong></p>
+
+<p>A executable file(EXE) is ready to execute wherein a Dynamic Link Library(DLL) contains types and methods that can be used from a EXE. DLLs are not meant to be executed directly and it is very helpful to organize and isolate common code which can be used with multiple applications.</p>
+
+<p>Finally, EXE will have an entry point. DLLs will not have an entry point and all it does is to expose the types and methods. The direct equivalent of a DLL in LINUX is Shared Libraries(SO).</p>
+
+<p><strong>Q) What is strong-typing versus weak-typing? Which is preferred? Why?</strong></p>
+
+<p>Strong-typing defines some restrictions on how operations are done when different data types are involved. Consider the following example</p>
+
+<pre><code class="language-csharp">int a = 10;
+a = &quot;You can't assign a string!&quot;;
+</code></pre>
+
+<p>Above code won’t compile as variable a is strongly-typed and it can hold only an integer value.</p>
+
+<p>Weak-typing is just opposite of strong-typing. C# is a strongly-typed language. But since most of the types derives from System.Object, you can write like.</p>
+
+<pre><code class="language-csharp">object o = 10;
+</code></pre>
+
+<p>This can be called as weak-typing. Of course, strong-typing is preferred over weak-typing. To understand why, consider the following example in which we have a collection of age.</p>
+
+<pre><code class="language-csharp">ArrayList ages = new ArrayList();
+ages.Add(10);
+ages.Add(20);
+ages.Add(30);
+ages.Add(&quot;Hey, I am not an age!&quot;);
+</code></pre>
+
+<p>Our intention is to have only ages in this collection. But since ArrayList is weakly-typed, we inserted a value which is not an age. Here is a strongly-types version of this code.</p>
+
+<pre><code class="language-csharp">List&lt;int&gt; ages = new List&lt;int&gt;();
+ages.Add(10);
+ages.Add(20);
+ages.Add(30);
+ages.Add(&quot;I am not an age&quot;); // &lt;- compiler error here
+</code></pre>
+
+<p><strong>Q) What is a PID? How is it useful when troubleshooting a system?</strong></p>
+
+<p>PID is Process Identifier and used by operating system to identify processes uniquely. I am not sure how it is used for troubleshooting. If some can provide insights into this, I will update this area.</p>
+
+<p><strong>Q) How many processes can listen on a single TCP/IP port?</strong></p>
+
+<p>Only one.</p>
+
+<p><strong>Q) What is the GAC? What problem does it solve?</strong></p>
+
+<p>GAC stands for Global Assembly Cache. It provides a centralized storage for assemblies that needs to be shared across applications. It solved the versioning problem and allows side-by-side execution. It can be used when assemblies require elevated permission to do the job.</p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://navaneeth.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+

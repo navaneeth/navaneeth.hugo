@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/web/</link>
+    <description>Recent content in Web on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 18 Nov 2014 12:55:32 +0530</lastBuildDate>
+    <atom:link href="https://navaneeth.github.io/categories/web/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>document.ready() handler not getting fired   Rails4</title>
+      <link>https://navaneeth.github.io/post/document.ready%28%29%20handler%20not%20getting%20fired%20-%20Rails4/</link>
+      <pubDate>Tue, 18 Nov 2014 12:55:32 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/document.ready%28%29%20handler%20not%20getting%20fired%20-%20Rails4/</guid>
+      <description>&lt;p&gt;Rails4 uses a gem called &lt;a href=&#34;https://github.com/rails/turbolinks&#34;&gt;turbolinks&lt;/a&gt; which makes following links on the web application faster. This gem is added to the Gemfile by default when a new rails project is initialized. However, there are few side effects this can cause.&lt;/p&gt;
+
+&lt;p&gt;Consider the following JS, added into app/assets/javascripts/projects.js:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;$(function () {
+  $(&#39;#startDate&#39;).datetimepicker({
+		pickTime: false
+	});
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This looks alright, but won&amp;rsquo;t work as expected.&lt;/p&gt;
+
+&lt;p&gt;When rails navigates to the page following a link, turbolink comes into picture and makes it faster by caching the JS contents. This leads into the ready handler not being fired. Which means, the datetimepicker used in the above example won&amp;rsquo;t work without a full page refresh.&lt;/p&gt;
+
+&lt;p&gt;Luckily, this can be fixed by using &lt;a href=&#34;https://github.com/kossnocorp/jquery.turbolinks&#34;&gt;jquery.turbolinks&lt;/a&gt; gem which works with turbolinks gem ensures the ready handlers are called.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hiding menu when clicking outside - AngularJS</title>
+      <link>https://navaneeth.github.io/post/Hiding%20menu%20when%20clicking%20outside%20-%20AngularJS/</link>
+      <pubDate>Sun, 28 Sep 2014 11:29:28 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/Hiding%20menu%20when%20clicking%20outside%20-%20AngularJS/</guid>
+      <description>&lt;p&gt;Assume you have a menu which looks like the following:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;right-menu&amp;quot;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;ng-click=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;toggleMenu($event);&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;src=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;img/RightMenuIcon.png&amp;quot;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;alt=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;ng-show=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;menuOpened&amp;quot;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;menu-dropdown-right&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;ul&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;ng-hide=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;loggedIn&amp;quot;&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;class&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;#/authenticate&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;Login&lt;span class=&#34;nt&#34;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;li&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;ng-show=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;loggedIn&amp;quot;&lt;/span&gt;  &lt;span class=&#34;na&#34;&gt;ng-click=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;logOut()&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;href=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;#&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;Logout&lt;span class=&#34;nt&#34;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    &lt;span class=&#34;nt&#34;&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+  &lt;span class=&#34;nt&#34;&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+&lt;span class=&#34;nt&#34;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;When the div gets a click event, angular calls &lt;code&gt;toggleMenu&lt;/code&gt; which toggles the &lt;code&gt;menuOpened&lt;/code&gt; variable. Changing the value of this variable in turn makes the div show/hide.&lt;/p&gt;
+
+&lt;p&gt;To hide the menu when clicking outside of the div, we add a &lt;code&gt;onclick&lt;/code&gt; handler to &lt;code&gt;window&lt;/code&gt; object which checks the &lt;code&gt;menuOpened&lt;/code&gt; variable and updates it if the menu is visible.&lt;/p&gt;
+
+&lt;p&gt;Here is the code for &lt;code&gt;MenuCtrl&lt;/code&gt; and the &lt;code&gt;onclick&lt;/code&gt; handler:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;angularApp.controller(&#39;MenuCtrl&#39;, [&#39;$scope&#39;, &#39;$location&#39;, &#39;$rootScope&#39;,
+
+  function($scope, $location, $rootScope) {
+
+		$scope.menuOpened = false;
+
+		$scope.toggleMenu = function(event) {
+			$scope.menuOpened = !($scope.menuOpened);
+
+      // Important part in the implementation
+      // Stopping event propagation means window.onclick won&#39;t get called when someone clicks
+      // on the menu div. Without this, menu will be hidden immediately
+			event.stopPropagation();
+		};
+
+		window.onclick = function() {
+			if ($scope.menuOpened) {
+				$scope.menuOpened = false;
+
+        // You should let angular know about the update that you have made, so that it can refresh the UI
+				$scope.$apply();
+			}
+		};
+	}
+]);
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

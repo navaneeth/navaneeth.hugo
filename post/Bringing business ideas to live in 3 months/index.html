@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Bringing business ideas to live in 3 months &middot; nkn</title>
+
+  
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://navaneeth.github.io/touch-icon-144-precomposed.png">
+  <link href="https://navaneeth.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>nkn</h1>
+      <p class="lead">{love to code}</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/">blog</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/about/">about</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://www.flickr.com/photos/navaneethkn"><i class="fa fa-flickr fa-3x"></i></a>
+      <a href="https://github.com/navaneeth/"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      
+      <a href="http://twitter.com/navaneethkn"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="https://navaneeth.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2015 <a href="https://navaneeth.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1>Bringing business ideas to live in 3 months</h1>
+    <span class="post-date">Dec 26, 2015 &middot; 5 minute read
+    
+    <br/>
+    <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/startup">startup</a>
+    </span>
+    
+
+<p>Early July, we started working with 2 ex-yahoo friends who had a nice product idea that they wanted to make it live. They had some screen designs on paper and clear cut vision on what the product should look like.</p>
+
+<p>We started with the development, post a week of ideation and technical spikes, and guess what, we had MVP ready for a limited user release in less than 9 weeks and a full production version by the end of October.</p>
+
+<p>The product is called <a href="http://www.shopinsync.com/">ShopInSync</a>.</p>
+
+<blockquote>
+<p>It enables a user to search through millions of products from top ecommerce sites like Flipkart, Snapdeal, and Amazon, and compare prices and offers before buying.</p>
+
+<p>The app lets shoppers consult their family and friends too – through an integrated messaging service. That is important in a country like India, where even minor shopping decisions can be influenced by social factors.</p>
+</blockquote>
+
+<p>Here are some screenshots</p>
+
+<p>
+<figure >
+    
+        <img src="/imgs/2015/12/unnamed.png" />
+    
+    
+    <figcaption>
+        <h4>Browse millions of products</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+    
+        <img src="/imgs/2015/12/unnamed3.png" />
+    
+    
+    <figcaption>
+        <h4>Chat with friends and family about products</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+    
+        <img src="/imgs/2015/12/unnamed1.png" />
+    
+    
+    <figcaption>
+        <h4>Compare price across different stores</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+    
+        <img src="/imgs/2015/12/unnamed4.png" />
+    
+    
+    <figcaption>
+        <h4>See all previous chats</h4>
+        
+    </figcaption>
+    
+</figure>
+</p>
+
+<h2 id="from-design-to-implementation:44ca01d4ee143ac56b0530eee2388f0a">From design to implementation</h2>
+
+<p>We started small. 4 member team working full time on Android, REST services and the feed pipeline. We used weekly iterations and delivered clear cut features every week. Slowly we could see the product shaping up. We were able to unblock each of us so that we could progress in parallel and faster.</p>
+
+<p>The team had not much of overhead. Tasks was prioritized using <a href="http://asana.com/">Asana</a>. We do a weekly plan every Monday and did an internal release every Friday. Build was automated using Jenkins. Every code check-in trigger a Jenkins build. <em>Jenkins-bot</em> reports the build status to our Slack channel. We had a single testing server where we can deploy via Jenkins using Ansible. Automating most of the repeated tasks allowed us to move faster and very less time was spent on maintaining the environments.</p>
+
+<p>We were using many <em>SaaS</em> services, as much as we could. <em>ElasticCache</em>, <em>Amazon RDS</em> etc. This also reduced the time spent on maintaining different environments. By late October, we made the first beta release to a closed circle!</p>
+
+<h2 id="beta-testing-with-friends-and-family:44ca01d4ee143ac56b0530eee2388f0a">Beta testing with friends and family</h2>
+
+<p>Team identified and reached out to a small set of people who helped us in beta testing the application. Many feedback, suggestions, pain points are all addressed. This is the best part in the overall product design cycle. You get to see how people actually see and use the application. Lot of ideas got validated and we were confident that we can move to the public launch.</p>
+
+<h2 id="scaling-to-millions-production-setup:44ca01d4ee143ac56b0530eee2388f0a">Scaling to millions - Production setup</h2>
+
+<p>Production setup was another interesting part in the whole game. We had to support many concurrent users and we have pretty huge data too. Production setup was on Amazon AWS. A cluster of EC2 machines, load-balanced using <em>AWS Elastic Load Balancer</em> acted as the front-end servers. <em>PostgreSQL</em> running <em>Amazon RDS</em> with a read replica mode is the database server. All of them was created in a separate VPC.</p>
+
+<p>Here is the server details:</p>
+
+<ul>
+<li>3 Front end servers (<em>m4.xlarge</em>) running <em>Ruby On Rails</em> load balanced using <em>ELB</em></li>
+<li><em>PostgreSQL</em> master and read replica running on <em>Amazon RDS</em></li>
+<li><a href="https://github.com/mperham/sidekiq/">Sidekiq</a> for background processing. 350 workers processing different queues, like search indexing etc</li>
+<li>Redis cluster of size 3 (<em>cache.r3.large</em>) on <em>Amazon elastic cache service</em> is used for the caching layer</li>
+<li><em>Elastic search</em> cluster with 6 nodes powering the search index and aggregations</li>
+<li>Cloundfront CDN</li>
+<li><a href="http://layer.com/">Layer</a> for messaging</li>
+</ul>
+
+<p>The above setup had enough room for supporting many concurrent users. We also came up with a plan to scale up if the traffic spikes really high.</p>
+
+<p>We had huge data to process too. Here is some of the statistics</p>
+
+<ul>
+<li>We had most of the products from Amazon, Flipkart and Snapdeal. PostgreSQL DB holds 30+ million records.</li>
+<li>Elastic search index also holds 30+ million products</li>
+<li>API uses heavy use of cache and it caches as much as possible for high performance</li>
+</ul>
+
+<p>With all of these, we were able to achieve the following</p>
+
+<ul>
+<li>All of the API endpoints responded with an average latency of 200-300ms</li>
+<li>All long running calculations are done in the background jobs causing no blocking for API clients</li>
+<li>Load balancing provided high availability and throughput</li>
+<li>Database queries performed really well with the indices on frequently used columns</li>
+<li>Search index was returning search results with milliseconds</li>
+</ul>
+
+<h2 id="press-release:44ca01d4ee143ac56b0530eee2388f0a">Press release</h2>
+
+<p>Product release is incomplete without some publicity. ShopInSync received very good publicity. Many national and local new papers covered the story.</p>
+
+<p>From <a href="http://techcircle.vccircle.com/2015/11/26/shopinsync-makes-online-shopping-a-collaborative-experience/">Techcircle</a></p>
+
+<blockquote>
+<p>“With the e-commerce sector booming and expanding, we realised that consumers have multiple options to choose from when it comes to online shopping. What we also comprehended is most of these purchases are done in consultation with friends and family. So the idea behind ShopinSync is to bring these two worlds together and make online shopping a more convenient process for the shoppers,” Raj Ramaswamy, co-founder, ShopInSync, told Techcircle.in.</p>
+</blockquote>
+
+<p>From <a href="http://www.thehindu.com/business/Industry/silicon-valley-investors-back-shopinsync-app/article7909227.ece?utm_source=RSS_Feed&amp;utm_medium=RSS&amp;utm_campaign=RSS_Syndication">The Hindu</a></p>
+
+<blockquote>
+<p>A group of Silicon Valley-based investors, including Vijay Ragavan, former head of engineering at Internet company,Yahoo, are backing a four-month-old ecommerce technology startup ShopInSync.</p>
+
+<p>The firm has built an app that enables shoppers to search and buy products from various online retailers such as Flipkart, Snapdeal and Amazon by integrating them on to a single platform. The app, which was released on Monday on Google&rsquo;s Android platform, offers features such as comparison of product prices. It also enables consumers to collaborate with friends and family to buy products via an integrated messaging service.</p>
+</blockquote>
+
+<p>From <a href="https://www.techinasia.com/exyahoo-friends-human-shop">TechInAsia</a></p>
+
+<blockquote>
+<p>It happens often. You impulse-buy a gadget and end up regretting it. If your best friend had been around, you might have known of a smarter, cheaper, alternative in the store next door. That’s equally true of clothes, furniture, and a zillion other things.</p>
+
+<p>Friends and family often hold the key to a happy purchase. They help you make an informed choice and pick the right stuff – especially when you are buying online. But how do you get them to see and approve from miles away?</p>
+</blockquote>
+
+<p>It was an awesome experience to watch the monitoring dashboards and seeing traffic spiking. The kick that you get from seeing this can only be experienced!</p>
+
+<h2 id="road-forward:44ca01d4ee143ac56b0530eee2388f0a">Road forward</h2>
+
+<p>Journey continues. There will be more new features, more stores and many more performance improvements. We plan to release iOS first week on January.</p>
+
+<p>You have an idea, now what? Just contact us to get started.</p>
+
+<p>Cheers!</p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://navaneeth.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+

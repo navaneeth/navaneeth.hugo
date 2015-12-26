@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/java/</link>
+    <description>Recent content in Java on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 20 Feb 2013 12:59:50 +0530</lastBuildDate>
+    <atom:link href="https://navaneeth.github.io/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>How to upload files when testing using Selenium Webdriver</title>
+      <link>https://navaneeth.github.io/post/how-to-upload-files-when-testing-using-selenium-webdriver/</link>
+      <pubDate>Wed, 20 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/how-to-upload-files-when-testing-using-selenium-webdriver/</guid>
+      <description>&lt;p&gt;You can use the following code to set a file path to the file upload control.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;WebElement file = driver.findElement(By.id(&amp;quot;control_id&amp;quot;));
+file.sendKeys(&amp;quot;/full/path/to/file&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You need to pass full path to the &lt;code&gt;sendKeys()&lt;/code&gt; for it to work. Otherwise &lt;code&gt;sendKeys()&lt;/code&gt; fails silently.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
