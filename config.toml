@@ -1,0 +1,26 @@
+baseurl = "https://navaneeth.github.io/"
+languageCode = "en-us"
+title = "{love to code}"
+theme = "hyde-x"
+pygmentsuseclasses = "true"
+
+[author]
+    name = "nkn"
+
+[taxonomies]
+    tag = "tags"
+    category = "categories"
+
+[params]
+    github = "https://github.com/navaneeth/"
+    tagline = "{love to code}"
+    twitter = "http://twitter.com/navaneethkn"
+    flickr = "https://www.flickr.com/photos/navaneethkn"
+    rss = "true"
+    highlight = "sunburst"
+    home = "blog"
+
+[[menu.main]]
+    name = "about"
+    identifier = "about"
+    url = "/about/"
