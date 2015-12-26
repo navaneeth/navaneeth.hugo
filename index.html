@@ -85,7 +85,7 @@
       <a class="label" href="https://navaneeth.github.io/categories/hugo">hugo</a>
       </span>
       
-      I always wanted to try out http://gohugo.io/ but never got a chance to do it. I spent some time today and migrated my Octopress blog to Hugo. So far, I am liking it. I didn&rsquo;t find a theme which matches my expectations, but the default one and few others are good enough to get started.
+      I always wanted to try out Hugo but never got a chance to do it. I spent some time today and migrated my Octopress blog to Hugo. So far, I am liking it. I didn&rsquo;t find a theme which matches my expectations, but the default one and few others are good enough to get started.
       
       
     </div>
@@ -102,21 +102,6 @@
       
       Early July, we started working with 2 ex-yahoo friends who had a nice product idea that they wanted to make it live. They had some screen designs on paper and clear cut vision on what the product should look like. We started with the development, post a week of ideation and technical spikes, and guess what, we had MVP ready for a limited user release in less than 9 weeks and a full production version by the end of October.
       <a href="https://navaneeth.github.io/post/Bringing%20business%20ideas%20to%20live%20in%203%20months/">Read On &rarr;</a>
-      
-    </div>
-    
-    <div class="post">
-      <h1 class="post-title">
-        <a href="https://navaneeth.github.io/post/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/">Function strdup implicitly converted to pointer</a>
-      </h1>
-      <span class="post-date">May 21, 2015 &middot; 2 minute read
-      
-      <br/>
-      <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/linux">linux</a><a class="label" href="https://navaneeth.github.io/categories/c">c</a>
-      </span>
-      
-      I was trying to make a debian package for libvarnam. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following: Our automated build log filter detected the problem(s) above that will likely cause your package to segfault on architectures where the size of a pointer is greater than the size of an integer, such as ia64 and amd64.
-      <a href="https://navaneeth.github.io/post/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/">Read On &rarr;</a>
       
     </div>
     
@@ -222,6 +207,21 @@
       
       xargs is very powerful commandline utility. Here is what Wikipedia says about xargs xargs is a command on Unix and most Unix-like operating systems used to build and execute command lines from standard input Most common use of xargs would be to do something like, find . -type f -print0 | xargs -0 rm Let us assume that you have a file with list of files to be downloaded from a website.
       <a href="https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
+        <a href="https://navaneeth.github.io/post/how-to-upload-files-when-testing-using-selenium-webdriver/">How to upload files when testing using Selenium Webdriver</a>
+      </h1>
+      <span class="post-date">Feb 20, 2013 &middot; 1 minute read
+      
+      <br/>
+      <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/java">java</a><a class="label" href="https://navaneeth.github.io/categories/selenium">selenium</a>
+      </span>
+      
+      You can use the following code to set a file path to the file upload control. WebElement file = driver.findElement(By.id(&quot;control_id&quot;)); file.sendKeys(&quot;/full/path/to/file&quot;); You need to pass full path to the sendKeys() for it to work. Otherwise sendKeys() fails silently.
+      
       
     </div>
     

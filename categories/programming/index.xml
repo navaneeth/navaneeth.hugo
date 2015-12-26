@@ -172,56 +172,6 @@
     
     <item>
       <title>Function strdup implicitly converted to pointer</title>
-      <link>https://navaneeth.github.io/post/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/</link>
-      <pubDate>Thu, 21 May 2015 12:59:50 +0530</pubDate>
-      
-      <guid>https://navaneeth.github.io/post/how-i-fixed-function-slash-%60strdup-slash-%60-implicitly-converted-to-pointer-error/</guid>
-      <description>&lt;p&gt;I was trying to make a debian package for &lt;a href=&#34;http://varnamproject.com&#34;&gt;libvarnam&lt;/a&gt;. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Our automated build log filter detected the problem(s) above that will
-likely cause your package to segfault on architectures where the size of
-a pointer is greater than the size of an integer, such as ia64 and amd64.&lt;/p&gt;
-
-&lt;p&gt;This is often due to a missing function prototype definition.&lt;/p&gt;
-
-&lt;p&gt;Since use of implicitly converted pointers is always fatal to the application
-on ia64, they are errors. Please correct them for your next upload.&lt;/p&gt;
-
-&lt;p&gt;More information can be found at: &lt;a href=&#34;http://wiki.debian.org/ImplicitPointerConversions&#34;&gt;http://wiki.debian.org/ImplicitPointerConversions&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The above error failed the build.&lt;/p&gt;
-
-&lt;p&gt;The relevant code where the failure happened looks like the following:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;char*
-strbuf_get_last_unicode_char(strbuf *word)
-{
-  varray *characters = NULL;
-  char *lastUnicodeChar = NULL;
-  characters = strbuf_chars(word);
-
-  if (varray_is_empty (characters)) {
-    varray_free (characters, NULL);
-    return NULL;
-  }
-
-  lastUnicodeChar = strdup ((const char*) varray_get(characters, varray_length(characters) - 1)); /* -&amp;gt; Error here */
-  varray_free(characters, &amp;amp;free);
-  /*ending should be freed in the calling function*/
-  return lastUnicodeChar;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;strdup&lt;/code&gt; is not a ANSI C function, hence it is not portable and not available with all compilers. This has caused the function prototype to be not found. When a function prototype is missing, gcc by default return an integer value. De-referencing the returned pointer will cause a segfault.&lt;/p&gt;
-
-&lt;p&gt;To fix this, I found a portable &lt;code&gt;strdup&lt;/code&gt; implementation in the OpenBSD source code. I have used that and disabled the default &lt;code&gt;strdup&lt;/code&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Function strdup implicitly converted to pointer</title>
       <link>https://navaneeth.github.io/post/Function%20strdup%20implicitly%20converted%20to%20pointer/</link>
       <pubDate>Thu, 21 May 2015 10:50:48 +0530</pubDate>
       
@@ -1424,6 +1374,203 @@ ages.Add(&amp;quot;I am not an age&amp;quot;); // &amp;lt;- compiler error here
 &lt;p&gt;&lt;strong&gt;Q) What is the GAC? What problem does it solve?&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;GAC stands for Global Assembly Cache. It provides a centralized storage for assemblies that needs to be shared across applications. It solved the versioning problem and allows side-by-side execution. It can be used when assemblies require elevated permission to do the job.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ADO.NET best practices – Reading data from data reader</title>
+      <link>https://navaneeth.github.io/post/ado-dot-net-best-practices-reading-data-from-data-reader/</link>
+      <pubDate>Sat, 11 Jul 2009 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/ado-dot-net-best-practices-reading-data-from-data-reader/</guid>
+      <description>
+
+&lt;p&gt;I have seen many people using DataReader incorrectly. In this post, I will try to explain some good practices that can be followed when reading from a data reader. Consider the following problematic code,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;SqlDataReader reader = /* ... */;
+while (reader.Read())
+{
+    string userName = reader[&amp;quot;user_name&amp;quot;].ToString();
+    int age = int.Parse( reader[&amp;quot;age&amp;quot;].ToString() );
+    /* ... */
+}
+reader.Close();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;How many problems can you figure out from the above code? There are many problems with this code,&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The columns “user_name” and “age” may or may not exist. If the column does not exist in the reader, it will throw error.&lt;/li&gt;
+&lt;li&gt;You may be calling &lt;code&gt;ToString()&lt;/code&gt; on an object which may be pointing to &lt;code&gt;NULL&lt;/code&gt;. This will lead to a null reference exception.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SqlDataReader&lt;/code&gt; implements &lt;code&gt;IDisposable&lt;/code&gt; and user code has to call &lt;code&gt;Dispose()&lt;/code&gt; each time to release the resources deterministically. This is not happening here.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;reader[&amp;quot;age&amp;quot;]&lt;/code&gt; may contain values that are not compatible with integer. In such case, &lt;code&gt;int.Parse()&lt;/code&gt; will throw a &lt;code&gt;FormatException&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Following sections will show a safe method to read data from DataReader.&lt;/p&gt;
+
+&lt;h2 id=&#34;understanding-ordinals:0cd52065e9b2dd1b300f1283c1b80438&#34;&gt;Understanding ordinals&lt;/h2&gt;
+
+&lt;p&gt;Ordinal is the index of a column in the reader. &lt;code&gt;GetOrdinal()&lt;/code&gt; method will give you the ordinal for the column name supplied. So the first step in reading data from reader should be to find the ordinal of the columns which we want to read. Before getting the ordinal values, you have to ensure that the reader can read. SqlDataReader provides a HasRows property which can be useful here. Here is how you read the ordinals&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;SqlDataReader reader = /* ... */;
+int userNameOrdinal;
+int ageOrdinal;
+if (reader.HasRows)
+{
+     try
+     {
+           userNameOrdinal = reader.GetOrdinal(&amp;quot;user_name&amp;quot;);
+     }
+     catch (IndexOutOfRangeException)
+     {
+           throw new YourCustomException(&amp;quot;Expected column &#39;user_name&#39; not found&amp;quot;);
+     }
+     try
+     {
+           ageOrdinal = reader.GetOrdinal(&amp;quot;age&amp;quot;);
+     }
+     catch (IndexOutOfRangeException)
+     {
+           throw new YourCustomException(&amp;quot;Expected column &#39;age&#39; not found&amp;quot;);
+     }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you have support to “Extension methods”, this code can be simplified further.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public static class SqlDataReaderExtensions
+{
+    public static int GetOrdinalOrThrow(this SqlDataReader reader, string columnName)
+    {
+        try
+        {
+            return reader.GetOrdinal(columnName);
+        }
+        catch (IndexOutOfRangeException)
+        {
+            throw new YourCustomException(string.Format(&amp;quot;Expected column &#39;{0}&#39; not found&amp;quot;,columnName));
+        }
+    }
+}
+
+SqlDataReader reader = /* ... */;
+int userNameOrdinal;
+int ageOrdinal;
+if (reader.HasRows)
+{
+      userNameOrdinal = reader.GetOrdinalOrThrow(&amp;quot;user_name&amp;quot;);
+      ageOrdinal = reader.GetOrdinalOrThrow(&amp;quot;age&amp;quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This makes the code more clean. However, I really wish to see a &lt;code&gt;TryGetOrdinal()&lt;/code&gt; method on &lt;code&gt;IDataReader&lt;/code&gt; so that we can save the cost of exception handling.&lt;/p&gt;
+
+&lt;p&gt;GetOrdinal() method first does a case-sensitive lookup for the column name. If it fails, case-insensitive search is performed. Thus, using the column name in correct case with GetOrdinal() will be more efficient.&lt;/p&gt;
+
+&lt;h2 id=&#34;respecting-type-safety:0cd52065e9b2dd1b300f1283c1b80438&#34;&gt;Respecting type safety&lt;/h2&gt;
+
+&lt;p&gt;C# is a strongly typed language and each programmer should take full advantage of this. Reading data like, &lt;code&gt;reader[&amp;quot;user_name&amp;quot;]&lt;/code&gt; is not a type safe way as it returns a object. Data reader provides methods to read data in a type safe way.&lt;/p&gt;
+
+&lt;p&gt;Here is what MSDN says about it&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;pre&gt;&lt;code&gt;When accessing column data use the typed accessors like GetString, GetInt32, and so on. This saves you the processing required to cast the Object returned from GetValue as a particular type.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Now let us follow the above suggestion and rewrite our code like,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;while (reader.Read())
+{
+   string userName = reader.GetString(userNameOrdinal);
+   int age = -1;
+   try
+   {
+         age = reader.GetInt32(ageOrdinal);
+   }
+   catch (InvalidCastException)
+   {
+         throw new YourCustomException(&amp;quot;Unable to read age. Expecting integer value&amp;quot;);
+   }
+   /* ... */
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;releasing-resources:0cd52065e9b2dd1b300f1283c1b80438&#34;&gt;Releasing resources&lt;/h2&gt;
+
+&lt;p&gt;If any type implements IDisposable, it is like saying “I have something to release explicitly rather than garbage collector to release it“. So it is programmers duty to ensure the calls to Dispose() when using disposable types. C# has “using” statement (stack semantics can be used in C++/CLI) which will ensure calls to Dispose(). Since DataReader is a disposable object, we can write like&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;using(SqlDataReader reader = command.ExecuteReader())
+{
+      while (reader.Read())
+      {
+          string userName = reader.GetString(userNameOrdinal);
+          int age = -1;
+          try
+          {
+              age = reader.GetInt32(ageOrdinal);
+          }
+          catch (InvalidCastException)
+          {
+              throw new YourCustomException(&amp;quot;Unable to read age. Expecting integer value&amp;quot;);
+          }
+          /* ... */
+      }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This ensures that the reader is disposed properly even in exceptional situations.&lt;/p&gt;
+
+&lt;h2 id=&#34;putting-everything-together:0cd52065e9b2dd1b300f1283c1b80438&#34;&gt;Putting everything together&lt;/h2&gt;
+
+&lt;p&gt;If you put everything together, code will be like&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;public static class SqlDataReaderExtensions
+{
+    public static int GetOrdinalOrThrow(this SqlDataReader reader, string columnName)
+    {
+        try
+        {
+            return reader.GetOrdinal(columnName);
+        }
+        catch (IndexOutOfRangeException)
+        {
+            throw new YourCustomException(string.Format(&amp;quot;Expected column &#39;{0}&#39; not found&amp;quot;,columnName));
+        }
+    }
+}
+
+int userNameOrdinal = -1;
+int ageOrdinal = -1;
+if (reader.HasRows)
+{
+    userNameOrdinal = reader.GetOrdinalOrThrow(&amp;quot;user_name&amp;quot;);
+    ageOrdinal = reader.GetOrdinalOrThrow(&amp;quot;age&amp;quot;);
+}
+using (SqlDataReader reader = GetReader())
+{
+    while (reader.Read())
+    {
+        string userName = reader.GetString(userNameOrdinal);
+        int age = -1;
+        try
+        {
+            age = reader.GetInt32(ageOrdinal);
+        }
+        catch (InvalidCastException)
+        {
+            throw new YourCustomException(&amp;quot;Unable to read age. Expecting integer value&amp;quot;);
+        }
+        /* ... */
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We have got clean code now. It handles the exceptions and throws informative exceptions to the caller rather than throwing Boneheaded exceptions, we have avoided explicit casting and DataReader is disposed properly.&lt;/p&gt;
+
+&lt;p&gt;These are applicable for all types which implements &lt;code&gt;IDataReader&lt;/code&gt;. &lt;code&gt;SqlDataReader&lt;/code&gt; is used in this post just for explanation.&lt;/p&gt;
+
+&lt;p&gt;Happy programming!&lt;/p&gt;
 </description>
     </item>
     
