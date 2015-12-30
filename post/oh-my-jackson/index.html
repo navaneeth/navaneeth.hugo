@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-  <title>Java &middot; nkn</title>
+  <title>oh my jackson! &middot; nkn</title>
 
   
   <link rel="stylesheet" href="https://navaneeth.github.io/css/poole.css">
@@ -26,7 +26,7 @@
   
   
   
-  <link href="https://navaneeth.github.io/categories/java/index.xml" rel="alternate" type="application/rss+xml" title="{love to code} &middot; nkn" />
+  
 
   <meta name="description" content="">
   <meta name="keywords" content="">
@@ -72,24 +72,38 @@
 
 
 <div class="content container">
-  <ul class="posts">
-  
-    <li><a href="https://navaneeth.github.io/post/oh-my-jackson/">oh my jackson!</a>
+  <div class="post">
+    <h1>oh my jackson!</h1>
+    <span class="post-date">Dec 30, 2015 &middot; 1 minute read
     
-    &middot;
+    <br/>
     <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/android">android</a><a class="label" href="https://navaneeth.github.io/categories/java">java</a>
     </span>
-    &middot; <time>Dec 30, 2015</time></li>
+    <p><a href="https://github.com/FasterXML/jackson">Jackson</a> just made my day!</p>
+
+<p>Today, I had to make some changes to one of our API. The change was minor so I have added additional fields into my JSON response. I have also kept the old fields just to make the existing clients happy.</p>
+
+<p>During testing, I figured out that the change breaks existing clients. I was surprised! The error was,</p>
+
+<blockquote>
+<p>org.codehaus.jackson.map.exc.UnrecognizedPropertyException: Unrecognized field &ldquo;image&rdquo; (Class Promotion), not marked as ignorable</p>
+</blockquote>
+
+<p>Alright; I thought. Android developer must be a very strict guy and failing when the response structure has additional fields.</p>
+
+<p>But he was not doing anything explicit to make the parsing strict.</p>
+
+<p>It looks like, Jackson&rsquo;s by default parsing mode is strict and it fails when there are any extra fields. Stupid! I have never seen any JSON parser doing this. I have used Ruby, C#, Golang and everywhere no library will have this option turned on by default.</p>
+
+<p>Now this caused additional pain and I had to introduce another version of the API. We have also configured Jackson not to do strict parsing.</p>
+
+  </div>
   
-    <li><a href="https://navaneeth.github.io/post/how-to-upload-files-when-testing-using-selenium-webdriver/">How to upload files when testing using Selenium Webdriver</a>
-    
-    &middot;
-    <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/java">java</a><a class="label" href="https://navaneeth.github.io/categories/selenium">selenium</a>
-    </span>
-    &middot; <time>Feb 20, 2013</time></li>
-  
-  </ul>
 </div>
+
+
+
+
 <script src="https://navaneeth.github.io/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
