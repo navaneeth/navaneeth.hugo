@@ -10,10 +10,11 @@ Some stuff
 Projects I develop
 ------------------
 
--	[libvarnam](http://github.com/navaneeth/libvarnam) - A transliteration library for Indian languages.
+-	[Gauge](http://getgauge.io/) - BDD style test automation for many programming languages
+-	[libvarnam](http://github.com/navaneeth/libvarnam) - A transliteration library for Indian languages
 -	[varnam-browser-addons](http://github.com/navaneeth/varnam-browser-addons) - Browser addons for libvarnam
 -	[libvarnam-nodejs](http://github.com/navaneeth/libvarnam-nodejs) - NodeJS port for libvarnam
--	[orchestrion](http://github.com/navaneeth/orchestrion) - A simple server program to do native windows testing. This uses UI automation framework and [White](https://github.com/TestStack/White)
+-	[orchestrion](http://github.com/navaneeth/orchestrion) - A simple server program to do native windows testing This uses UI automation framework and [White](https://github.com/TestStack/White)
 -	[calabash-ios-java](http://github.com/navaneeth/calabash-ios-java) - Java port for calabash
 
 Projects I have contributed to
