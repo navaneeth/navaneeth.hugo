@@ -6,8 +6,74 @@
     <description>Recent content on {love to code}</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Dec 2015 18:30:50 +0530</lastBuildDate>
+    <lastBuildDate>Tue, 14 Jun 2016 19:01:04 +0530</lastBuildDate>
     <atom:link href="https://navaneeth.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Accessing nested keys from a map in Elixir</title>
+      <link>https://navaneeth.github.io/post/accessing-nested-keys-from-a-map-in-elixir/</link>
+      <pubDate>Tue, 14 Jun 2016 19:01:04 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/accessing-nested-keys-from-a-map-in-elixir/</guid>
+      <description>&lt;p&gt;Erlang VM is a powerful pattern matching system. Pattern matching comes very handy when you want to access nested fields in a map.&lt;/p&gt;
+
+&lt;p&gt;Recently at work, I had to parse a large JSON and extract value of a key. This post shows how you can use pattern matching to extract deeply nested values from a JSON.&lt;/p&gt;
+
+&lt;p&gt;Here is a sample JSON&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;apiGroups&amp;quot;: {
+    &amp;quot;affiliate&amp;quot;: {
+      &amp;quot;name&amp;quot;: &amp;quot;affiliate&amp;quot;,
+      &amp;quot;apiListings&amp;quot;: {
+        &amp;quot;televisions&amp;quot;: {
+          &amp;quot;availableVariants&amp;quot;: {
+            &amp;quot;v1.1.0&amp;quot;: {
+              &amp;quot;resourceName&amp;quot;: &amp;quot;televisions&amp;quot;,
+              &amp;quot;get&amp;quot;: &amp;quot;https://affiliate-api.flipkart.net/affiliate/1.0/feeds/16/category/ckf-czl.json?expiresAt=1465939211609&amp;amp;sig=6ef13e817f5e7a3e974407e766e82ddc&amp;quot;,
+              &amp;quot;deltaGet&amp;quot;: &amp;quot;https://affiliate-api.flipkart.net/affiliate/1.0/deltaFeeds/16/category/ckf-czl.json?expiresAt=1465939211609&amp;amp;sig=6ef13e817f5e7a3e974407e766e82ddc&amp;quot;,
+              &amp;quot;post&amp;quot;: null,
+              &amp;quot;put&amp;quot;: null,
+              &amp;quot;delete&amp;quot;: null
+            },
+          }
+        }
+      }
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From this, I have to extract the value for the key &lt;code&gt;get&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here is how you can pattern match and extract the value:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  defp get_product_url(category) do
+    case HTTPotion.get(&amp;quot;https://affiliate-api.flipkart.net/affiliate/api/.....&amp;quot;) do
+      %HTTPotion.Response{body: body, status_code: 200} -&amp;gt;
+        %{&amp;quot;apiGroups&amp;quot; =&amp;gt;
+          %{&amp;quot;affiliate&amp;quot; =&amp;gt;
+            %{&amp;quot;apiListings&amp;quot; =&amp;gt;
+              %{^category =&amp;gt;
+                %{&amp;quot;availableVariants&amp;quot; =&amp;gt;
+                  %{&amp;quot;v1.1.0&amp;quot; =&amp;gt;
+                    %{&amp;quot;get&amp;quot; =&amp;gt; product_url}
+                  }
+                }
+              }
+            }
+          }
+        } = Poison.decode!(body)
+        product_url
+      %HTTPotion.ErrorResponse{message: reason} -&amp;gt;
+        Logger.error reason
+    end
+  end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Did you notice the &lt;code&gt;^category&lt;/code&gt;? In this case, we are using value of &lt;code&gt;category&lt;/code&gt; as the key. &lt;code&gt;^&lt;/code&gt; symbol tells Elixir to expand the variable.&lt;/p&gt;
+
+&lt;p&gt;Pretty neat!&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>oh my jackson!</title>
@@ -1013,64 +1079,6 @@ varray_insert(varray *array, int index, void *data)
 &lt;p&gt;This array doesn’t take ownership of the data it contains. Ownership has to be managed separately. When adding a new item, array grows in constant propotion yielding inserts in amortized constant time. I have omitted error checking for malloc and realloc for simplicity.&lt;/p&gt;
 
 &lt;p&gt;Hope you enjoy the post.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Simple egg timer on Linux for Pomodoro technique</title>
-      <link>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</link>
-      <pubDate>Sun, 19 Dec 2010 12:59:50 +0530</pubDate>
-      
-      <guid>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</guid>
-      <description>&lt;p&gt;Recently I have started evaluating the Pomodoro Technique which I found quite interesting. I am still evaluating the technique and not yet concluded on whether I should continue using it.&lt;/p&gt;
-
-&lt;p&gt;To implement pomodoro technique, you need a kitchen timer or egg timer. Since I use pomodoro for my programming work, I obviously don’t want to use a physical timer. I couldn’t find a decent timer for linux especially one that works well with Xfce. In this blog post, I will explain building a kitchen timer with basic linux programming techniques. This also gives an idea about how simple linux tools can be combined to do useful stuff.&lt;/p&gt;
-
-&lt;p&gt;Things that are used&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Shell scripting&lt;/li&gt;
-&lt;li&gt;Notification mechanisms on popular desktops like Gnome and Xfce. (I use Xfce in this example)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The shell script is actually a modified version of the one published here (&lt;a href=&#34;http://mostlylinux.wordpress.com/commandline/eggtimer/&#34;&gt;http://mostlylinux.wordpress.com/commandline/eggtimer/&lt;/a&gt;).&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/bash
-counter=0
-limit=$1
-summary=$2
-startmessage=$3
-endmessage=$4
-notify-send -u critical -i appointment -t 600 &amp;quot;$summary&amp;quot; &amp;quot;$startmessage&amp;quot;
-echo
-while [ $counter != $limit ]; do
-   echo &amp;quot;$counter minutes so far...&amp;quot;;
-   sleep 60
-   let &amp;quot;counter = $counter + 1&amp;quot;
-done
-if [ $counter = $limit ]; then
-   echo
-   notify-send -u critical -i appointment &amp;quot;$summary&amp;quot; &amp;quot;$endmessage&amp;quot;
-   echo -e &#39;\a&#39; &amp;amp;gt;&amp;amp;amp;2
-   exit 0
-fi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;All it does is wait until the limit reaches. It uses the sleep(1) command to sleep for a minute. notify-send is used for sending notifications to the desktop environment.&lt;/p&gt;
-
-&lt;p&gt;This script can be invoked using,&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;./p-timer.sh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;If you use bash, you can add an alias for convenience.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;alias begin-pomodoro=&#39;sh ~/utils/p-timer.sh 25 &amp;quot;Pomodoro&amp;quot; &amp;quot;Pomodoro started, you have 25 minutes left&amp;quot; &amp;quot;Pomodoro ended. Please stop the work and take short break&amp;quot;&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This post is written on one pomodoro!&lt;/p&gt;
-
-&lt;p&gt;Happy programming!&lt;/p&gt;
 </description>
     </item>
     

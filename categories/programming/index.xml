@@ -6,8 +6,74 @@
     <description>Recent content in Programming on {love to code}</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Dec 2015 18:30:50 +0530</lastBuildDate>
+    <lastBuildDate>Tue, 14 Jun 2016 19:01:04 +0530</lastBuildDate>
     <atom:link href="https://navaneeth.github.io/categories/programming/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Accessing nested keys from a map in Elixir</title>
+      <link>https://navaneeth.github.io/post/accessing-nested-keys-from-a-map-in-elixir/</link>
+      <pubDate>Tue, 14 Jun 2016 19:01:04 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/accessing-nested-keys-from-a-map-in-elixir/</guid>
+      <description>&lt;p&gt;Erlang VM is a powerful pattern matching system. Pattern matching comes very handy when you want to access nested fields in a map.&lt;/p&gt;
+
+&lt;p&gt;Recently at work, I had to parse a large JSON and extract value of a key. This post shows how you can use pattern matching to extract deeply nested values from a JSON.&lt;/p&gt;
+
+&lt;p&gt;Here is a sample JSON&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;apiGroups&amp;quot;: {
+    &amp;quot;affiliate&amp;quot;: {
+      &amp;quot;name&amp;quot;: &amp;quot;affiliate&amp;quot;,
+      &amp;quot;apiListings&amp;quot;: {
+        &amp;quot;televisions&amp;quot;: {
+          &amp;quot;availableVariants&amp;quot;: {
+            &amp;quot;v1.1.0&amp;quot;: {
+              &amp;quot;resourceName&amp;quot;: &amp;quot;televisions&amp;quot;,
+              &amp;quot;get&amp;quot;: &amp;quot;https://affiliate-api.flipkart.net/affiliate/1.0/feeds/16/category/ckf-czl.json?expiresAt=1465939211609&amp;amp;sig=6ef13e817f5e7a3e974407e766e82ddc&amp;quot;,
+              &amp;quot;deltaGet&amp;quot;: &amp;quot;https://affiliate-api.flipkart.net/affiliate/1.0/deltaFeeds/16/category/ckf-czl.json?expiresAt=1465939211609&amp;amp;sig=6ef13e817f5e7a3e974407e766e82ddc&amp;quot;,
+              &amp;quot;post&amp;quot;: null,
+              &amp;quot;put&amp;quot;: null,
+              &amp;quot;delete&amp;quot;: null
+            },
+          }
+        }
+      }
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From this, I have to extract the value for the key &lt;code&gt;get&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here is how you can pattern match and extract the value:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  defp get_product_url(category) do
+    case HTTPotion.get(&amp;quot;https://affiliate-api.flipkart.net/affiliate/api/.....&amp;quot;) do
+      %HTTPotion.Response{body: body, status_code: 200} -&amp;gt;
+        %{&amp;quot;apiGroups&amp;quot; =&amp;gt;
+          %{&amp;quot;affiliate&amp;quot; =&amp;gt;
+            %{&amp;quot;apiListings&amp;quot; =&amp;gt;
+              %{^category =&amp;gt;
+                %{&amp;quot;availableVariants&amp;quot; =&amp;gt;
+                  %{&amp;quot;v1.1.0&amp;quot; =&amp;gt;
+                    %{&amp;quot;get&amp;quot; =&amp;gt; product_url}
+                  }
+                }
+              }
+            }
+          }
+        } = Poison.decode!(body)
+        product_url
+      %HTTPotion.ErrorResponse{message: reason} -&amp;gt;
+        Logger.error reason
+    end
+  end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Did you notice the &lt;code&gt;^category&lt;/code&gt;? In this case, we are using value of &lt;code&gt;category&lt;/code&gt; as the key. &lt;code&gt;^&lt;/code&gt; symbol tells Elixir to expand the variable.&lt;/p&gt;
+
+&lt;p&gt;Pretty neat!&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>oh my jackson!</title>
@@ -1329,77 +1395,6 @@ bool RemoveNode(Node&amp;lt;T&amp;gt; nodeToRemove)
 &lt;/ul&gt;
 
 &lt;p&gt;Probably we will see these features in another post.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>What Great .NET Developers Ought To Know (More .NET Interview Questions and Answers) – Part1</title>
-      <link>https://navaneeth.github.io/post/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/</link>
-      <pubDate>Thu, 13 Aug 2009 12:59:50 +0530</pubDate>
-      
-      <guid>https://navaneeth.github.io/post/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/</guid>
-      <description>&lt;p&gt;In this series of posts, I will try to answer the questions posted by Scott Hanselman &lt;a href=&#34;http://www.hanselman.com/blog/WhatGreatNETDevelopersOughtToKnowMoreNETInterviewQuestions.aspx&#34;&gt;here&lt;/a&gt;. This part we will be seeing the first set of questions he has given under &lt;em&gt;Everyone who writes code&lt;/em&gt; heading.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Q) Describe the difference between a Thread and a Process?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;A Thread is a small unit of code in execution. A process is an instance of program which will have multiple threads running. A process can host multiple threads. Thread will always belong to a process. Communication between multiple processes are difficult but communication between threads is easy.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Q) What is a Windows Service and how does its lifecycle differ from a “standard” EXE?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Windows service is a long running program which can run without user interaction. It is used for applications that should work always, e.g: a HTTP server. Unlike standard EXE, a windows service can’t be started by double clicking the EXE. It should be installed on the system as a service using installutil tool. Service control manager manges a windows service by providing options to start/stop a service.&lt;/p&gt;
-
-&lt;p&gt;Like a standard EXE, windows services lifecycle also begins from the main method. After that it fires the event OnStart in which you can write code for starting a service.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Q) What is the difference between an EXE and a DLL?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;A executable file(EXE) is ready to execute wherein a Dynamic Link Library(DLL) contains types and methods that can be used from a EXE. DLLs are not meant to be executed directly and it is very helpful to organize and isolate common code which can be used with multiple applications.&lt;/p&gt;
-
-&lt;p&gt;Finally, EXE will have an entry point. DLLs will not have an entry point and all it does is to expose the types and methods. The direct equivalent of a DLL in LINUX is Shared Libraries(SO).&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Q) What is strong-typing versus weak-typing? Which is preferred? Why?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Strong-typing defines some restrictions on how operations are done when different data types are involved. Consider the following example&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;int a = 10;
-a = &amp;quot;You can&#39;t assign a string!&amp;quot;;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Above code won’t compile as variable a is strongly-typed and it can hold only an integer value.&lt;/p&gt;
-
-&lt;p&gt;Weak-typing is just opposite of strong-typing. C# is a strongly-typed language. But since most of the types derives from System.Object, you can write like.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;object o = 10;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This can be called as weak-typing. Of course, strong-typing is preferred over weak-typing. To understand why, consider the following example in which we have a collection of age.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;ArrayList ages = new ArrayList();
-ages.Add(10);
-ages.Add(20);
-ages.Add(30);
-ages.Add(&amp;quot;Hey, I am not an age!&amp;quot;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Our intention is to have only ages in this collection. But since ArrayList is weakly-typed, we inserted a value which is not an age. Here is a strongly-types version of this code.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-csharp&#34;&gt;List&amp;lt;int&amp;gt; ages = new List&amp;lt;int&amp;gt;();
-ages.Add(10);
-ages.Add(20);
-ages.Add(30);
-ages.Add(&amp;quot;I am not an age&amp;quot;); // &amp;lt;- compiler error here
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;Q) What is a PID? How is it useful when troubleshooting a system?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;PID is Process Identifier and used by operating system to identify processes uniquely. I am not sure how it is used for troubleshooting. If some can provide insights into this, I will update this area.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Q) How many processes can listen on a single TCP/IP port?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Only one.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Q) What is the GAC? What problem does it solve?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;GAC stands for Global Assembly Cache. It provides a centralized storage for assemblies that needs to be shared across applications. It solved the versioning problem and allows side-by-side execution. It can be used when assemblies require elevated permission to do the job.&lt;/p&gt;
 </description>
     </item>
     

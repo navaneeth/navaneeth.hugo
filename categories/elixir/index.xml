@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Elixir on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/elixir/</link>
+    <description>Recent content in Elixir on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 14 Jun 2016 19:01:04 +0530</lastBuildDate>
+    <atom:link href="https://navaneeth.github.io/categories/elixir/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Accessing nested keys from a map in Elixir</title>
+      <link>https://navaneeth.github.io/post/accessing-nested-keys-from-a-map-in-elixir/</link>
+      <pubDate>Tue, 14 Jun 2016 19:01:04 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/accessing-nested-keys-from-a-map-in-elixir/</guid>
+      <description>&lt;p&gt;Erlang VM is a powerful pattern matching system. Pattern matching comes very handy when you want to access nested fields in a map.&lt;/p&gt;
+
+&lt;p&gt;Recently at work, I had to parse a large JSON and extract value of a key. This post shows how you can use pattern matching to extract deeply nested values from a JSON.&lt;/p&gt;
+
+&lt;p&gt;Here is a sample JSON&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;quot;apiGroups&amp;quot;: {
+    &amp;quot;affiliate&amp;quot;: {
+      &amp;quot;name&amp;quot;: &amp;quot;affiliate&amp;quot;,
+      &amp;quot;apiListings&amp;quot;: {
+        &amp;quot;televisions&amp;quot;: {
+          &amp;quot;availableVariants&amp;quot;: {
+            &amp;quot;v1.1.0&amp;quot;: {
+              &amp;quot;resourceName&amp;quot;: &amp;quot;televisions&amp;quot;,
+              &amp;quot;get&amp;quot;: &amp;quot;https://affiliate-api.flipkart.net/affiliate/1.0/feeds/16/category/ckf-czl.json?expiresAt=1465939211609&amp;amp;sig=6ef13e817f5e7a3e974407e766e82ddc&amp;quot;,
+              &amp;quot;deltaGet&amp;quot;: &amp;quot;https://affiliate-api.flipkart.net/affiliate/1.0/deltaFeeds/16/category/ckf-czl.json?expiresAt=1465939211609&amp;amp;sig=6ef13e817f5e7a3e974407e766e82ddc&amp;quot;,
+              &amp;quot;post&amp;quot;: null,
+              &amp;quot;put&amp;quot;: null,
+              &amp;quot;delete&amp;quot;: null
+            },
+          }
+        }
+      }
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;From this, I have to extract the value for the key &lt;code&gt;get&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here is how you can pattern match and extract the value:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  defp get_product_url(category) do
+    case HTTPotion.get(&amp;quot;https://affiliate-api.flipkart.net/affiliate/api/.....&amp;quot;) do
+      %HTTPotion.Response{body: body, status_code: 200} -&amp;gt;
+        %{&amp;quot;apiGroups&amp;quot; =&amp;gt;
+          %{&amp;quot;affiliate&amp;quot; =&amp;gt;
+            %{&amp;quot;apiListings&amp;quot; =&amp;gt;
+              %{^category =&amp;gt;
+                %{&amp;quot;availableVariants&amp;quot; =&amp;gt;
+                  %{&amp;quot;v1.1.0&amp;quot; =&amp;gt;
+                    %{&amp;quot;get&amp;quot; =&amp;gt; product_url}
+                  }
+                }
+              }
+            }
+          }
+        } = Poison.decode!(body)
+        product_url
+      %HTTPotion.ErrorResponse{message: reason} -&amp;gt;
+        Logger.error reason
+    end
+  end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Did you notice the &lt;code&gt;^category&lt;/code&gt;? In this case, we are using value of &lt;code&gt;category&lt;/code&gt; as the key. &lt;code&gt;^&lt;/code&gt; symbol tells Elixir to expand the variable.&lt;/p&gt;
+
+&lt;p&gt;Pretty neat!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
