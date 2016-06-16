@@ -74,7 +74,7 @@
 <div class="content container">
   <div class="post">
     <h1>Accessing nested keys from a map in Elixir</h1>
-    <span class="post-date">Jun 14, 2016 &middot; 1 minute read
+    <span class="post-date">Jun 14, 2016 &middot; 2 minute read
     
     <br/>
     <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/elixir">elixir</a>
@@ -134,6 +134,8 @@
 </code></pre>
 
 <p>Did you notice the <code>^category</code>? In this case, we are using value of <code>category</code> as the key. <code>^</code> symbol tells Elixir to expand the variable.</p>
+
+<p>Caveat: Using this style, you will get cryptic error message which just says right hand side values can&rsquo;t be matched with left hand side in case of wrong data format. Thus, use this carefully in situations where you are sure about the data format.</p>
 
 <p>Pretty neat!</p>
 

@@ -71,6 +71,8 @@
 
 &lt;p&gt;Did you notice the &lt;code&gt;^category&lt;/code&gt;? In this case, we are using value of &lt;code&gt;category&lt;/code&gt; as the key. &lt;code&gt;^&lt;/code&gt; symbol tells Elixir to expand the variable.&lt;/p&gt;
 
+&lt;p&gt;Caveat: Using this style, you will get cryptic error message which just says right hand side values can&amp;rsquo;t be matched with left hand side in case of wrong data format. Thus, use this carefully in situations where you are sure about the data format.&lt;/p&gt;
+
 &lt;p&gt;Pretty neat!&lt;/p&gt;
 </description>
     </item>
