@@ -68,4 +68,6 @@ Here is how you can pattern match and extract the value:
 
 Did you notice the `^category`? In this case, we are using value of `category` as the key. `^` symbol tells Elixir to expand the variable.
 
+Caveat: Using this style, you will get cryptic error message which just says right hand side values can't be matched with left hand side in case of wrong data format. Thus, use this carefully in situations where you are sure about the data format. 
+
 Pretty neat!
