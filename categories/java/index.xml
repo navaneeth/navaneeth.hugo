@@ -7,7 +7,9 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 30 Dec 2015 18:30:50 +0530</lastBuildDate>
-    <atom:link href="https://navaneeth.github.io/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://navaneeth.github.io/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>oh my jackson!</title>
@@ -15,24 +17,10 @@
       <pubDate>Wed, 30 Dec 2015 18:30:50 +0530</pubDate>
       
       <guid>https://navaneeth.github.io/post/oh-my-jackson/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/FasterXML/jackson&#34;&gt;Jackson&lt;/a&gt; just made my day!&lt;/p&gt;
-
-&lt;p&gt;Today, I had to make some changes to one of our API. The change was minor so I have added additional fields into my JSON response. I have also kept the old fields just to make the existing clients happy.&lt;/p&gt;
-
-&lt;p&gt;During testing, I figured out that the change breaks existing clients. I was surprised! The error was,&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;org.codehaus.jackson.map.exc.UnrecognizedPropertyException: Unrecognized field &amp;ldquo;image&amp;rdquo; (Class Promotion), not marked as ignorable&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Alright; I thought. Android developer must be a very strict guy and failing when the response structure has additional fields.&lt;/p&gt;
-
-&lt;p&gt;But he was not doing anything explicit to make the parsing strict.&lt;/p&gt;
-
-&lt;p&gt;It looks like, Jackson&amp;rsquo;s by default parsing mode is strict and it fails when there are any extra fields. Stupid! I have never seen any JSON parser doing this. I have used Ruby, C#, Golang and everywhere no library will have this option turned on by default.&lt;/p&gt;
-
-&lt;p&gt;Now this caused additional pain and I had to introduce another version of the API. We have also configured Jackson not to do strict parsing.&lt;/p&gt;
-</description>
+      <description>Jackson just made my day!
+Today, I had to make some changes to one of our API. The change was minor so I have added additional fields into my JSON response. I have also kept the old fields just to make the existing clients happy.
+During testing, I figured out that the change breaks existing clients. I was surprised! The error was,
+ org.codehaus.jackson.map.exc.UnrecognizedPropertyException: Unrecognized field &amp;ldquo;image&amp;rdquo; (Class Promotion), not marked as ignorable</description>
     </item>
     
     <item>
@@ -41,14 +29,8 @@
       <pubDate>Wed, 20 Feb 2013 12:59:50 +0530</pubDate>
       
       <guid>https://navaneeth.github.io/post/how-to-upload-files-when-testing-using-selenium-webdriver/</guid>
-      <description>&lt;p&gt;You can use the following code to set a file path to the file upload control.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;WebElement file = driver.findElement(By.id(&amp;quot;control_id&amp;quot;));
-file.sendKeys(&amp;quot;/full/path/to/file&amp;quot;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You need to pass full path to the &lt;code&gt;sendKeys()&lt;/code&gt; for it to work. Otherwise &lt;code&gt;sendKeys()&lt;/code&gt; fails silently.&lt;/p&gt;
-</description>
+      <description>You can use the following code to set a file path to the file upload control.
+WebElement file = driver.findElement(By.id(&amp;quot;control_id&amp;quot;)); file.sendKeys(&amp;quot;/full/path/to/file&amp;quot;);  You need to pass full path to the sendKeys() for it to work. Otherwise sendKeys() fails silently.</description>
     </item>
     
   </channel>

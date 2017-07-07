@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Channels in libuv &middot; nkn</title>
+
+  
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://navaneeth.github.io/touch-icon-144-precomposed.png">
+  <link href="https://navaneeth.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-38544003-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>nkn</h1>
+      <p class="lead">{love to code}</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/">blog</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/about/">about</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://www.flickr.com/photos/navaneethkn"><i class="fa fa-flickr fa-3x"></i></a>
+      <a href="https://github.com/navaneeth/"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      
+      <a href="http://twitter.com/navaneethkn"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="https://navaneeth.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2017 <a href="https://navaneeth.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Channels in libuv</h1>
+    <span class="post-date">Aug 2, 2013 &middot; 3 minute read
+    
+    <br/>
+    <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/c">c</a><a class="label" href="https://navaneeth.github.io/categories/golang">golang</a>
+    </span>
+    
+
+<p><code>go</code> programming language provides a very powerful synchronization mechanism called <a href="http://golang.org/doc/effective_go.html#channels">channels</a>. Channels simplifies communication between threads and makes it very easy to send and receive data from go routines.</p>
+
+<p>I always missed such functionalities when using <code>libuv</code>. <code>libuv</code> has <code>uv async_send</code>, but it can be used only to wakeup the event loop. In this post, we will implement channels in <code>C</code> using <code>libuv</code>. The idea is to implement a channel so that user can use it without worrying about manually doing the synchronization.</p>
+
+<h1 id="implementation">Implementation</h1>
+
+<p>A channel will have a queue, a mutex to synchronize the sending and receiving and a condition variable to signal receivers when data is available. When <code>uv_chan_send</code> is called, it takes the data and puts it into a internal queue and signal all receivers about the data. <code>uv_chan_receive</code> will acquire a lock, dequeue the data and unlock the lock.</p>
+
+<p><em>uv-channel.h</em>:</p>
+
+<pre><code class="language-c">typedef struct uv_chan_s uv_chan_t;
+
+struct uv_chan_s {
+  uv_mutex_t mutex;
+  uv_cond_t cond;
+  void* q[2];
+};
+
+int uv_chan_init(uv_chan_t* chan);
+void uv_chan_send(uv_chan_t* chan, void* data);
+void* uv_chan_receive(uv_chan_t* chan);
+void uv_chan_destroy(uv_chan_t* chan);
+</code></pre>
+
+<p><em>uv-channel.c</em>:</p>
+
+<pre><code class="language-c">typedef struct {
+  void* data;
+  uv_req_type type;
+  void* active_queue[2];
+} uv__chan_item_t;
+
+int uv_chan_init(uv_chan_t* chan) {
+  int r = uv_mutex_init (&amp;chan-&gt;mutex);
+  if (r == -1)
+    return r;
+
+  QUEUE_INIT(&amp;chan-&gt;q);
+
+  return uv_cond_init (&amp;chan-&gt;cond);
+}
+
+void uv_chan_send(uv_chan_t* chan, void* data) {
+  uv__chan_item_t* item = malloc(sizeof(uv__chan_item_t));
+  item-&gt;data = data;
+
+  uv_mutex_lock (&amp;chan-&gt;mutex);
+  QUEUE_INSERT_TAIL(&amp;chan-&gt;q, &amp;item-&gt;active_queue);
+  uv_cond_signal (&amp;chan-&gt;cond);
+  uv_mutex_unlock (&amp;chan-&gt;mutex);
+}
+
+void* uv_chan_receive(uv_chan_t* chan) {
+  uv__chan_item_t* item;
+  QUEUE* head;
+  void* data = NULL;
+
+  uv_mutex_lock (&amp;chan-&gt;mutex);
+  while (QUEUE_EMPTY(&amp;chan-&gt;q)) {
+    uv_cond_wait (&amp;chan-&gt;cond, &amp;chan-&gt;mutex);
+  }
+
+  head = QUEUE_HEAD (&amp;chan-&gt;q);
+  item = QUEUE_DATA (head, uv__chan_item_t, active_queue);
+  data = item-&gt;data;
+  QUEUE_REMOVE (head);
+  free (item);
+  uv_mutex_unlock (&amp;chan-&gt;mutex);
+  return data;
+}
+
+void uv_chan_destroy(uv_chan_t* chan) {
+  uv_cond_destroy (&amp;chan-&gt;cond);
+  uv_mutex_destroy (&amp;chan-&gt;mutex);
+}
+</code></pre>
+
+<h1 id="example">Example</h1>
+
+<pre><code class="language-c">#include &quot;uv.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+static void worker(void* arg) {
+  int i;
+  char* string;
+  uv_chan_t* chan = arg;
+
+  for (i = 0; i &lt; 10; i++) {
+    string = malloc(sizeof(char) * 2);
+    sprintf(string, &quot;%d&quot;, i);
+    uv_chan_send (chan, string);
+    uv_sleep (10);
+  }
+  uv_chan_send (chan, NULL);
+}
+
+int main(int argc, char** argv) {
+  int threads_exited = 0;
+  char* message;
+  uv_chan_t chan;
+  uv_thread_t thread1, thread2;
+
+  uv_chan_init (&amp;chan);
+  uv_thread_create(&amp;thread1, worker, &amp;chan);
+  uv_thread_create(&amp;thread2, worker, &amp;chan);
+
+  while (threads_exited &lt; 2) {
+    message = uv_chan_receive(&amp;chan);
+    if (message == NULL)
+      ++threads_exited;
+    else {
+      printf(&quot;Message : %\n&quot;, message);
+      free(message);
+    }
+  }
+
+  uv_chan_destroy (&amp;chan);
+  return 0;
+}
+</code></pre>
+
+<p>In this example, I am executing two threads and each will execute the <code>worker</code> function. <code>worker</code> function will get an instance of the channel. Each worker will push some data into the channel and main thread receives all the data. Worker thread signals end of messages by passing a <code>NULL</code> value to the channel. <code>uv_chan_receive</code> blocks until the channel gets some data.</p>
+
+<p>Note: you need to allocate/deep copy the data before sending to the channel. Otherwise, worker would have overwritten the data before receiver gets it.</p>
+
+<h1 id="future-work">Future work</h1>
+
+<p>Some ideas which would be nice to have:</p>
+
+<ul>
+<li>Implement a timeout on <code>uv_chan_receive</code>.</li>
+<li>Provide a deep copy callback on the channel, so that data can be send to the channel without copying and channel will take care of deep copying by invoking the specified callback.</li>
+</ul>
+
+<p>Happy programming!</p>
+
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://navaneeth.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+

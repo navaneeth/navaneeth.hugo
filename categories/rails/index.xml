@@ -7,31 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 18 Nov 2014 12:55:32 +0530</lastBuildDate>
-    <atom:link href="https://navaneeth.github.io/categories/rails/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://navaneeth.github.io/categories/rails/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>document.ready() handler not getting fired   Rails4</title>
-      <link>https://navaneeth.github.io/post/document.ready%28%29%20handler%20not%20getting%20fired%20-%20Rails4/</link>
+      <link>https://navaneeth.github.io/post/document.ready-handler-not-getting-fired---rails4/</link>
       <pubDate>Tue, 18 Nov 2014 12:55:32 +0530</pubDate>
       
-      <guid>https://navaneeth.github.io/post/document.ready%28%29%20handler%20not%20getting%20fired%20-%20Rails4/</guid>
-      <description>&lt;p&gt;Rails4 uses a gem called &lt;a href=&#34;https://github.com/rails/turbolinks&#34;&gt;turbolinks&lt;/a&gt; which makes following links on the web application faster. This gem is added to the Gemfile by default when a new rails project is initialized. However, there are few side effects this can cause.&lt;/p&gt;
-
-&lt;p&gt;Consider the following JS, added into app/assets/javascripts/projects.js:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;$(function () {
-  $(&#39;#startDate&#39;).datetimepicker({
-		pickTime: false
-	});
-});
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This looks alright, but won&amp;rsquo;t work as expected.&lt;/p&gt;
-
-&lt;p&gt;When rails navigates to the page following a link, turbolink comes into picture and makes it faster by caching the JS contents. This leads into the ready handler not being fired. Which means, the datetimepicker used in the above example won&amp;rsquo;t work without a full page refresh.&lt;/p&gt;
-
-&lt;p&gt;Luckily, this can be fixed by using &lt;a href=&#34;https://github.com/kossnocorp/jquery.turbolinks&#34;&gt;jquery.turbolinks&lt;/a&gt; gem which works with turbolinks gem ensures the ready handlers are called.&lt;/p&gt;
-</description>
+      <guid>https://navaneeth.github.io/post/document.ready-handler-not-getting-fired---rails4/</guid>
+      <description>Rails4 uses a gem called turbolinks which makes following links on the web application faster. This gem is added to the Gemfile by default when a new rails project is initialized. However, there are few side effects this can cause.
+Consider the following JS, added into app/assets/javascripts/projects.js:
+$(function () { $(&#39;#startDate&#39;).datetimepicker({ pickTime: false }); });  This looks alright, but won&amp;rsquo;t work as expected.
+When rails navigates to the page following a link, turbolink comes into picture and makes it faster by caching the JS contents.</description>
     </item>
     
   </channel>

@@ -7,204 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 21 May 2015 10:50:48 +0530</lastBuildDate>
-    <atom:link href="https://navaneeth.github.io/categories/c/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://navaneeth.github.io/categories/c/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Function strdup implicitly converted to pointer</title>
-      <link>https://navaneeth.github.io/post/Function%20strdup%20implicitly%20converted%20to%20pointer/</link>
+      <link>https://navaneeth.github.io/post/function-strdup-implicitly-converted-to-pointer/</link>
       <pubDate>Thu, 21 May 2015 10:50:48 +0530</pubDate>
       
-      <guid>https://navaneeth.github.io/post/Function%20strdup%20implicitly%20converted%20to%20pointer/</guid>
-      <description>&lt;p&gt;I was trying to make a debian package for &lt;a href=&#34;http://varnamproject.com&#34;&gt;libvarnam&lt;/a&gt;. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Our automated build log filter detected the problem(s) above that will
-likely cause your package to segfault on architectures where the size of
-a pointer is greater than the size of an integer, such as ia64 and amd64.&lt;/p&gt;
-
-&lt;p&gt;This is often due to a missing function prototype definition.&lt;/p&gt;
-
-&lt;p&gt;Since use of implicitly converted pointers is always fatal to the application
-on ia64, they are errors. Please correct them for your next upload.&lt;/p&gt;
-
-&lt;p&gt;More information can be found at: &lt;a href=&#34;http://wiki.debian.org/ImplicitPointerConversions&#34;&gt;http://wiki.debian.org/ImplicitPointerConversions&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The above error failed the build.&lt;/p&gt;
-
-&lt;p&gt;The relevant code where the failure happened looks like the following:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;char*
-strbuf_get_last_unicode_char(strbuf *word)
-{
-  varray *characters = NULL;
-  char *lastUnicodeChar = NULL;
-  characters = strbuf_chars(word);
-
-  if (varray_is_empty (characters)) {
-    varray_free (characters, NULL);
-    return NULL;
-  }
-
-  lastUnicodeChar = strdup ((const char*) varray_get(characters, varray_length(characters) - 1)); /* -&amp;gt; Error here */
-  varray_free(characters, &amp;amp;free);
-  /*ending should be freed in the calling function*/
-  return lastUnicodeChar;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;strdup&lt;/code&gt; is not a ANSI C function, hence it is not portable and not available with all compilers. This has caused the function prototype to be not found. When a function prototype is missing, gcc by default return an integer value. De-referencing the returned pointer will cause a segfault.&lt;/p&gt;
-
-&lt;p&gt;To fix this, I found a portable &lt;code&gt;strdup&lt;/code&gt; implementation in the OpenBSD source code. I have used that and disabled the default &lt;code&gt;strdup&lt;/code&gt;.&lt;/p&gt;
-</description>
+      <guid>https://navaneeth.github.io/post/function-strdup-implicitly-converted-to-pointer/</guid>
+      <description>I was trying to make a debian package for libvarnam. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:
+ Our automated build log filter detected the problem(s) above that will likely cause your package to segfault on architectures where the size of a pointer is greater than the size of an integer, such as ia64 and amd64.</description>
     </item>
     
     <item>
       <title>Channels in libuv</title>
-      <link>https://navaneeth.github.io/post/Channels%20in%20libuv/</link>
+      <link>https://navaneeth.github.io/post/channels-in-libuv/</link>
       <pubDate>Fri, 02 Aug 2013 12:59:50 +0530</pubDate>
       
-      <guid>https://navaneeth.github.io/post/Channels%20in%20libuv/</guid>
-      <description>
-
-&lt;p&gt;&lt;code&gt;go&lt;/code&gt; programming language provides a very powerful synchronization mechanism called &lt;a href=&#34;http://golang.org/doc/effective_go.html#channels&#34;&gt;channels&lt;/a&gt;. Channels simplifies communication between threads and makes it very easy to send and receive data from go routines.&lt;/p&gt;
-
-&lt;p&gt;I always missed such functionalities when using &lt;code&gt;libuv&lt;/code&gt;. &lt;code&gt;libuv&lt;/code&gt; has &lt;code&gt;uv async_send&lt;/code&gt;, but it can be used only to wakeup the event loop. In this post, we will implement channels in &lt;code&gt;C&lt;/code&gt; using &lt;code&gt;libuv&lt;/code&gt;. The idea is to implement a channel so that user can use it without worrying about manually doing the synchronization.&lt;/p&gt;
-
-&lt;h1 id=&#34;implementation:8acece6ccdbb27d74705676873e0c80e&#34;&gt;Implementation&lt;/h1&gt;
-
-&lt;p&gt;A channel will have a queue, a mutex to synchronize the sending and receiving and a condition variable to signal receivers when data is available. When &lt;code&gt;uv_chan_send&lt;/code&gt; is called, it takes the data and puts it into a internal queue and signal all receivers about the data. &lt;code&gt;uv_chan_receive&lt;/code&gt; will acquire a lock, dequeue the data and unlock the lock.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;uv-channel.h&lt;/em&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;typedef struct uv_chan_s uv_chan_t;
-
-struct uv_chan_s {
-  uv_mutex_t mutex;
-  uv_cond_t cond;
-  void* q[2];
-};
-
-int uv_chan_init(uv_chan_t* chan);
-void uv_chan_send(uv_chan_t* chan, void* data);
-void* uv_chan_receive(uv_chan_t* chan);
-void uv_chan_destroy(uv_chan_t* chan);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;em&gt;uv-channel.c&lt;/em&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;typedef struct {
-  void* data;
-  uv_req_type type;
-  void* active_queue[2];
-} uv__chan_item_t;
-
-int uv_chan_init(uv_chan_t* chan) {
-  int r = uv_mutex_init (&amp;amp;chan-&amp;gt;mutex);
-  if (r == -1)
-    return r;
-
-  QUEUE_INIT(&amp;amp;chan-&amp;gt;q);
-
-  return uv_cond_init (&amp;amp;chan-&amp;gt;cond);
-}
-
-void uv_chan_send(uv_chan_t* chan, void* data) {
-  uv__chan_item_t* item = malloc(sizeof(uv__chan_item_t));
-  item-&amp;gt;data = data;
-
-  uv_mutex_lock (&amp;amp;chan-&amp;gt;mutex);
-  QUEUE_INSERT_TAIL(&amp;amp;chan-&amp;gt;q, &amp;amp;item-&amp;gt;active_queue);
-  uv_cond_signal (&amp;amp;chan-&amp;gt;cond);
-  uv_mutex_unlock (&amp;amp;chan-&amp;gt;mutex);
-}
-
-void* uv_chan_receive(uv_chan_t* chan) {
-  uv__chan_item_t* item;
-  QUEUE* head;
-  void* data = NULL;
-
-  uv_mutex_lock (&amp;amp;chan-&amp;gt;mutex);
-  while (QUEUE_EMPTY(&amp;amp;chan-&amp;gt;q)) {
-    uv_cond_wait (&amp;amp;chan-&amp;gt;cond, &amp;amp;chan-&amp;gt;mutex);
-  }
-
-  head = QUEUE_HEAD (&amp;amp;chan-&amp;gt;q);
-  item = QUEUE_DATA (head, uv__chan_item_t, active_queue);
-  data = item-&amp;gt;data;
-  QUEUE_REMOVE (head);
-  free (item);
-  uv_mutex_unlock (&amp;amp;chan-&amp;gt;mutex);
-  return data;
-}
-
-void uv_chan_destroy(uv_chan_t* chan) {
-  uv_cond_destroy (&amp;amp;chan-&amp;gt;cond);
-  uv_mutex_destroy (&amp;amp;chan-&amp;gt;mutex);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;example:8acece6ccdbb27d74705676873e0c80e&#34;&gt;Example&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;#include &amp;quot;uv.h&amp;quot;
-#include &amp;lt;stdio.h&amp;gt;
-#include &amp;lt;stdlib.h&amp;gt;
-#include &amp;lt;string.h&amp;gt;
-
-static void worker(void* arg) {
-  int i;
-  char* string;
-  uv_chan_t* chan = arg;
-
-  for (i = 0; i &amp;lt; 10; i++) {
-    string = malloc(sizeof(char) * 2);
-    sprintf(string, &amp;quot;%d&amp;quot;, i);
-    uv_chan_send (chan, string);
-    uv_sleep (10);
-  }
-  uv_chan_send (chan, NULL);
-}
-
-int main(int argc, char** argv) {
-  int threads_exited = 0;
-  char* message;
-  uv_chan_t chan;
-  uv_thread_t thread1, thread2;
-
-  uv_chan_init (&amp;amp;chan);
-  uv_thread_create(&amp;amp;thread1, worker, &amp;amp;chan);
-  uv_thread_create(&amp;amp;thread2, worker, &amp;amp;chan);
-
-  while (threads_exited &amp;lt; 2) {
-    message = uv_chan_receive(&amp;amp;chan);
-    if (message == NULL)
-      ++threads_exited;
-    else {
-      printf(&amp;quot;Message : %\n&amp;quot;, message);
-      free(message);
-    }
-  }
-
-  uv_chan_destroy (&amp;amp;chan);
-  return 0;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;In this example, I am executing two threads and each will execute the &lt;code&gt;worker&lt;/code&gt; function. &lt;code&gt;worker&lt;/code&gt; function will get an instance of the channel. Each worker will push some data into the channel and main thread receives all the data. Worker thread signals end of messages by passing a &lt;code&gt;NULL&lt;/code&gt; value to the channel. &lt;code&gt;uv_chan_receive&lt;/code&gt; blocks until the channel gets some data.&lt;/p&gt;
-
-&lt;p&gt;Note: you need to allocate/deep copy the data before sending to the channel. Otherwise, worker would have overwritten the data before receiver gets it.&lt;/p&gt;
-
-&lt;h1 id=&#34;future-work:8acece6ccdbb27d74705676873e0c80e&#34;&gt;Future work&lt;/h1&gt;
-
-&lt;p&gt;Some ideas which would be nice to have:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Implement a timeout on &lt;code&gt;uv_chan_receive&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;Provide a deep copy callback on the channel, so that data can be send to the channel without copying and channel will take care of deep copying by invoking the specified callback.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Happy programming!&lt;/p&gt;
-</description>
+      <guid>https://navaneeth.github.io/post/channels-in-libuv/</guid>
+      <description>go programming language provides a very powerful synchronization mechanism called channels. Channels simplifies communication between threads and makes it very easy to send and receive data from go routines.
+I always missed such functionalities when using libuv. libuv has uv async_send, but it can be used only to wakeup the event loop. In this post, we will implement channels in C using libuv. The idea is to implement a channel so that user can use it without worrying about manually doing the synchronization.</description>
     </item>
     
     <item>
@@ -213,92 +37,7 @@ int main(int argc, char** argv) {
       <pubDate>Fri, 11 May 2012 12:59:50 +0530</pubDate>
       
       <guid>https://navaneeth.github.io/post/simple-generic-and-dynamically-allocated-array-in-c/</guid>
-      <description>&lt;p&gt;C is a very good language. I have been using for quite some time for my opensource project. The flexibility C offers is really good. But sometimes, lack of simple datastructures like a dynamically growing array will slow down the programmer. There are tons of implementation available online, but most of them are overcomplicated, got lot of dependencies or tough to understand and incorporate with your application. In this post, I present a simple array which grows dynamically, reuses the memory, supports any pointer type and easy to copy to your code base.&lt;/p&gt;
-
-&lt;p&gt;Here is the code.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;
-typedef struct varray_t
-{
-   void **memory;
-   size_t allocated;
-   size_t used;
-   int index;
-} varray;
-
-void
-varray_init(varray **array)
-{
-   *array = (varray*) malloc (sizeof(varray));
-   (*array)-&amp;gt;memory = NULL;
-   (*array)-&amp;gt;allocated = 0;
-   (*array)-&amp;gt;used = 0;
-   (*array)-&amp;gt;index = -1;
-}
-
-void
-varray_push(varray *array, void *data)
-{
-   size_t toallocate;
-   size_t size = sizeof(void*);
-   if ((array-&amp;gt;allocated - array-&amp;gt;used) &amp;lt; size) {
-      toallocate = array-&amp;gt;allocated == 0 ? size : (array-&amp;gt;allocated * 2);
-      array-&amp;gt;memory = realloc(array-&amp;gt;memory, toallocate);
-      array-&amp;gt;allocated = toallocate;
-   }
-
-   array-&amp;gt;memory[++array-&amp;gt;index] = data;
-   array-&amp;gt;used = array-&amp;gt;used + size;
-}
-
-int
-varray_length(varray *array)
-{
-   return array-&amp;gt;index + 1;
-}
-
-void
-varray_clear(varray *array)
-{
-   int i;
-   for(i = 0; i &amp;lt; varray_length(array); i++)
-   {
-      array-&amp;gt;memory[i] = NULL;
-   }
-   array-&amp;gt;used = 0;
-   array-&amp;gt;index = -1;
-}
-
-void
-varray_free(varray *array)
-{
-   free(array-&amp;gt;memory);
-   free(array);
-}
-
-void*
-varray_get(varray *array, int index)
-{
-   if (index &amp;lt; 0 || index &amp;gt; array-&amp;gt;index)
-      return NULL;
-
-   return array-&amp;gt;memory[index];
-}
-
-void
-varray_insert(varray *array, int index, void *data)
-{
-   if (index &amp;lt; 0 || index &amp;gt; array-&amp;gt;index)
-      return;
-
-   array-&amp;gt;memory[index] = data;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This array doesn’t take ownership of the data it contains. Ownership has to be managed separately. When adding a new item, array grows in constant propotion yielding inserts in amortized constant time. I have omitted error checking for malloc and realloc for simplicity.&lt;/p&gt;
-
-&lt;p&gt;Hope you enjoy the post.&lt;/p&gt;
-</description>
+      <description>C is a very good language. I have been using for quite some time for my opensource project. The flexibility C offers is really good. But sometimes, lack of simple datastructures like a dynamically growing array will slow down the programmer. There are tons of implementation available online, but most of them are overcomplicated, got lot of dependencies or tough to understand and incorporate with your application. In this post, I present a simple array which grows dynamically, reuses the memory, supports any pointer type and easy to copy to your code base.</description>
     </item>
     
   </channel>

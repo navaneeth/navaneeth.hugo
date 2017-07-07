@@ -7,7 +7,9 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 28 Feb 2013 12:59:50 +0530</lastBuildDate>
-    <atom:link href="https://navaneeth.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://navaneeth.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>How to use individual lines pulled from stdin in the middle of a command when using xargs</title>
@@ -15,31 +17,10 @@
       <pubDate>Thu, 28 Feb 2013 12:59:50 +0530</pubDate>
       
       <guid>https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/</guid>
-      <description>&lt;p&gt;&lt;code&gt;xargs&lt;/code&gt; is very powerful commandline utility. Here is what Wikipedia says about &lt;code&gt;xargs&lt;/code&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;xargs is a command on Unix and most Unix-like operating systems used to build and execute command lines from standard input&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Most common use of &lt;code&gt;xargs&lt;/code&gt; would be to do something like,&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;find . -type f -print0 | xargs -0 rm
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Let us assume that you have a file with list of files to be downloaded from a website. Something like,&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;one.zip
-two.zip
-three.zip
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;With &lt;code&gt;wget&lt;/code&gt; and &lt;code&gt;xargs&lt;/code&gt; all these files can be downloaded easily with just one command.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cat filenames.txt | xargs -I filename wget http://download.com/filename
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;-I&lt;/code&gt; flag takes a replacement string and &lt;code&gt;xargs&lt;/code&gt; will then replace &lt;code&gt;filename&lt;/code&gt; with the value obtained from &lt;code&gt;stdin&lt;/code&gt;.&lt;/p&gt;
-</description>
+      <description>xargs is very powerful commandline utility. Here is what Wikipedia says about xargs
+ xargs is a command on Unix and most Unix-like operating systems used to build and execute command lines from standard input
+ Most common use of xargs would be to do something like,
+find . -type f -print0 | xargs -0 rm  Let us assume that you have a file with list of files to be downloaded from a website.</description>
     </item>
     
     <item>
@@ -48,56 +29,8 @@ three.zip
       <pubDate>Sun, 19 Dec 2010 12:59:50 +0530</pubDate>
       
       <guid>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</guid>
-      <description>&lt;p&gt;Recently I have started evaluating the Pomodoro Technique which I found quite interesting. I am still evaluating the technique and not yet concluded on whether I should continue using it.&lt;/p&gt;
-
-&lt;p&gt;To implement pomodoro technique, you need a kitchen timer or egg timer. Since I use pomodoro for my programming work, I obviously don’t want to use a physical timer. I couldn’t find a decent timer for linux especially one that works well with Xfce. In this blog post, I will explain building a kitchen timer with basic linux programming techniques. This also gives an idea about how simple linux tools can be combined to do useful stuff.&lt;/p&gt;
-
-&lt;p&gt;Things that are used&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Shell scripting&lt;/li&gt;
-&lt;li&gt;Notification mechanisms on popular desktops like Gnome and Xfce. (I use Xfce in this example)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The shell script is actually a modified version of the one published here (&lt;a href=&#34;http://mostlylinux.wordpress.com/commandline/eggtimer/&#34;&gt;http://mostlylinux.wordpress.com/commandline/eggtimer/&lt;/a&gt;).&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/bash
-counter=0
-limit=$1
-summary=$2
-startmessage=$3
-endmessage=$4
-notify-send -u critical -i appointment -t 600 &amp;quot;$summary&amp;quot; &amp;quot;$startmessage&amp;quot;
-echo
-while [ $counter != $limit ]; do
-   echo &amp;quot;$counter minutes so far...&amp;quot;;
-   sleep 60
-   let &amp;quot;counter = $counter + 1&amp;quot;
-done
-if [ $counter = $limit ]; then
-   echo
-   notify-send -u critical -i appointment &amp;quot;$summary&amp;quot; &amp;quot;$endmessage&amp;quot;
-   echo -e &#39;\a&#39; &amp;amp;gt;&amp;amp;amp;2
-   exit 0
-fi
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;All it does is wait until the limit reaches. It uses the sleep(1) command to sleep for a minute. notify-send is used for sending notifications to the desktop environment.&lt;/p&gt;
-
-&lt;p&gt;This script can be invoked using,&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;./p-timer.sh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;If you use bash, you can add an alias for convenience.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;alias begin-pomodoro=&#39;sh ~/utils/p-timer.sh 25 &amp;quot;Pomodoro&amp;quot; &amp;quot;Pomodoro started, you have 25 minutes left&amp;quot; &amp;quot;Pomodoro ended. Please stop the work and take short break&amp;quot;&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;This post is written on one pomodoro!&lt;/p&gt;
-
-&lt;p&gt;Happy programming!&lt;/p&gt;
-</description>
+      <description>Recently I have started evaluating the Pomodoro Technique which I found quite interesting. I am still evaluating the technique and not yet concluded on whether I should continue using it.
+To implement pomodoro technique, you need a kitchen timer or egg timer. Since I use pomodoro for my programming work, I obviously don’t want to use a physical timer. I couldn’t find a decent timer for linux especially one that works well with Xfce.</description>
     </item>
     
   </channel>

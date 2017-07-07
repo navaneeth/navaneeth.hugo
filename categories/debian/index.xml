@@ -7,56 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 21 May 2015 10:50:48 +0530</lastBuildDate>
-    <atom:link href="https://navaneeth.github.io/categories/debian/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://navaneeth.github.io/categories/debian/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Function strdup implicitly converted to pointer</title>
-      <link>https://navaneeth.github.io/post/Function%20strdup%20implicitly%20converted%20to%20pointer/</link>
+      <link>https://navaneeth.github.io/post/function-strdup-implicitly-converted-to-pointer/</link>
       <pubDate>Thu, 21 May 2015 10:50:48 +0530</pubDate>
       
-      <guid>https://navaneeth.github.io/post/Function%20strdup%20implicitly%20converted%20to%20pointer/</guid>
-      <description>&lt;p&gt;I was trying to make a debian package for &lt;a href=&#34;http://varnamproject.com&#34;&gt;libvarnam&lt;/a&gt;. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Our automated build log filter detected the problem(s) above that will
-likely cause your package to segfault on architectures where the size of
-a pointer is greater than the size of an integer, such as ia64 and amd64.&lt;/p&gt;
-
-&lt;p&gt;This is often due to a missing function prototype definition.&lt;/p&gt;
-
-&lt;p&gt;Since use of implicitly converted pointers is always fatal to the application
-on ia64, they are errors. Please correct them for your next upload.&lt;/p&gt;
-
-&lt;p&gt;More information can be found at: &lt;a href=&#34;http://wiki.debian.org/ImplicitPointerConversions&#34;&gt;http://wiki.debian.org/ImplicitPointerConversions&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The above error failed the build.&lt;/p&gt;
-
-&lt;p&gt;The relevant code where the failure happened looks like the following:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;char*
-strbuf_get_last_unicode_char(strbuf *word)
-{
-  varray *characters = NULL;
-  char *lastUnicodeChar = NULL;
-  characters = strbuf_chars(word);
-
-  if (varray_is_empty (characters)) {
-    varray_free (characters, NULL);
-    return NULL;
-  }
-
-  lastUnicodeChar = strdup ((const char*) varray_get(characters, varray_length(characters) - 1)); /* -&amp;gt; Error here */
-  varray_free(characters, &amp;amp;free);
-  /*ending should be freed in the calling function*/
-  return lastUnicodeChar;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;strdup&lt;/code&gt; is not a ANSI C function, hence it is not portable and not available with all compilers. This has caused the function prototype to be not found. When a function prototype is missing, gcc by default return an integer value. De-referencing the returned pointer will cause a segfault.&lt;/p&gt;
-
-&lt;p&gt;To fix this, I found a portable &lt;code&gt;strdup&lt;/code&gt; implementation in the OpenBSD source code. I have used that and disabled the default &lt;code&gt;strdup&lt;/code&gt;.&lt;/p&gt;
-</description>
+      <guid>https://navaneeth.github.io/post/function-strdup-implicitly-converted-to-pointer/</guid>
+      <description>I was trying to make a debian package for libvarnam. Lot of work went into making the package ready. Debian has very strict rules about how the packaging should be done. Debian also marks few errors as fatal and which may require a code change to fix it. One of the errors I faced was the following:
+ Our automated build log filter detected the problem(s) above that will likely cause your package to segfault on architectures where the size of a pointer is greater than the size of an integer, such as ia64 and amd64.</description>
     </item>
     
   </channel>

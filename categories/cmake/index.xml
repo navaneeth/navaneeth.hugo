@@ -7,25 +7,18 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 28 Jul 2013 13:02:25 +0530</lastBuildDate>
-    <atom:link href="https://navaneeth.github.io/categories/cmake/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://navaneeth.github.io/categories/cmake/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Building static and shared libraries using CMake</title>
-      <link>https://navaneeth.github.io/post/Building%20static%20and%20shared%20libraries%20using%20CMake/</link>
+      <link>https://navaneeth.github.io/post/building-static-and-shared-libraries-using-cmake/</link>
       <pubDate>Sun, 28 Jul 2013 13:02:25 +0530</pubDate>
       
-      <guid>https://navaneeth.github.io/post/Building%20static%20and%20shared%20libraries%20using%20CMake/</guid>
-      <description>&lt;p&gt;Recently in &lt;a href=&#34;https://github.com/navaneeth/libvarnam&#34;&gt;libvarnam&lt;/a&gt;, I had to build a static and shared library from the same source files. This was much harder before CMake 2.8. From CMake 2.8.8, CMake has support for &lt;code&gt;Object library&lt;/code&gt; which made it very simple.&lt;/p&gt;
-
-&lt;p&gt;Basic idea is to use &lt;code&gt;add_library&lt;/code&gt; with &lt;code&gt;OBJECT&lt;/code&gt; type. CMake will compile all the source files provided in this target and makes the object files for it. It won&amp;rsquo;t create a temporary static library with all these object files. These object files can later be referred in the target which builds the library. In my CMakeLists.txt, I have the following.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-c&#34;&gt;add_library (core OBJECT ${SOURCES})
-add_library (static STATIC $&amp;lt;TARGET_OBJECTS:core&amp;gt;)
-add_library (shared SHARED $&amp;lt;TARGET_OBJECTS:core&amp;gt;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;The above will build static and shared library from the same set of object files. This improves compilation time considerably as source files will be compiled only once and used in multiple targets.&lt;/p&gt;
-</description>
+      <guid>https://navaneeth.github.io/post/building-static-and-shared-libraries-using-cmake/</guid>
+      <description>Recently in libvarnam, I had to build a static and shared library from the same source files. This was much harder before CMake 2.8. From CMake 2.8.8, CMake has support for Object library which made it very simple.
+Basic idea is to use add_library with OBJECT type. CMake will compile all the source files provided in this target and makes the object files for it. It won&amp;rsquo;t create a temporary static library with all these object files.</description>
     </item>
     
   </channel>

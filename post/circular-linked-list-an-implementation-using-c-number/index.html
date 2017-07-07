@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="https://navaneeth.github.io/css/highlight/sunburst.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
 
   
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://navaneeth.github.io/touch-icon-144-precomposed.png">
@@ -30,6 +31,16 @@
 
   <meta name="description" content="">
   <meta name="keywords" content="">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-38544003-1', 'auto');
+    ga('send', 'pageview');
+  </script>
   
 </head>
 <body>
@@ -65,7 +76,7 @@
 
     
 
-    <p>Copyright &copy; 2016 <a href="https://navaneeth.github.io/license/">License</a><br/>
+    <p>Copyright &copy; 2017 <a href="https://navaneeth.github.io/license/">License</a><br/>
        Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
   </div>
 </div>
@@ -73,7 +84,7 @@
 
 <div class="content container">
   <div class="post">
-    <h1>Circular linked list – An implementation using C#</h1>
+    <h1 class="post-title">Circular linked list – An implementation using C#</h1>
     <span class="post-date">Aug 18, 2009 &middot; 6 minute read
     
     <br/>
@@ -105,7 +116,7 @@
 
 <p><img src="images/posts/classdiagram1.png" alt="Alt text" title="Class diagram" /></p>
 
-<h2 id="node-lt-t-gt-class:c4b153d1621eb531bb575e5dfac92e1a">Node&lt;T&gt; class</h2>
+<h2 id="node-lt-t-gt-class">Node&lt;T&gt; class</h2>
 
 <blockquote>
 <p>Every problem can be solved by adding another layer of indirection.</p>
@@ -146,7 +157,7 @@ public sealed class Node&lt;T&gt;
 }
 </code></pre>
 
-<h2 id="circularlinkedlist-lt-t-gt-class:c4b153d1621eb531bb575e5dfac92e1a">CircularLinkedList&lt;T&gt; class</h2>
+<h2 id="circularlinkedlist-lt-t-gt-class">CircularLinkedList&lt;T&gt; class</h2>
 
 <p>Keeping the requirements in mind, let us start writing the generic CircularLinkedList<T>. Some linked list implementations maintains only a link to the head node and when adding a new item to the list, each node in the list has to be traveled till tail node is found and this gives O(n) complexity for the algorithm.</p>
 
@@ -312,7 +323,7 @@ bool RemoveNode(Node&lt;T&gt; nodeToRemove)
 }
 </code></pre>
 
-<h2 id="test-harness:c4b153d1621eb531bb575e5dfac92e1a">Test harness</h2>
+<h2 id="test-harness">Test harness</h2>
 
 <p>Following code shows how this class can be used,</p>
 
@@ -354,7 +365,7 @@ bool RemoveNode(Node&lt;T&gt; nodeToRemove)
 }
 </code></pre>
 
-<h2 id="possible-expansions:c4b153d1621eb531bb575e5dfac92e1a">Possible expansions</h2>
+<h2 id="possible-expansions">Possible expansions</h2>
 
 <p>There are good and complex features that can be added to this list. Here are few that will be useful,</p>
 
@@ -375,7 +386,6 @@ bool RemoveNode(Node&lt;T&gt; nodeToRemove)
 
 <script src="https://navaneeth.github.io/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-
 </body>
 </html>
 

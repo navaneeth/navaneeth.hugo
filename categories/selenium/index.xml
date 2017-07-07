@@ -7,7 +7,9 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 20 Feb 2013 12:59:50 +0530</lastBuildDate>
-    <atom:link href="https://navaneeth.github.io/categories/selenium/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://navaneeth.github.io/categories/selenium/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>How to upload files when testing using Selenium Webdriver</title>
@@ -15,14 +17,8 @@
       <pubDate>Wed, 20 Feb 2013 12:59:50 +0530</pubDate>
       
       <guid>https://navaneeth.github.io/post/how-to-upload-files-when-testing-using-selenium-webdriver/</guid>
-      <description>&lt;p&gt;You can use the following code to set a file path to the file upload control.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;WebElement file = driver.findElement(By.id(&amp;quot;control_id&amp;quot;));
-file.sendKeys(&amp;quot;/full/path/to/file&amp;quot;);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;You need to pass full path to the &lt;code&gt;sendKeys()&lt;/code&gt; for it to work. Otherwise &lt;code&gt;sendKeys()&lt;/code&gt; fails silently.&lt;/p&gt;
-</description>
+      <description>You can use the following code to set a file path to the file upload control.
+WebElement file = driver.findElement(By.id(&amp;quot;control_id&amp;quot;)); file.sendKeys(&amp;quot;/full/path/to/file&amp;quot;);  You need to pass full path to the sendKeys() for it to work. Otherwise sendKeys() fails silently.</description>
     </item>
     
   </channel>
