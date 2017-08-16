@@ -89,6 +89,22 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="https://navaneeth.github.io/post/building-static-and-shared-libraries-using-cmake/">Building static and shared libraries using CMake</a>
+      </h1>
+      <span class="post-date">Jul 28, 2013 &middot; 1 minute read
+      
+      <br/>
+      <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/cmake">cmake</a>
+      </span>
+      
+      Recently in libvarnam, I had to build a static and shared library from the same source files. This was much harder before CMake 2.8. From CMake 2.8.8, CMake has support for Object library which made it very simple.
+Basic idea is to use add_library with OBJECT type. CMake will compile all the source files provided in this target and makes the object files for it. It won&rsquo;t create a temporary static library with all these object files.
+      <a href="https://navaneeth.github.io/post/building-static-and-shared-libraries-using-cmake/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/">How to use individual lines pulled from stdin in the middle of a command when using xargs</a>
       </h1>
       <span class="post-date">Feb 28, 2013 &middot; 1 minute read
