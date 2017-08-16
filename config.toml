@@ -19,6 +19,7 @@ pygmentsuseclasses = "true"
     rss = "true"
     highlight = "sunburst"
     home = "blog"
+    googleAnalytics = "UA-38544003-1"
 
 [[menu.main]]
     name = "about"
