@@ -13,7 +13,7 @@ Feel like getting out of here? I am game- let me grab the bike keys and a map of
 
 This July (26th Jun 2017 to 5th July 2017), Anju and I took the courage and went for a Himalayan trip on a motorcycle. The trip was adventurous and fun filled. We were also anxious because we were leaving our son back at home for the first time. 12 days, without him!
 
-We started the journey by taking a flight to Chandigarh from Bangalore and a taxi to Manali. We stayed at Manali for the night and collected our bike next day. A __500CC__ standard bullet, forest green color was ready to take us for the exciting journey.
+We started the journey by taking a flight to Chandigarh from Bangalore and then a taxi from there to Manali. We stayed at Manali for the night and collected our bike next day. A __500CC__ standard bullet, forest green color was ready to take us for the exciting journey.
 
 ![Leh][map]
 
@@ -21,19 +21,19 @@ We started the journey by taking a flight to Chandigarh from Bangalore and a tax
 
 ![Rohtang pass][rohtang-pass-1]
 
-Unfortunately, we started riding on a national holiday, *Ramzan*. Manali was crowded. We felt as if the whole world is in Manali. Small roads in Manali was blocked by heavy traffic. It took us quite a bit of struggle to get out of Manali and start riding towards the mountains. The mountains are calling, but the city traffic is holding us back.
+Unfortunately, we started riding on a national holiday, *Ramzan*. Manali was crowded. We felt as though the whole world was at Manali. Small roads here in Manali were blocked by heavy traffic. It took us quite a bit of struggle to get out of Manali and start riding towards the mountains. The mountains were calling, but the city traffic is holding us back.
 
 Our first stop was at Rohtang pass.
 
-Rohtang pass was filled with tourists. If you hate the crowds, avoid this area like plague.
+Rohtang pass was filled with tourists. If you hate the crowd, avoid this area.
 
-We were in a hurry to get out of traffic as early as possible. Right after Rohtang, we were greeted with a thick yellow board, *Welcome to Lahaul & Spiti*.
+We were in a hurry to get out of traffic as early as possible. Right after Rohtang, we were greeted by a thick yellow board. It said - *Welcome to Lahaul & Spiti*.
 
 [![Welcome to Lahaul & Spiti][lahaul-spiti]](https://www.flickr.com/photos/navaneethkn/35365408040/in/dateposted-public/lightbox/)
 
-By now, the crowd has cleared up and we were the only ones in the road. Prisctine Himalayas!
+By now, the crowd had cleared up and we were the only ones in the road. Prisctine Himalayas!
 
-We were driving on the Leh - Manali highway. Even though it is a highway, only small stretch of the roads are good. Rest all are mostly off road. It is my first experience with mountain roads like this.
+We were driving on the Leh - Manali highway. Even though it is a highway, only a small stretch of the roads were good. Rest all are mostly off road. It was my first experience with mountain roads like this.
 
 [![Leh - Manali highway][leh-manali-highway1]](https://www.flickr.com/photos/navaneethkn/34912816224/in/dateposted-public/lightbox/)
 
@@ -43,7 +43,7 @@ We were enjoying the blue sky, bumpy roads and the [*dhabas*](https://en.wikiped
 
 We are usually wary of organized tours. But in this case, even though it was an organized tour, we had full freedom to take as many stops as we need and capture the himalayan beauty.
 
-The valley was beautiful, weather was nice. We felt like travelling through a wonderland.
+The valley was beautiful, weather was nice. We felt like we were in a wonderland.
 
 [![Wonderland][wonderland1]](https://www.flickr.com/photos/navaneethkn/34914105554/in/dateposted-public/lightbox/)
 
@@ -53,7 +53,7 @@ By evening, we reached our first camp site, [Jispa](https://en.wikipedia.org/wik
 
 Jispa camp site is located on the shores of [*Chenab River*](https://en.wikipedia.org/wiki/Chenab_River).
 
-We spent a pleasant morning looking at the timeless Chenab river. The serene landscape offered us lots of photographic opportunities.
+We spent a pleasant morning looking at the timeless Chenab river. The serene landscape offered us a lot of photographic opportunities.
 
 [![Shores of chenab river][jispa1]](https://www.flickr.com/photos/navaneethkn/34977664783/in/dateposted-public/lightbox/)
 
@@ -79,7 +79,7 @@ Our ride was beautiful and intense as usual. We had to cross few water streams a
 
 Sarchu is a major camp location for the travellers to Leh. There are temporary tents installed for camping.
 
-Sarchu is at 14,000ft and it is too windy and it is too cold. We faced altitude sickness for the first time. Heavy headache, nausea, vomiting etc. Taking a pain-killer tablet fixed it for us.
+Sarchu is at 14,000ft and it is too windy and too cold there. We faced altitude sickness for the first time. Heavy headache, nausea, vomiting etc. Taking a pain-killer tablet fixed it for us.
 
 [![Sarchu][sarchu1]](https://www.flickr.com/photos/navaneethkn/35623616562/in/dateposted-public/lightbox/)
 
@@ -93,7 +93,7 @@ The drive till Gata loops is straight road and comparatively easy to ride.
 
 ![Sarchu][sarchu2]
 
-After taking a short brake at Pang, we headed towards [Moore plains](https://en.wikipedia.org/wiki/More_plains). Straight stretch of roads untill the climb begins to Taglang La. We had a temptation to speed up but we didn't. This stretch of straight roads are full of small bumps and surprises. Many people in our team fell down and got injured.
+After taking a short brake at Pang, we headed towards [Moore plains](https://en.wikipedia.org/wiki/More_plains). Straight stretch of roads untill the climb begins to Taglang La. We had a temptation to speed up but we didn't. This stretch of straight roads were full of small bumps and surprises. Many people in our team fell down and got injured.
 
 Riding motorcycle is very liberating. We felt closer to the nature and the people around us. We had lots of random conversations with people in the villages. They were all nice and friendly.
 
@@ -117,7 +117,7 @@ Fantastic evening lights around [Shanti Stupa](https://en.wikipedia.org/wiki/Sha
 
 [![Shanti stupa][shanti-stupa1]](https://www.flickr.com/photos/navaneethkn/35662046971/in/dateposted-public/lightbox/)
 
-We woke up the next day hearing the bad news. It is raining everywhere. Roads to Khardungla is closed. Rain was not expected at this time of year at Leh. But there we had heavy rain and flooded roads. We had to cancel Khardungla and spent a day exploring Leh.
+We woke up the next day hearing the bad news. It was raining everywhere. Roads to Khardungla was closed. Rain was not expected at this time of year at Leh. But there we had heavy rain and flooded roads. We had to cancel Khardungla and spent a day exploring Leh.
 
 ![Leh city][leh-city1]
 
@@ -141,7 +141,7 @@ I went out to see evening lights lighting up the mountains. But I was disappoint
 
 ## Pangong lake
 
-The famous tourist spot after the Hindi movie, [3 Idiots](http://www.imdb.com/title/tt1187043/). This lake is around 150Km from Leh, very close to India-China border. It is a beautiful lake and drive to there is as usual, stunning!
+The famous tourist spot from the Hindi movie, [3 Idiots](http://www.imdb.com/title/tt1187043/). This lake is around 150Km from Leh, very close to India-China border. It is a beautiful lake and drive to there was as usual, stunning!
 
 During this journey, we passed through [Chang La (17590ft)](https://en.wikipedia.org/wiki/Chang_La), the second highest motorable road in the world. Whole pass was covered in snow and offered us a stunning view.
 
@@ -171,7 +171,7 @@ Manali - Leh trip is not too tough. But not too easy too. Planning it properly m
 2. Always carry enough woolen cloths
 3. Be sure to carry rain coats, water proof boots etc
 4. Drink more water and keep yourself hydrated. Altitude sickness is very common and keeping hydrated helps. [Hydration pack](https://en.wikipedia.org/wiki/Hydration_pack) helped us a lot
-5. Carry enough medicines. *Diamox* tablets helps to reduce altitude sickness
+5. Carry enough medicines. *Diamox* tablets help reduce altitude sickness
 6. Drive carefully, roads are very slippery
 7. Get padded cycling shorts. This helps you to sit for longer in the saddle
 8. Sunglasses
@@ -183,7 +183,7 @@ Manali - Leh trip is not too tough. But not too easy too. Planning it properly m
 
 ----
 
-Travelling is liberating. Don't restrict yourself to your own comfort zones. Have conversations with strangers, make new friends, laugh like crazy people and enjoy the trip to the maximum.
+Travelling is liberating. Don't restrict yourself to your own comfort zones. Have conversations with strangers, make new friends, laugh like crazy and enjoy the trip to the maximum.
 
 ![Navaneeth & Anju][wetwo]
 
