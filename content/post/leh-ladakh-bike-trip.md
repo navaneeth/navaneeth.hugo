@@ -61,7 +61,7 @@ Jispa was the best camp site we stayed during our journey. Terrain was full of f
 
 Most of us do farming by choice. For them, it is a necessity. Farming helps them to sustain the heavy winter isolation and keep them busy all the time. We saw potatoes, cauliflower etc in the farms.
 
-It was time to bid adieu to the beautiful Jispa. Today's ride will be short. We left Jispa by morning 10AM.
+It was time to bid adieu to the beautiful Jispa. Ride from Jispa to Sarchu was short. We left Jispa by morning 10AM.
 
 In this stretch, bikes had to cross several small/medium water streams. It was my first time experience in riding through the streams. Riding through streams looks very easy, but pretty hard to do.
 
@@ -93,7 +93,7 @@ The drive till Gata loops is straight road and comparatively easy to ride.
 
 ![Sarchu][sarchu2]
 
-After taking a short brake at Pang, we headed towards [Moore plains](https://en.wikipedia.org/wiki/More_plains). Straight stretch of roads untill the climb begins to Taglang La. We had a temptation to speed up but we didn't. This stretch of straight roads were full of small bumps and surprises. Many people in our team fell down and got injured.
+After taking a short break at Pang, we headed towards [Moore plains](https://en.wikipedia.org/wiki/More_plains). Straight stretch of roads untill the climb begins to Taglang La. We had a temptation to speed up but we didn't. This stretch of straight roads were full of small bumps and surprises. Many people in our team fell down and got injured.
 
 Riding motorcycle is very liberating. We felt closer to the nature and the people around us. We had lots of random conversations with people in the villages. They were all nice and friendly.
 
