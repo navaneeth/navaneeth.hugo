@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://navaneeth.github.io/post/onam/</loc>
+    <lastmod>2017-09-04T10:34:36+05:30</lastmod>
+  </url>
+  
+  <url>
     <loc>https://navaneeth.github.io/post/leh-ladakh-bike-trip/</loc>
     <lastmod>2017-07-06T14:37:36+05:30</lastmod>
   </url>
@@ -201,6 +206,12 @@
   </url>
   
   <url>
+    <loc>https://navaneeth.github.io/categories/photography/</loc>
+    <lastmod>2017-09-04T10:34:36+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://navaneeth.github.io/categories/pomodoro/</loc>
     <lastmod>2010-12-19T12:59:50+05:30</lastmod>
     <priority>0</priority>
@@ -208,7 +219,7 @@
   
   <url>
     <loc>https://navaneeth.github.io/post/</loc>
-    <lastmod>2017-07-06T14:37:36+05:30</lastmod>
+    <lastmod>2017-09-04T10:34:36+05:30</lastmod>
     <priority>0</priority>
   </url>
   
@@ -267,7 +278,7 @@
   
   <url>
     <loc>https://navaneeth.github.io/</loc>
-    <lastmod>2017-07-06T14:37:36+05:30</lastmod>
+    <lastmod>2017-09-04T10:34:36+05:30</lastmod>
     <priority>0</priority>
   </url>
   

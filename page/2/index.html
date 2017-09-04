@@ -89,6 +89,22 @@
     
     <div class="post">
       <h1 class="post-title">
+        <a href="https://navaneeth.github.io/post/channels-in-libuv/">Channels in libuv</a>
+      </h1>
+      <span class="post-date">Aug 2, 2013 &middot; 3 minute read
+      
+      <br/>
+      <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/c">c</a><a class="label" href="https://navaneeth.github.io/categories/golang">golang</a>
+      </span>
+      
+      go programming language provides a very powerful synchronization mechanism called channels. Channels simplifies communication between threads and makes it very easy to send and receive data from go routines.
+I always missed such functionalities when using libuv. libuv has uv async_send, but it can be used only to wakeup the event loop. In this post, we will implement channels in C using libuv. The idea is to implement a channel so that user can use it without worrying about manually doing the synchronization.
+      <a href="https://navaneeth.github.io/post/channels-in-libuv/">Read On &rarr;</a>
+      
+    </div>
+    
+    <div class="post">
+      <h1 class="post-title">
         <a href="https://navaneeth.github.io/post/building-static-and-shared-libraries-using-cmake/">Building static and shared libraries using CMake</a>
       </h1>
       <span class="post-date">Jul 28, 2013 &middot; 1 minute read
@@ -235,22 +251,6 @@ A Thread is a small unit of code in execution. A process is an instance of progr
       
     </div>
     
-    <div class="post">
-      <h1 class="post-title">
-        <a href="https://navaneeth.github.io/post/ado-dot-net-best-practices-reading-data-from-data-reader/">ADO.NET best practices – Reading data from data reader</a>
-      </h1>
-      <span class="post-date">Jul 11, 2009 &middot; 4 minute read
-      
-      <br/>
-      <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/.net">.net</a><a class="label" href="https://navaneeth.github.io/categories/c">c#</a>
-      </span>
-      
-      I have seen many people using DataReader incorrectly. In this post, I will try to explain some good practices that can be followed when reading from a data reader. Consider the following problematic code,
-SqlDataReader reader = /* ... */; while (reader.Read()) { string userName = reader[&quot;user_name&quot;].ToString(); int age = int.Parse( reader[&quot;age&quot;].ToString() ); /* ... */ } reader.Close();  How many problems can you figure out from the above code?
-      <a href="https://navaneeth.github.io/post/ado-dot-net-best-practices-reading-data-from-data-reader/">Read On &rarr;</a>
-      
-    </div>
-    
     
 
 <ul class="pagination">
@@ -289,13 +289,25 @@ SqlDataReader reader = /* ... */; while (reader.Read()) { string userName = read
     class="active"><a href="/page/2/">2</a></li>
     
     
+    
+    
+    
+     
+        
+        
+    
+    
     <li
-    class="disabled">
-    <a href="" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    ><a href="/page/3/">3</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/3/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
     </li>
     
     <li>
-        <a href="/page/2/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+        <a href="/page/3/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
     </li>
     
 </ul>
