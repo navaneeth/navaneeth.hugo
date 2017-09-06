@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rails on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/rails/</link>
+    <description>Recent content in Rails on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 18 Nov 2014 12:55:32 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/rails/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>document.ready() handler not getting fired   Rails4</title>
+      <link>https://navaneeth.github.io/post/document.ready-handler-not-getting-fired---rails4/</link>
+      <pubDate>Tue, 18 Nov 2014 12:55:32 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/document.ready-handler-not-getting-fired---rails4/</guid>
+      <description>Rails4 uses a gem called turbolinks which makes following links on the web application faster. This gem is added to the Gemfile by default when a new rails project is initialized. However, there are few side effects this can cause.
+Consider the following JS, added into app/assets/javascripts/projects.js:
+$(function () { $(&#39;#startDate&#39;).datetimepicker({ pickTime: false }); });  This looks alright, but won&amp;rsquo;t work as expected.
+When rails navigates to the page following a link, turbolink comes into picture and makes it faster by caching the JS contents.</description>
+    </item>
+    
+  </channel>
+</rss>

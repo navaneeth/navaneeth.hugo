@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C&#43;&#43;/Cli on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/c&#43;&#43;/cli/</link>
+    <description>Recent content in C&#43;&#43;/Cli on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 17 Feb 2013 12:59:50 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/c++/cli/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Working with native code easily in C# with the help of C&#43;&#43;/CLI</title>
+      <link>https://navaneeth.github.io/post/working-with-native-code-in-csharp-easily-with-cplusplus-cli/</link>
+      <pubDate>Sun, 17 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/working-with-native-code-in-csharp-easily-with-cplusplus-cli/</guid>
+      <description>.NET comes with pretty good interoperability options which would enable unmanaged code to be used from a managed environment. In C#, to call a function which is available in a DLL, PInvoke (Platform invocation service) can be used. Here is what MSDN says.
+ Platform Invocation Services (PInvoke) allows managed code to call unmanaged functions that are implemented in a DLL.
+ This is very helpful when you need to call some system functions from your C# application.</description>
+    </item>
+    
+  </channel>
+</rss>

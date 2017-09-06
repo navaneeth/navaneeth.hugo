@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Angularjs on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/angularjs/</link>
+    <description>Recent content in Angularjs on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 28 Sep 2014 11:29:28 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/angularjs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hiding menu when clicking outside - AngularJS</title>
+      <link>https://navaneeth.github.io/post/hiding-menu-when-clicking-outside---angularjs/</link>
+      <pubDate>Sun, 28 Sep 2014 11:29:28 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/hiding-menu-when-clicking-outside---angularjs/</guid>
+      <description>Assume you have a menu which looks like the following:
+&amp;lt;div class=&amp;quot;right-menu&amp;quot; ng-click=&amp;quot;toggleMenu($event);&amp;quot;&amp;gt; &amp;lt;img src=&amp;quot;img/RightMenuIcon.png&amp;quot; alt=&amp;quot;&amp;quot; /&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div ng-show=&amp;quot;menuOpened&amp;quot; class=&amp;quot;menu-dropdown-right&amp;quot;&amp;gt; &amp;lt;ul&amp;gt; &amp;lt;li ng-hide=&amp;quot;loggedIn&amp;quot; class=&amp;quot;class&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;#/authenticate&amp;quot;&amp;gt;Login&amp;lt;/a&amp;gt; &amp;lt;/li&amp;gt; &amp;lt;li ng-show=&amp;quot;loggedIn&amp;quot; ng-click=&amp;quot;logOut()&amp;quot;&amp;gt;&amp;lt;a href=&amp;quot;#&amp;quot;&amp;gt;Logout&amp;lt;/a&amp;gt; &amp;lt;/li&amp;gt; &amp;lt;/ul&amp;gt; &amp;lt;/div&amp;gt;  When the div gets a click event, angular calls toggleMenu which toggles the menuOpened variable. Changing the value of this variable in turn makes the div show/hide.
+To hide the menu when clicking outside of the div, we add a onclick handler to window object which checks the menuOpened variable and updates it if the menu is visible.</description>
+    </item>
+    
+  </channel>
+</rss>

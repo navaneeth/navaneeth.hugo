@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Threading on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/threading/</link>
+    <description>Recent content in Threading on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 Feb 2013 12:59:50 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/threading/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Is Thread.Sleep() evil?</title>
+      <link>https://navaneeth.github.io/post/is-thread-dot-sleep-evil/</link>
+      <pubDate>Tue, 19 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/is-thread-dot-sleep-evil/</guid>
+      <description>If you search for this topic, you will find lots of information and many of them claiming Thread.Sleep() is evil. However, I think this evilness is mostly dependent on which context Thread.Sleep() is used.
+You might have seen code like the below one.
+while (!exit) { DoWork(); Thread.Sleep(10000); }  This code example does some work and sleeps for 1 minute before does the job again. This simple example has some potential issues.</description>
+    </item>
+    
+  </channel>
+</rss>

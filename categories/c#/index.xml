@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C# on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/c#/</link>
+    <description>Recent content in C# on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 Feb 2013 12:59:50 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/c#/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Is Thread.Sleep() evil?</title>
+      <link>https://navaneeth.github.io/post/is-thread-dot-sleep-evil/</link>
+      <pubDate>Tue, 19 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/is-thread-dot-sleep-evil/</guid>
+      <description>If you search for this topic, you will find lots of information and many of them claiming Thread.Sleep() is evil. However, I think this evilness is mostly dependent on which context Thread.Sleep() is used.
+You might have seen code like the below one.
+while (!exit) { DoWork(); Thread.Sleep(10000); }  This code example does some work and sleeps for 1 minute before does the job again. This simple example has some potential issues.</description>
+    </item>
+    
+    <item>
+      <title>Circular linked list – An implementation using C#</title>
+      <link>https://navaneeth.github.io/post/circular-linked-list-an-implementation-using-c-number/</link>
+      <pubDate>Tue, 18 Aug 2009 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/circular-linked-list-an-implementation-using-c-number/</guid>
+      <description>In this post, I will explain about creating a circular doubly linked list using C#. .NET framework provides a doubly linked list implementation in System.Collections.Generic.LinkedList class . But this class is not providing the behavior of a circular linked list and it is very tough to extend for supporting circular linked list requirements.
+In a normal doubly linked list, each node will have a link to its previous and next nodes.</description>
+    </item>
+    
+    <item>
+      <title>What Great .NET Developers Ought To Know (More .NET Interview Questions and Answers) – Part1</title>
+      <link>https://navaneeth.github.io/post/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/</link>
+      <pubDate>Thu, 13 Aug 2009 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/</guid>
+      <description>In this series of posts, I will try to answer the questions posted by Scott Hanselman here. This part we will be seeing the first set of questions he has given under Everyone who writes code heading.
+Q) Describe the difference between a Thread and a Process?
+A Thread is a small unit of code in execution. A process is an instance of program which will have multiple threads running. A process can host multiple threads.</description>
+    </item>
+    
+    <item>
+      <title>ADO.NET best practices – Reading data from data reader</title>
+      <link>https://navaneeth.github.io/post/ado-dot-net-best-practices-reading-data-from-data-reader/</link>
+      <pubDate>Sat, 11 Jul 2009 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/ado-dot-net-best-practices-reading-data-from-data-reader/</guid>
+      <description>I have seen many people using DataReader incorrectly. In this post, I will try to explain some good practices that can be followed when reading from a data reader. Consider the following problematic code,
+SqlDataReader reader = /* ... */; while (reader.Read()) { string userName = reader[&amp;quot;user_name&amp;quot;].ToString(); int age = int.Parse( reader[&amp;quot;age&amp;quot;].ToString() ); /* ... */ } reader.Close();  How many problems can you figure out from the above code?</description>
+    </item>
+    
+  </channel>
+</rss>

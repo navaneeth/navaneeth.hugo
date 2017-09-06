@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>Accessing nested keys from a map in Elixir &middot; nkn</title>
+
+  
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/poole-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-overrides.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/hyde-x.css">
+  <link rel="stylesheet" href="https://navaneeth.github.io/css/highlight/sunburst.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700|Abril+Fatface">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://navaneeth.github.io/touch-icon-144-precomposed.png">
+  <link href="https://navaneeth.github.io/favicon.png" rel="icon">
+
+  
+  
+  
+  
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-38544003-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</head>
+<body>
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      
+      <h1>nkn</h1>
+      <p class="lead">{love to code}</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/">blog</a></li>
+      
+      <li class="sidebar-nav-item"><a href="https://navaneeth.github.io/about/">about</a></li>
+      
+    </ul>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item">
+      <a href="https://www.flickr.com/photos/navaneethkn"><i class="fa fa-flickr fa-3x"></i></a>
+      <a href="https://github.com/navaneeth/"><i class="fa fa-github-square fa-3x"></i></a>
+      
+      
+      
+      
+      
+      <a href="http://twitter.com/navaneethkn"><i class="fa fa-twitter-square fa-3x"></i></a>
+      
+      <a href="https://navaneeth.github.io/index.xml" type="application/rss+xml"><i class="fa fa-rss-square fa-3x"></i></a>
+      </li>
+    </ul>
+
+    
+
+    <p>Copyright &copy; 2017 <a href="https://navaneeth.github.io/license/">License</a><br/>
+       Powered by <a href="http://gohugo.io">Hugo</a> and <a href="https://github.com/zyro/hyde-x">Hyde-X</a></p>
+  </div>
+</div>
+
+
+<div class="content container">
+  <div class="post">
+    <h1 class="post-title">Accessing nested keys from a map in Elixir</h1>
+    <span class="post-date">Jun 14, 2016 &middot; 2 minute read
+    
+    <br/>
+    <a class="label" href="https://navaneeth.github.io/categories/programming">programming</a><a class="label" href="https://navaneeth.github.io/categories/elixir">elixir</a>
+    </span>
+    <p>Erlang VM is a powerful pattern matching system. Pattern matching comes very handy when you want to access nested fields in a map.</p>
+
+<p>Recently at work, I had to parse a large JSON and extract value of a key. This post shows how you can use pattern matching to extract deeply nested values from a JSON.</p>
+
+<p></p>
+
+<p>Here is a sample JSON</p>
+
+<pre><code>&quot;apiGroups&quot;: {
+    &quot;affiliate&quot;: {
+      &quot;name&quot;: &quot;affiliate&quot;,
+      &quot;apiListings&quot;: {
+        &quot;televisions&quot;: {
+          &quot;availableVariants&quot;: {
+            &quot;v1.1.0&quot;: {
+              &quot;resourceName&quot;: &quot;televisions&quot;,
+              &quot;get&quot;: &quot;https://affiliate-api.flipkart.net/affiliate/1.0/feeds/16/category/ckf-czl.json?expiresAt=1465939211609&amp;sig=6ef13e817f5e7a3e974407e766e82ddc&quot;,
+              &quot;deltaGet&quot;: &quot;https://affiliate-api.flipkart.net/affiliate/1.0/deltaFeeds/16/category/ckf-czl.json?expiresAt=1465939211609&amp;sig=6ef13e817f5e7a3e974407e766e82ddc&quot;,
+              &quot;post&quot;: null,
+              &quot;put&quot;: null,
+              &quot;delete&quot;: null
+            },
+          }
+        }
+      }
+    }
+  }
+</code></pre>
+
+<p>From this, I have to extract the value for the key <code>get</code>.</p>
+
+<p>Here is how you can pattern match and extract the value:</p>
+
+<pre><code>  defp get_product_url(category) do
+    case HTTPotion.get(&quot;https://affiliate-api.flipkart.net/affiliate/api/.....&quot;) do
+      %HTTPotion.Response{body: body, status_code: 200} -&gt;
+        %{&quot;apiGroups&quot; =&gt;
+          %{&quot;affiliate&quot; =&gt;
+            %{&quot;apiListings&quot; =&gt;
+              %{^category =&gt;
+                %{&quot;availableVariants&quot; =&gt;
+                  %{&quot;v1.1.0&quot; =&gt;
+                    %{&quot;get&quot; =&gt; product_url}
+                  }
+                }
+              }
+            }
+          }
+        } = Poison.decode!(body)
+        product_url
+      %HTTPotion.ErrorResponse{message: reason} -&gt;
+        Logger.error reason
+    end
+  end
+</code></pre>
+
+<p>Did you notice the <code>^category</code>? In this case, we are using value of <code>category</code> as the key. <code>^</code> symbol tells Elixir to expand the variable.</p>
+
+<p>Caveat: Using this style, you will get cryptic error message which just says right hand side values can&rsquo;t be matched with left hand side in case of wrong data format. Thus, use this carefully in situations where you are sure about the data format.</p>
+
+<p>Pretty neat!</p>
+  </div>
+  
+</div>
+
+
+
+
+<script src="https://navaneeth.github.io/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
+

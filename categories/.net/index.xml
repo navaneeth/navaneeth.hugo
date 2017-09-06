@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>.Net on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/.net/</link>
+    <description>Recent content in .Net on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 17 Feb 2013 12:59:50 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/.net/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Working with native code easily in C# with the help of C&#43;&#43;/CLI</title>
+      <link>https://navaneeth.github.io/post/working-with-native-code-in-csharp-easily-with-cplusplus-cli/</link>
+      <pubDate>Sun, 17 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/working-with-native-code-in-csharp-easily-with-cplusplus-cli/</guid>
+      <description>.NET comes with pretty good interoperability options which would enable unmanaged code to be used from a managed environment. In C#, to call a function which is available in a DLL, PInvoke (Platform invocation service) can be used. Here is what MSDN says.
+ Platform Invocation Services (PInvoke) allows managed code to call unmanaged functions that are implemented in a DLL.
+ This is very helpful when you need to call some system functions from your C# application.</description>
+    </item>
+    
+    <item>
+      <title>What Great .NET Developers Ought To Know (More .NET Interview Questions and Answers) – Part1</title>
+      <link>https://navaneeth.github.io/post/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/</link>
+      <pubDate>Thu, 13 Aug 2009 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/</guid>
+      <description>In this series of posts, I will try to answer the questions posted by Scott Hanselman here. This part we will be seeing the first set of questions he has given under Everyone who writes code heading.
+Q) Describe the difference between a Thread and a Process?
+A Thread is a small unit of code in execution. A process is an instance of program which will have multiple threads running. A process can host multiple threads.</description>
+    </item>
+    
+    <item>
+      <title>ADO.NET best practices – Reading data from data reader</title>
+      <link>https://navaneeth.github.io/post/ado-dot-net-best-practices-reading-data-from-data-reader/</link>
+      <pubDate>Sat, 11 Jul 2009 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/ado-dot-net-best-practices-reading-data-from-data-reader/</guid>
+      <description>I have seen many people using DataReader incorrectly. In this post, I will try to explain some good practices that can be followed when reading from a data reader. Consider the following problematic code,
+SqlDataReader reader = /* ... */; while (reader.Read()) { string userName = reader[&amp;quot;user_name&amp;quot;].ToString(); int age = int.Parse( reader[&amp;quot;age&amp;quot;].ToString() ); /* ... */ } reader.Close();  How many problems can you figure out from the above code?</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Startup on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/startup/</link>
+    <description>Recent content in Startup on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 26 Dec 2015 12:26:42 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/startup/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Bringing business ideas to live in 3 months</title>
+      <link>https://navaneeth.github.io/post/bringing-business-ideas-to-live-in-3-months/</link>
+      <pubDate>Sat, 26 Dec 2015 12:26:42 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/bringing-business-ideas-to-live-in-3-months/</guid>
+      <description>Early July, we started working with 2 ex-yahoo friends who had a nice product idea that they wanted to make it live. They had some screen designs on paper and clear cut vision on what the product should look like.
+We started with the development, post a week of ideation and technical spikes, and guess what, we had MVP ready for a limited user release in less than 9 weeks and a full production version by the end of October.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Android on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/android/</link>
+    <description>Recent content in Android on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 30 Dec 2015 18:30:50 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/android/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>oh my jackson!</title>
+      <link>https://navaneeth.github.io/post/oh-my-jackson/</link>
+      <pubDate>Wed, 30 Dec 2015 18:30:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/oh-my-jackson/</guid>
+      <description>Jackson just made my day!
+Today, I had to make some changes to one of our API. The change was minor so I have added additional fields into my JSON response. I have also kept the old fields just to make the existing clients happy.
+During testing, I figured out that the change breaks existing clients. I was surprised! The error was,
+ org.codehaus.jackson.map.exc.UnrecognizedPropertyException: Unrecognized field &amp;ldquo;image&amp;rdquo; (Class Promotion), not marked as ignorable</description>
+    </item>
+    
+  </channel>
+</rss>

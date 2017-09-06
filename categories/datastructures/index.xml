@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Datastructures on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/datastructures/</link>
+    <description>Recent content in Datastructures on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 11 May 2012 12:59:50 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/datastructures/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Simple, generic and dynamically allocated array in C</title>
+      <link>https://navaneeth.github.io/post/simple-generic-and-dynamically-allocated-array-in-c/</link>
+      <pubDate>Fri, 11 May 2012 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/simple-generic-and-dynamically-allocated-array-in-c/</guid>
+      <description>C is a very good language. I have been using for quite some time for my opensource project. The flexibility C offers is really good. But sometimes, lack of simple datastructures like a dynamically growing array will slow down the programmer. There are tons of implementation available online, but most of them are overcomplicated, got lot of dependencies or tough to understand and incorporate with your application. In this post, I present a simple array which grows dynamically, reuses the memory, supports any pointer type and easy to copy to your code base.</description>
+    </item>
+    
+    <item>
+      <title>Circular linked list – An implementation using C#</title>
+      <link>https://navaneeth.github.io/post/circular-linked-list-an-implementation-using-c-number/</link>
+      <pubDate>Tue, 18 Aug 2009 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/circular-linked-list-an-implementation-using-c-number/</guid>
+      <description>In this post, I will explain about creating a circular doubly linked list using C#. .NET framework provides a doubly linked list implementation in System.Collections.Generic.LinkedList class . But this class is not providing the behavior of a circular linked list and it is very tough to extend for supporting circular linked list requirements.
+In a normal doubly linked list, each node will have a link to its previous and next nodes.</description>
+    </item>
+    
+  </channel>
+</rss>

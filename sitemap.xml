@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/onam/</loc>
+    <lastmod>2017-09-04T10:34:36+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/leh-ladakh-bike-trip/</loc>
+    <lastmod>2017-07-06T14:37:36+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/accessing-nested-keys-from-a-map-in-elixir/</loc>
+    <lastmod>2016-06-14T19:01:04+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/oh-my-jackson/</loc>
+    <lastmod>2015-12-30T18:30:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/upgrading-blog-to-hugo/</loc>
+    <lastmod>2015-12-26T22:25:29+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/bringing-business-ideas-to-live-in-3-months/</loc>
+    <lastmod>2015-12-26T12:26:42+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/function-strdup-implicitly-converted-to-pointer/</loc>
+    <lastmod>2015-05-21T10:50:48+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/document.ready-handler-not-getting-fired---rails4/</loc>
+    <lastmod>2014-11-18T12:55:32+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/hiding-menu-when-clicking-outside---angularjs/</loc>
+    <lastmod>2014-09-28T11:29:28+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/how-to-get-lintian-warnings-when-using-ubuntu/</loc>
+    <lastmod>2014-03-23T13:00:00+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/channels-in-libuv/</loc>
+    <lastmod>2013-08-02T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/building-static-and-shared-libraries-using-cmake/</loc>
+    <lastmod>2013-07-28T13:02:25+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/</loc>
+    <lastmod>2013-02-28T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/how-to-upload-files-when-testing-using-selenium-webdriver/</loc>
+    <lastmod>2013-02-20T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/is-thread-dot-sleep-evil/</loc>
+    <lastmod>2013-02-19T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/working-with-native-code-in-csharp-easily-with-cplusplus-cli/</loc>
+    <lastmod>2013-02-17T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/simple-generic-and-dynamically-allocated-array-in-c/</loc>
+    <lastmod>2012-05-11T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</loc>
+    <lastmod>2010-12-19T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/circular-linked-list-an-implementation-using-c-number/</loc>
+    <lastmod>2009-08-18T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/what-great-net-developers-ought-to-know-net-interview-questions-and-answers-part1/</loc>
+    <lastmod>2009-08-13T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/ado-dot-net-best-practices-reading-data-from-data-reader/</loc>
+    <lastmod>2009-07-11T12:59:50+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/about/</loc>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/license/</loc>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/.net/</loc>
+    <lastmod>2013-02-17T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/android/</loc>
+    <lastmod>2015-12-30T18:30:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/angularjs/</loc>
+    <lastmod>2014-09-28T11:29:28+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/c/</loc>
+    <lastmod>2015-05-21T10:50:48+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/c#/</loc>
+    <lastmod>2013-02-19T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/c&#43;&#43;/cli/</loc>
+    <lastmod>2013-02-17T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/</loc>
+    <lastmod>2013-02-17T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/cmake/</loc>
+    <lastmod>2013-07-28T13:02:25+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/datastructures/</loc>
+    <lastmod>2012-05-11T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/debian/</loc>
+    <lastmod>2015-05-21T10:50:48+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/elixir/</loc>
+    <lastmod>2016-06-14T19:01:04+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/golang/</loc>
+    <lastmod>2013-08-02T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/hugo/</loc>
+    <lastmod>2015-12-26T22:25:29+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/java/</loc>
+    <lastmod>2015-12-30T18:30:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/linux/</loc>
+    <lastmod>2013-02-28T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/photography/</loc>
+    <lastmod>2017-09-04T10:34:36+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/pomodoro/</loc>
+    <lastmod>2010-12-19T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/post/</loc>
+    <lastmod>2017-09-04T10:34:36+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/programming/</loc>
+    <lastmod>2016-06-14T19:01:04+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/rails/</loc>
+    <lastmod>2014-11-18T12:55:32+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/selenium/</loc>
+    <lastmod>2013-02-20T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/shell/</loc>
+    <lastmod>2010-12-19T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/startup/</loc>
+    <lastmod>2015-12-26T12:26:42+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/threading/</loc>
+    <lastmod>2013-02-19T12:59:50+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/travel/</loc>
+    <lastmod>2017-07-06T14:37:36+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/categories/web/</loc>
+    <lastmod>2014-11-18T12:55:32+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://navaneeth.github.io/</loc>
+    <lastmod>2017-09-04T10:34:36+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

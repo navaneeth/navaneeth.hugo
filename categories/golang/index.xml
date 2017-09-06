@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/golang/</link>
+    <description>Recent content in Golang on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 02 Aug 2013 12:59:50 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Channels in libuv</title>
+      <link>https://navaneeth.github.io/post/channels-in-libuv/</link>
+      <pubDate>Fri, 02 Aug 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/channels-in-libuv/</guid>
+      <description>go programming language provides a very powerful synchronization mechanism called channels. Channels simplifies communication between threads and makes it very easy to send and receive data from go routines.
+I always missed such functionalities when using libuv. libuv has uv async_send, but it can be used only to wakeup the event loop. In this post, we will implement channels in C using libuv. The idea is to implement a channel so that user can use it without worrying about manually doing the synchronization.</description>
+    </item>
+    
+  </channel>
+</rss>

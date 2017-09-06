@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on {love to code}</title>
+    <link>https://navaneeth.github.io/categories/linux/</link>
+    <description>Recent content in Linux on {love to code}</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 28 Feb 2013 12:59:50 +0530</lastBuildDate>
+    
+	<atom:link href="https://navaneeth.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How to use individual lines pulled from stdin in the middle of a command when using xargs</title>
+      <link>https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/</link>
+      <pubDate>Thu, 28 Feb 2013 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/how-to-use-individual-lines-pulled-from-stdin-in-the-middle-of-a-command-when-using-xargs/</guid>
+      <description>xargs is very powerful commandline utility. Here is what Wikipedia says about xargs
+ xargs is a command on Unix and most Unix-like operating systems used to build and execute command lines from standard input
+ Most common use of xargs would be to do something like,
+find . -type f -print0 | xargs -0 rm  Let us assume that you have a file with list of files to be downloaded from a website.</description>
+    </item>
+    
+    <item>
+      <title>Simple egg timer on Linux for Pomodoro technique</title>
+      <link>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</link>
+      <pubDate>Sun, 19 Dec 2010 12:59:50 +0530</pubDate>
+      
+      <guid>https://navaneeth.github.io/post/simple-egg-timer-on-linux-for-pomodoro-technique/</guid>
+      <description>Recently I have started evaluating the Pomodoro Technique which I found quite interesting. I am still evaluating the technique and not yet concluded on whether I should continue using it.
+To implement pomodoro technique, you need a kitchen timer or egg timer. Since I use pomodoro for my programming work, I obviously don’t want to use a physical timer. I couldn’t find a decent timer for linux especially one that works well with Xfce.</description>
+    </item>
+    
+  </channel>
+</rss>
