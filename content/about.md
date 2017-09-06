@@ -30,4 +30,4 @@ Projects I have contributed to
 -	[libuv](https://github.com/joyent/libuv/)
 -	[White](https://github.com/TestStack/White)
 
-I also do freelance projects. Feel free to contact me if required at navaneethkn *at* gmail *dot* com
+I also do freelance projects. Feel free to contact me if required at navaneethkn *at* gmail *dot* com.
