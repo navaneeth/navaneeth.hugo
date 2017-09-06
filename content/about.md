@@ -1,5 +1,7 @@
 My name is Navaneeth. I live in Bangalore, India. I am a software developer at [Sahaj](http://www.sahajsoft.com/). I am a Free Software enthusiast, and in love with the GNOME Project.
 
+[Download my Resume](/docs/Navaneeth_Resume.pdf)
+
 Some stuff
 ----------
 
