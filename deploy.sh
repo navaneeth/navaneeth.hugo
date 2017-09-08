@@ -7,6 +7,7 @@ hugo -t hyde-x # if using a theme, replace by `hugo -t <yourtheme>`
 
 # Go To Public folder
 cd public
+git pull --rebase
 # Add changes to git.
 git add -A
 

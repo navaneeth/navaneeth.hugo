@@ -1,4 +1,4 @@
-baseurl = "https://navaneeth.github.io/"
+baseurl = "http://blog.nkn.io/"
 languageCode = "en-us"
 title = "{love to code}"
 theme = "hyde-x"
